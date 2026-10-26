@@ -1,8 +1,8 @@
-# UniBus
+# Vandi
 
 Marketplace que conecta operadores de transporte fretado universitário e alunos de outras cidades que estudam na Facens.
 
-> `UniBus` é o nome de trabalho do projeto. Existem outros produtos com o mesmo nome no mercado; um eventual lançamento comercial passaria por rebranding.
+> `Vandi` é o nome de trabalho do projeto. Existem outros produtos com o mesmo nome no mercado; um eventual lançamento comercial passaria por rebranding.
 
 ## O problema
 
