@@ -29,12 +29,12 @@ export function useExample() {
   // Começa em "loading": é o que a tela mostra no 1º desenho.
   const [state, setState] = useState<ExampleState>({ status: "loading" })
 
-  // Regra do lint (react-hooks/set-state-in-effect): setState só dentro do .then, nunca direto no efeito.
+  // setState só dentro do .then: regra react-hooks/set-state-in-effect
   useEffect(() => {
     load().then(setState)
   }, [])
 
-  // "Tentar de novo": volta ao Skeleton e carrega outra vez. Em handler, setState direto é permitido.
+  // "Tentar de novo": em handler, setState direto é permitido
   function retry() {
     setState({ status: "loading" })
     load().then(setState)

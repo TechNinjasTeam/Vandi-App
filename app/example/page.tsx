@@ -40,13 +40,14 @@ export default function ExamplePage() {
 
         {/* 1. Carregando: Skeleton do mesmo formato do cartão (altura e cantos iguais) */}
         {state.status === "loading" && (
-          <div className="flex flex-col gap-3" aria-busy="true" aria-label="Carregando">
+          <div className="flex flex-col gap-3" role="status" aria-busy="true" aria-label="Carregando">
             <Skeleton className="h-[148px] rounded-xl" />
             <Skeleton className="h-[148px] rounded-xl" />
           </div>
         )}
 
-        {/* 2. Erro: mensagem + "Tentar de novo". O texto do erro vem pronto do service. */}
+        {/* 2. Erro: mensagem + "Tentar de novo". Leitura que falha mostra texto fixo da tela;
+            texto de erro vindo do service vale para gravações (`Result` com `error` em português). */}
         {state.status === "error" && (
           <div className="flex flex-col gap-3">
             <Alert variant="destructive">
@@ -83,15 +84,14 @@ export default function ExamplePage() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="grid grid-cols-2 gap-2">
-                    {[
-                      { label: "Ida", time: route.outboundTime },
-                      { label: "Volta", time: route.returnTime },
-                    ].map((cell) => (
-                      <div key={cell.label} className="flex flex-col gap-0.5 rounded-sm bg-background px-3 py-2.5">
-                        <span className="legenda text-muted-foreground">{cell.label}</span>
-                        <span className="corpo-forte">{cell.time}</span>
-                      </div>
-                    ))}
+                    <div className="flex flex-col gap-0.5 rounded-sm bg-background px-3 py-2.5">
+                      <span className="legenda text-muted-foreground">Ida</span>
+                      <span className="corpo-forte">{route.outboundTime}</span>
+                    </div>
+                    <div className="flex flex-col gap-0.5 rounded-sm bg-background px-3 py-2.5">
+                      <span className="legenda text-muted-foreground">Volta</span>
+                      <span className="corpo-forte">{route.returnTime}</span>
+                    </div>
                   </CardContent>
                 </Card>
               </li>
