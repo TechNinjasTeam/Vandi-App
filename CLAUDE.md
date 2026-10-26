@@ -156,7 +156,7 @@ npm test -- <caminho>   # Vitest, sempre por caminho
 
 ## Git
 
-- Base: `main`. Uma branch por issue: `<type>/<scope>-<n>` (ex.: `feat/criar-rota-12`).
+- Base: `main`. Uma branch por issue: `<type>/<scope>-<o-que>-<n>`, 3 ou 4 palavras no total (ex.: `feat/routes-create-route-12`, `feat/home-redirect-16`).
 - Commits em Conventional Commits: `<type>(<scope>): <descrição>`, imperativo, até 72 caracteres, sem ponto final, sem `Co-Authored-By`.
 - PR pequeno, para `main`, com print no celular, revisado e aprovado pelo Gabriel antes do merge. Revisão em lote, terça e sexta.
 - Specs e planos das features ficam no cofre (`Features/`), não neste repositório.
