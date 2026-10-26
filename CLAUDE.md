@@ -116,6 +116,7 @@ Rota (serviço recorrente) é diferente de Viagem (a saída de um dia, ida ou vo
 | Na tela | No código |
 |---|---|
 | Operador / Aluno | `Operator` / `Student` |
+| Conta (operador ou aluno) | `Account = Operator \| Student`, role `"operator" \| "student"` |
 | Rota | `Route` |
 | Ponto de embarque | `BoardingPoint` |
 | Matrícula (vaga fixa) | `Enrollment`: `requested`, `accepted`, `declined` |

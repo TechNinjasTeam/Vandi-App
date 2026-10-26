@@ -1,0 +1,49 @@
+[
+  {
+    "id": "route-carlos",
+    "operatorId": "op-carlos",
+    "origin": "Itu",
+    "destination": "Facens",
+    "weekdays": [
+      "mon",
+      "tue",
+      "wed",
+      "thu",
+      "fri"
+    ],
+    "outboundTime": "17:50",
+    "returnTime": "22:50",
+    "seats": 15,
+    "monthlyPrice": 38000
+  },
+  {
+    "id": "route-ana",
+    "operatorId": "op-ana",
+    "origin": "Salto",
+    "destination": "Facens",
+    "weekdays": [
+      "mon",
+      "wed",
+      "fri"
+    ],
+    "outboundTime": "18:00",
+    "returnTime": "22:50",
+    "seats": 15,
+    "monthlyPrice": 32000
+  },
+  {
+    "id": "route-marcia",
+    "operatorId": "op-marcia",
+    "origin": "Itu",
+    "destination": "Facens",
+    "weekdays": [
+      "mon",
+      "wed",
+      "fri"
+    ],
+    "outboundTime": "17:50",
+    "returnTime": "22:50",
+    "seats": 15,
+    "monthlyPrice": 29000
+  }
+]
