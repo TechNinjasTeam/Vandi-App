@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
+import accounts from "@/mocks/accounts.json"
 import routes from "@/mocks/routes.json"
 import type { Account } from "@/types"
 import { clearAll, read, readSession, seed, write, writeSession } from "./storage"
@@ -191,5 +192,70 @@ describe("signUp validation", () => {
     expect(result.error).toBe("Digite seu nome.")
     expect(read("accounts")).toHaveLength(42)
     expect(readSession()).toBeNull()
+  })
+})
+
+describe("signUp write", () => {
+  it("stores the cleaned-up account and opens the session on the student path", async () => {
+    const expected = {
+      id: "st-maria-souza",
+      name: "Maria Souza",
+      email: "maria@email.com",
+      password: "12345678",
+      role: "student",
+      phone: "(15) 99999-0000",
+    }
+    expect(await signUp(valid)).toEqual({ ok: true, data: expected })
+    expect(read("accounts")).toContainEqual(expected)
+    expect(readSession()).toBe("st-maria-souza")
+    expect(await getInitialPath()).toBe("/student/vans")
+  })
+
+  it.each([
+    ["15999990000", "(15) 99999-0000"],
+    ["1533334444", "(15) 3333-4444"],
+  ])("stores the phone %s masked as %s", async (phone, masked) => {
+    const result = await signUp({ ...valid, phone })
+    expect(result.ok && result.data.phone).toBe(masked)
+  })
+
+  it("creates an operator with an op- id and sends them to /operator", async () => {
+    const result = await signUp({ ...valid, role: "operator", name: "Júlia Ávila" })
+    expect(result.ok && result.data.id).toBe("op-julia-avila")
+    expect(await getInitialPath()).toBe("/operator")
+  })
+
+  it("never reuses an id: a namesake does not inherit the demo account's data", async () => {
+    const first = await signUp({ ...valid, name: "Mateus Lima", email: "a@email.com" })
+    const second = await signUp({ ...valid, name: "Mateus Lima", email: "b@email.com" })
+    expect(first.ok && first.data.id).toBe("st-mateus-lima-2")
+    expect(second.ok && second.data.id).toBe("st-mateus-lima-3")
+    expect(read("accounts").find((a) => a.id === "st-mateus-lima")?.email).toBe("aluno.fixo@vandi.test")
+  })
+
+  it("falls back to the account slug when the name has no letters or digits", async () => {
+    const result = await signUp({ ...valid, name: "???" })
+    expect(result.ok && result.data.id).toBe("st-account")
+  })
+
+  it("keeps the login after a reload", async () => {
+    await signUp(valid)
+    vi.resetModules()
+    const reloaded = await import("./session")
+    expect((await reloaded.getCurrentAccount())?.id).toBe("st-maria-souza")
+  })
+
+  it("lets the new account sign in after signing out", async () => {
+    await signUp(valid)
+    await signOut()
+    const result = await signIn("maria@email.com", "12345678")
+    expect(result.ok).toBe(true)
+  })
+
+  it("restoring the demo data removes the created accounts", async () => {
+    await signUp(valid)
+    await restoreDemoData("2026-10-30")
+    expect(read("accounts")).toEqual(accounts)
+    expect(await signIn("maria@email.com", "12345678")).toEqual({ ok: false, error: "E-mail ou senha incorretos." })
   })
 })
