@@ -14,6 +14,8 @@ page.tsx → use-<tela>.ts → services/*.ts → services/storage.ts → localSt
 
 Os 4 estados, `Result`, nomes e celular primeiro: veja o `CLAUDE.md`. Janela é `Drawer`: veja o fim de `page.tsx`. Datas: `services/clock.ts`.
 
+Datas dos mocks são relativas: `today`, `today±N`, `next-trip` (próximo dia de viagem da rota do registro) e o sufixo `T<HH:mm>`; `seed(today)` em `services/storage.ts` resolve (DEC-038).
+
 ## Passo a passo de uma tela nova
 
 1. Copie `app/example/` para a rota nova e renomeie o hook (`use-<tela>.ts`, `use<Tela>`). Apague este README e o `?state=` do hook: ele existe só na tela-exemplo.

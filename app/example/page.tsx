@@ -67,7 +67,7 @@ export default function ExamplePage() {
             </span>
             <span className="titulo-card">Nenhuma rota por aqui</span>
             <span className="apoio max-w-[280px] text-muted-foreground">
-              Quando um motorista cadastrar uma rota, ela aparece nesta lista.
+              Quando um operador cadastrar uma rota, ela aparece nesta lista.
             </span>
           </div>
         )}

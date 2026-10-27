@@ -1,7 +1,7 @@
 "use client"
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { Alert, AlertTitle } from "@/components/ui/alert"
+import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -39,7 +39,7 @@ export function ProfileView() {
       {state.status === "error" && (
         <div className="flex flex-col gap-3">
           <Alert variant="destructive">
-            <AlertTitle>Não foi possível carregar sua conta.</AlertTitle>
+            <AlertDescription>Não foi possível carregar sua conta.</AlertDescription>
           </Alert>
           <Button variant="secondary" size="lg" onClick={retry}>
             Tentar de novo
