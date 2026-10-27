@@ -1,5 +1,6 @@
 "use client"
 
+import { usePathname } from "next/navigation"
 import { House, User, Users } from "lucide-react"
 
 import { BottomNav, type BottomNavItem } from "@/components/bottom-nav"
@@ -9,6 +10,7 @@ import { useAreaLayout } from "@/hooks/use-area-layout"
 // Guarda + moldura do operador: sem sessão ou papel errado vai para /sign-in.
 export function OperatorLayout({ children }: { children: React.ReactNode }) {
   const { status, pendingRequests } = useAreaLayout("operator")
+  const pathname = usePathname()
 
   const items: BottomNavItem[] = [
     { href: "/operator", label: "Início", icon: House },
@@ -26,7 +28,8 @@ export function OperatorLayout({ children }: { children: React.ReactNode }) {
       ) : (
         <>
           <main className="flex flex-1 flex-col gap-6 px-4 pt-6 pb-6">{children}</main>
-          <BottomNav items={items} />
+          {/* DEC-052: criar rota usa rodapé de ação, sem barra. */}
+          {pathname !== "/operator/new-route" && <BottomNav items={items} />}
         </>
       )}
     </div>

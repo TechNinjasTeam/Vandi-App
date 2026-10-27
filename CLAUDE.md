@@ -120,6 +120,7 @@ Rota (serviço recorrente) é diferente de Viagem (a saída de um dia, ida ou vo
 | Rota | `Route` |
 | Ponto de embarque | `BoardingPoint` |
 | Matrícula (vaga fixa) | `Enrollment`: `requested`, `accepted`, `declined` |
+| Lugares ocupados | `occupiedSeats` (matrículas `accepted`, DEC-048) |
 | Viagem | `Trip`, `direction: "outbound" \| "return"` |
 | Ausência ("Não vou amanhã") | `Absence` |
 | Chamada de retorno | `ReturnCall`, `ReturnCallResponse` |
