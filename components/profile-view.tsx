@@ -1,5 +1,8 @@
 "use client"
 
+import { useSyncExternalStore } from "react"
+import { useTheme } from "next-themes"
+
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Badge } from "@/components/ui/badge"
@@ -16,11 +19,39 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer"
 import { Skeleton } from "@/components/ui/skeleton"
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import { useProfile } from "@/hooks/use-profile"
 
 function initials(name: string) {
   const parts = name.trim().split(/\s+/)
   return (parts[0][0] + (parts.length > 1 ? parts[parts.length - 1][0] : "")).toUpperCase()
+}
+
+const subscribe = () => () => {}
+
+// Seletor provisório (DEC-046): sem opção marcada até montar, para não piscar a errada.
+function ThemeSelector() {
+  const { theme, setTheme } = useTheme()
+  const mounted = useSyncExternalStore(subscribe, () => true, () => false)
+
+  return (
+    <section className="flex flex-col gap-2">
+      <h2 id="appearance-title" className="apoio">
+        Aparência
+      </h2>
+      <ToggleGroup
+        type="single"
+        aria-labelledby="appearance-title"
+        className="grid grid-cols-3"
+        value={mounted ? theme : ""}
+        onValueChange={(value) => value && setTheme(value)}
+      >
+        <ToggleGroupItem value="light">Claro</ToggleGroupItem>
+        <ToggleGroupItem value="dark">Escuro</ToggleGroupItem>
+        <ToggleGroupItem value="system">Sistema</ToggleGroupItem>
+      </ToggleGroup>
+    </section>
+  )
 }
 
 // Perfil provisório, igual para operador e aluno.
@@ -61,6 +92,8 @@ export function ProfileView() {
               <Badge>{state.account.role === "operator" ? "Operador" : "Aluno"}</Badge>
             </CardContent>
           </Card>
+
+          <ThemeSelector />
 
           <div className="flex flex-col gap-3">
             <Button variant="outline" size="lg" className="w-full" onClick={signOut}>

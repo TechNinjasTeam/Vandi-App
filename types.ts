@@ -56,3 +56,10 @@ export type MonthlyFee = {
 export type Credit = { studentId: string; bookingId: string; amount: number }
 /** Same name as the browser's PushSubscription: importing it from "@/types" shadows the DOM type in that file. */
 export type PushSubscription = { id: string; studentId: string; endpoint: string; createdAt: string }
+
+/** Message of each invalid sign-up field, ready for the screen. */
+export type SignUpFieldErrors = Partial<Record<"name" | "phone" | "email" | "password", string>>
+/** Result<Account> plus, on a form error, the message of each invalid field (`error` repeats the first). */
+export type SignUpResult =
+  | { ok: true; data: Account }
+  | { ok: false; error: string; fieldErrors?: SignUpFieldErrors }
