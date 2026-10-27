@@ -1,7 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
+import routesMock from "@/mocks/routes.json"
 import type { NewRouteFieldErrors, NewRouteInput } from "@/types"
 import { clearAll, read, seed, write } from "./storage"
 import { createRoute, listOperatorRoutes, occupiedSeats } from "./routes"
+import { restoreDemoData } from "./session"
 
 function makeFake(overrides: Record<string, unknown> = {}) {
   const map = new Map<string, string>()
@@ -181,5 +183,93 @@ describe("createRoute validation", () => {
     expect(result.error).toBe("Digite a cidade de onde a van sai.")
     expect(read("routes")).toHaveLength(3)
     expect(read("boardingPoints")).toHaveLength(6)
+  })
+})
+
+describe("createRoute write", () => {
+  it("writes the route and its points, trimmed and with order, and returns the route", async () => {
+    const result = await createRoute("op-carlos", valid)
+    expect(result).toEqual({
+      ok: true,
+      data: {
+        id: "route-sorocaba",
+        operatorId: "op-carlos",
+        origin: "Sorocaba",
+        destination: "Facens",
+        weekdays: ["mon", "tue", "wed", "thu", "fri"],
+        outboundTime: "17:30",
+        returnTime: "22:40",
+        seats: 12,
+        monthlyPrice: 35000,
+      },
+    })
+    expect(read("routes").find((r) => r.id === "route-sorocaba")).toEqual(result.ok && result.data)
+    expect(read("boardingPoints").filter((p) => p.routeId === "route-sorocaba")).toEqual([
+      { id: "bp-sorocaba-terminal-santo-antonio", routeId: "route-sorocaba", name: "Terminal Santo Antônio", time: "17:30", order: 1 },
+      { id: "bp-sorocaba-praca-coronel-fernando-prestes", routeId: "route-sorocaba", name: "Praça Coronel Fernando Prestes", time: "17:45", order: 2 },
+    ])
+  })
+
+  it("the new route shows up in the operator's list with no occupied seats", async () => {
+    await createRoute("op-carlos", valid)
+    const list = await listOperatorRoutes("op-carlos")
+    expect(list.map((r) => r.id)).toEqual(["route-carlos", "route-sorocaba"])
+    expect(list[1].occupiedSeats).toBe(0)
+  })
+
+  it.each([
+    ["350", 35000],
+    ["350,00", 35000],
+    ["R$ 350,00", 35000],
+    ["R$350,5", 35050],
+    ["350.50", 35050],
+    ["1.200,00", 120000],
+  ])("monthly price %j is stored as %i cents", async (monthlyPrice, cents) => {
+    const result = await createRoute("op-carlos", { ...valid, monthlyPrice })
+    expect(result.ok && result.data.monthlyPrice).toBe(cents)
+  })
+
+  it("weekdays are stored in week order", async () => {
+    const result = await createRoute("op-carlos", { ...valid, weekdays: ["fri", "mon"] })
+    expect(result.ok && result.data.weekdays).toEqual(["mon", "fri"])
+  })
+
+  it("ids stay unique: a second route from the same city gets -2, and so do equal point names", async () => {
+    const itu = { ...valid, origin: "Itu", boardingPoints: [{ name: "Praça da Matriz", time: "17:30" }] }
+    const first = await createRoute("op-carlos", itu)
+    const second = await createRoute("op-carlos", itu)
+    expect(first.ok && first.data.id).toBe("route-itu")
+    expect(second.ok && second.data.id).toBe("route-itu-2")
+    expect(read("boardingPoints").map((p) => p.id)).toContain("bp-itu-2-praca-da-matriz")
+
+    await createRoute("op-carlos", {
+      ...valid,
+      origin: "Salto de Pirapora",
+      boardingPoints: [
+        { name: "Praça da Matriz", time: "17:30" },
+        { name: "Praça da Matriz", time: "17:40" },
+      ],
+    })
+    const ids = read("boardingPoints").filter((p) => p.routeId === "route-salto-de-pirapora").map((p) => p.id)
+    expect(ids).toEqual(["bp-salto-de-pirapora-praca-da-matriz", "bp-salto-de-pirapora-praca-da-matriz-2"])
+  })
+
+  it("an origin named like a mock operator does not collide with the mock route", async () => {
+    const result = await createRoute("op-ana", { ...valid, origin: "Carlos" })
+    expect(result.ok && result.data.id).toBe("route-carlos-2")
+    expect(read("routes").find((r) => r.id === "route-carlos")?.operatorId).toBe("op-carlos")
+  })
+
+  it("a new operator sees only their own route, and Carlos does not see it", async () => {
+    await createRoute("op-julia-avila", valid)
+    expect((await listOperatorRoutes("op-julia-avila")).map((r) => r.id)).toEqual(["route-sorocaba"])
+    expect((await listOperatorRoutes("op-carlos")).map((r) => r.id)).toEqual(["route-carlos"])
+  })
+
+  it("restoring the demo data removes the created routes", async () => {
+    await createRoute("op-julia-avila", valid)
+    await restoreDemoData("2026-10-30")
+    expect(read("routes")).toEqual(routesMock)
+    expect(await listOperatorRoutes("op-julia-avila")).toEqual([])
   })
 })
