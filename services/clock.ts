@@ -25,3 +25,9 @@ export function getNextTripDate(weekdays: Weekday[], today: string): string {
   }
   throw new Error("route without weekdays")
 }
+
+/** "Segunda, 26/10" for "2026-10-26" (DEC-038, DEC-051). */
+export function formatDayCaption(date: string): string {
+  void date
+  throw new Error("not implemented")
+}

@@ -63,3 +63,26 @@ export type SignUpFieldErrors = Partial<Record<"name" | "phone" | "email" | "pas
 export type SignUpResult =
   | { ok: true; data: Account }
   | { ok: false; error: string; fieldErrors?: SignUpFieldErrors }
+
+/** Create-route form as typed (DEC-050). Destination is always "Facens": not in the form. */
+export type NewRouteInput = {
+  origin: string
+  weekdays: Weekday[]
+  outboundTime: string; returnTime: string      // "HH:mm", or "" when empty (input type="time")
+  seats: string                                 // as typed: "15"
+  monthlyPrice: string                          // as typed: "350", "350,00", "R$ 350,00"
+  boardingPoints: { name: string; time: string }[] // in the order the van passes
+}
+/** Message of each invalid new-route field. `boardingPoints`: no point at all (no field: Alert above the button). */
+export type NewRouteFieldErrors = Partial<
+  Record<"origin" | "weekdays" | "outboundTime" | "returnTime" | "seats" | "monthlyPrice" | "boardingPoints", string>
+> & {
+  /** Same index as NewRouteInput.boardingPoints, `{}` for a valid row. Only when some row is invalid. */
+  boardingPointRows?: { name?: string; time?: string }[]
+}
+/** Result<Route> plus the message of each invalid field (`error` repeats the first, in form order). */
+export type NewRouteResult =
+  | { ok: true; data: Route }
+  | { ok: false; error: string; fieldErrors?: NewRouteFieldErrors }
+/** Computed, never stored: an operator's route with its points (by `order`) and occupied seats (DEC-048). */
+export type OperatorRoute = Route & { boardingPoints: BoardingPoint[]; occupiedSeats: number }
