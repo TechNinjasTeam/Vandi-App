@@ -33,7 +33,7 @@ export async function signIn(email: string, password: string): Promise<Result<Ac
 
 const normalizeEmail = (email: string) => email.trim().toLowerCase()
 
-const slugOf = (name: string) =>
+export const slugOf = (name: string) =>
   name
     .normalize("NFD")
     .replace(/\p{M}/gu, "")
