@@ -114,12 +114,12 @@ export function TimeField({ id, name, label, error, className }: TimeFieldProps)
             id={id}
             type="button"
             aria-haspopup="dialog"
-            aria-invalid={error ? true : undefined}
+            data-invalid={error ? "true" : undefined}
             aria-describedby={error ? `${id}-error` : undefined}
             className={cn(
               "flex h-12 w-full min-w-0 items-center justify-between gap-1 rounded-md border border-input bg-card px-4 text-base tabular-nums text-foreground transition-[color,border-color,box-shadow] outline-none",
               "focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-              "aria-invalid:border-destructive aria-invalid:ring-1 aria-invalid:ring-destructive",
+              "data-[invalid=true]:border-destructive data-[invalid=true]:ring-1 data-[invalid=true]:ring-destructive",
               className
             )}
           >
