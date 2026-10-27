@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import routes from "@/mocks/routes.json"
 import type { Account } from "@/types"
 import { clearAll, read, readSession, seed, write, writeSession } from "./storage"
-import { getCurrentAccount, getInitialPath, restoreDemoData, signIn, signOut } from "./session"
+import { getCurrentAccount, getInitialPath, restoreDemoData, signIn, signOut, signUp } from "./session"
 
 function makeFake(overrides: Record<string, unknown> = {}) {
   const map = new Map<string, string>()
@@ -133,6 +133,63 @@ describe("signIn", () => {
     ["support account with empty password", "ana.ribeiro@vandi.test", ""],
   ])("%s gets one message and no session", async (_case, email, password) => {
     expect(await signIn(email, password)).toEqual({ ok: false, error: "E-mail ou senha incorretos." })
+    expect(readSession()).toBeNull()
+  })
+})
+
+const valid = {
+  role: "student" as const,
+  name: "  Maria Souza ",
+  phone: "(15) 99999-0000",
+  email: " Maria@Email.com ",
+  password: "12345678",
+}
+
+async function fieldErrorsOf(input: Partial<typeof valid>) {
+  const result = await signUp({ ...valid, ...input })
+  return result.ok ? {} : (result.fieldErrors ?? {})
+}
+
+describe("signUp validation", () => {
+  it("refuses an empty name", async () => {
+    expect(await signUp({ ...valid, name: "   " })).toEqual({
+      ok: false,
+      error: "Digite seu nome.",
+      fieldErrors: { name: "Digite seu nome." },
+    })
+  })
+
+  it.each(["nome@email", "nome email@x.com", ""])("refuses the invalid e-mail %j", async (email) => {
+    expect((await fieldErrorsOf({ email })).email).toBe("Digite um e-mail válido, ex.: nome@email.com")
+  })
+
+  it("refuses an e-mail that already has an account, ignoring case and spaces", async () => {
+    expect((await fieldErrorsOf({ email: " Aluno.Fixo@VANDI.test " })).email).toBe(
+      "Esse e-mail já tem conta. Entre ou use outro e-mail.",
+    )
+  })
+
+  it.each(["99999-0000", "+55 15 99999-0000"])("refuses the phone %j without a DDD or with a country code", async (phone) => {
+    expect((await fieldErrorsOf({ phone })).phone).toBe("Coloque o DDD, ex.: 15 99999-0000")
+  })
+
+  it.each(["1599990000", "(15) 99999-0000"])("accepts the phone %j with 10 or 11 digits", async (phone) => {
+    expect((await fieldErrorsOf({ phone })).phone).toBeUndefined()
+    expect((await signUp({ ...valid, phone })).ok).toBe(true)
+  })
+
+  it("requires 8 characters in the password", async () => {
+    expect((await fieldErrorsOf({ password: "1234567" })).password).toBe("A senha precisa ter pelo menos 8 caracteres.")
+    expect((await signUp({ ...valid, password: "12345678" })).ok).toBe(true)
+  })
+
+  it("reports every invalid field at once, repeats the first in error and saves nothing", async () => {
+    const result = await signUp({ role: "student", name: "", phone: "1", email: "x", password: "1" })
+    expect(result.ok).toBe(false)
+    if (result.ok) return
+    expect(Object.keys(result.fieldErrors ?? {}).sort()).toEqual(["email", "name", "password", "phone"])
+    expect(result.error).toBe("Digite seu nome.")
+    expect(read("accounts")).toHaveLength(42)
     expect(readSession()).toBeNull()
   })
 })
