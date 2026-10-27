@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import routes from "@/mocks/routes.json"
 import type { Account } from "@/types"
 import { clearAll, read, readSession, seed, write, writeSession } from "./storage"
-import { getCurrentAccount, getInitialPath, restoreDemoData, signOut } from "./session"
+import { getCurrentAccount, getInitialPath, restoreDemoData, signIn, signOut } from "./session"
 
 function makeFake(overrides: Record<string, unknown> = {}) {
   const map = new Map<string, string>()
@@ -103,5 +103,36 @@ describe("restoreDemoData", () => {
       ok: false,
       error: "Não foi possível restaurar os dados. Tente de novo.",
     })
+  })
+})
+
+describe("signIn", () => {
+  it.each([
+    ["carlos@vandi.test", "op-carlos"],
+    ["aluno.sem-vaga@vandi.test", "st-rafael-moura"],
+    ["aluno.aguardando@vandi.test", "st-beatriz-campos"],
+    ["aluno.fixo@vandi.test", "st-mateus-lima"],
+    ["aluno.falta@vandi.test", "st-lia-ferraz"],
+    ["aluno.avulso-pendente@vandi.test", "st-julia-prado"],
+    ["aluno.avulso-pago@vandi.test", "st-gustavo-reis"],
+  ])("%s enters with the demo password and opens the session", async (email, id) => {
+    const result = await signIn(email, "vandi123")
+    expect(result.ok && result.data.id).toBe(id)
+    expect(readSession()).toBe(id)
+  })
+
+  it("ignores case and spaces around the e-mail", async () => {
+    const result = await signIn(" Aluno.Fixo@VANDI.test ", "vandi123")
+    expect(result.ok && result.data.id).toBe("st-mateus-lima")
+  })
+
+  it.each([
+    ["wrong password", "aluno.fixo@vandi.test", "VANDI123"],
+    ["unknown e-mail", "ninguem@vandi.test", "vandi123"],
+    ["empty password", "aluno.fixo@vandi.test", ""],
+    ["support account with empty password", "ana.ribeiro@vandi.test", ""],
+  ])("%s gets one message and no session", async (_case, email, password) => {
+    expect(await signIn(email, password)).toEqual({ ok: false, error: "E-mail ou senha incorretos." })
+    expect(readSession()).toBeNull()
   })
 })
