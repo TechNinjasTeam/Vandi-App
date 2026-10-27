@@ -1,0 +1,338 @@
+[
+  {
+    "id": "op-carlos",
+    "name": "Carlos Almeida",
+    "email": "carlos@vandi.test",
+    "password": "vandi123",
+    "phone": "(11) 99876-5432",
+    "role": "operator"
+  },
+  {
+    "id": "op-ana",
+    "name": "Ana Ribeiro",
+    "email": "ana.ribeiro@vandi.test",
+    "password": "",
+    "phone": "(11) 90000-0038",
+    "role": "operator"
+  },
+  {
+    "id": "op-marcia",
+    "name": "Márcia Toledo",
+    "email": "marcia.toledo@vandi.test",
+    "password": "",
+    "phone": "(11) 90000-0039",
+    "role": "operator"
+  },
+  {
+    "id": "st-rafael-moura",
+    "name": "Rafael Moura",
+    "email": "aluno.sem-vaga@vandi.test",
+    "password": "vandi123",
+    "phone": "(11) 90000-0001",
+    "role": "student"
+  },
+  {
+    "id": "st-beatriz-campos",
+    "name": "Beatriz Campos",
+    "email": "aluno.aguardando@vandi.test",
+    "password": "vandi123",
+    "phone": "(11) 90000-0002",
+    "role": "student"
+  },
+  {
+    "id": "st-mateus-lima",
+    "name": "Mateus Lima",
+    "email": "aluno.fixo@vandi.test",
+    "password": "vandi123",
+    "phone": "(11) 90000-0003",
+    "role": "student"
+  },
+  {
+    "id": "st-lia-ferraz",
+    "name": "Lia Ferraz",
+    "email": "aluno.falta@vandi.test",
+    "password": "vandi123",
+    "phone": "(11) 97700-1122",
+    "role": "student"
+  },
+  {
+    "id": "st-julia-prado",
+    "name": "Júlia Prado",
+    "email": "aluno.avulso-pendente@vandi.test",
+    "password": "vandi123",
+    "phone": "(11) 90000-0004",
+    "role": "student"
+  },
+  {
+    "id": "st-gustavo-reis",
+    "name": "Gustavo Reis",
+    "email": "aluno.avulso-pago@vandi.test",
+    "password": "vandi123",
+    "phone": "(11) 90000-0005",
+    "role": "student"
+  },
+  {
+    "id": "st-davi-rocha",
+    "name": "Davi Rocha",
+    "email": "davi.rocha@vandi.test",
+    "password": "",
+    "phone": "(11) 90000-0006",
+    "role": "student"
+  },
+  {
+    "id": "st-helena-prado",
+    "name": "Helena Prado",
+    "email": "helena.prado@vandi.test",
+    "password": "",
+    "phone": "(11) 90000-0007",
+    "role": "student"
+  },
+  {
+    "id": "st-igor-matos",
+    "name": "Igor Matos",
+    "email": "igor.matos@vandi.test",
+    "password": "",
+    "phone": "(11) 90000-0008",
+    "role": "student"
+  },
+  {
+    "id": "st-julia-neves",
+    "name": "Júlia Neves",
+    "email": "julia.neves@vandi.test",
+    "password": "",
+    "phone": "(11) 90000-0009",
+    "role": "student"
+  },
+  {
+    "id": "st-marcos-lima",
+    "name": "Marcos Lima",
+    "email": "marcos.lima@vandi.test",
+    "password": "",
+    "phone": "(11) 90000-0010",
+    "role": "student"
+  },
+  {
+    "id": "st-caio-mendes",
+    "name": "Caio Mendes",
+    "email": "caio.mendes@vandi.test",
+    "password": "",
+    "phone": "(11) 99812-3344",
+    "role": "student"
+  },
+  {
+    "id": "st-fernanda-dias",
+    "name": "Fernanda Dias",
+    "email": "fernanda.dias@vandi.test",
+    "password": "",
+    "phone": "(11) 90000-0011",
+    "role": "student"
+  },
+  {
+    "id": "st-pedro-alves",
+    "name": "Pedro Alves",
+    "email": "pedro.alves@vandi.test",
+    "password": "",
+    "phone": "(11) 90000-0012",
+    "role": "student"
+  },
+  {
+    "id": "st-rafa-souza",
+    "name": "Rafa Souza",
+    "email": "rafa.souza@vandi.test",
+    "password": "",
+    "phone": "(11) 90000-0013",
+    "role": "student"
+  },
+  {
+    "id": "st-tiago-reis",
+    "name": "Tiago Reis",
+    "email": "tiago.reis@vandi.test",
+    "password": "",
+    "phone": "(11) 90000-0014",
+    "role": "student"
+  },
+  {
+    "id": "st-ana-silva",
+    "name": "Ana Clara Silva",
+    "email": "ana.silva@vandi.test",
+    "password": "",
+    "phone": "(11) 90000-0015",
+    "role": "student"
+  },
+  {
+    "id": "st-bia-torres",
+    "name": "Bia Torres",
+    "email": "bia.torres@vandi.test",
+    "password": "",
+    "phone": "(11) 90000-0016",
+    "role": "student"
+  },
+  {
+    "id": "st-gustavo-pinto",
+    "name": "Gustavo Pinto",
+    "email": "gustavo.pinto@vandi.test",
+    "password": "",
+    "phone": "(11) 90000-0017",
+    "role": "student"
+  },
+  {
+    "id": "st-nina-castro",
+    "name": "Nina Castro",
+    "email": "nina.castro@vandi.test",
+    "password": "",
+    "phone": "(11) 90000-0018",
+    "role": "student"
+  },
+  {
+    "id": "st-enzo-ramos",
+    "name": "Enzo Ramos",
+    "email": "enzo.ramos@vandi.test",
+    "password": "",
+    "phone": "(11) 90000-0019",
+    "role": "student"
+  },
+  {
+    "id": "st-lucas-moreira",
+    "name": "Lucas Moreira",
+    "email": "lucas.moreira@vandi.test",
+    "password": "",
+    "phone": "(11) 90000-0020",
+    "role": "student"
+  },
+  {
+    "id": "st-sofia-brito",
+    "name": "Sofia Brito",
+    "email": "sofia.brito@vandi.test",
+    "password": "",
+    "phone": "(11) 90000-0021",
+    "role": "student"
+  },
+  {
+    "id": "st-otavio-leme",
+    "name": "Otávio Leme",
+    "email": "otavio.leme@vandi.test",
+    "password": "",
+    "phone": "(11) 90000-0022",
+    "role": "student"
+  },
+  {
+    "id": "st-andre-batista",
+    "name": "André Batista",
+    "email": "andre.batista@vandi.test",
+    "password": "",
+    "phone": "(11) 90000-0023",
+    "role": "student"
+  },
+  {
+    "id": "st-carla-moura",
+    "name": "Carla Moura",
+    "email": "carla.moura@vandi.test",
+    "password": "",
+    "phone": "(11) 90000-0024",
+    "role": "student"
+  },
+  {
+    "id": "st-diego-farias",
+    "name": "Diego Farias",
+    "email": "diego.farias@vandi.test",
+    "password": "",
+    "phone": "(11) 90000-0025",
+    "role": "student"
+  },
+  {
+    "id": "st-elisa-rangel",
+    "name": "Elisa Rangel",
+    "email": "elisa.rangel@vandi.test",
+    "password": "",
+    "phone": "(11) 90000-0026",
+    "role": "student"
+  },
+  {
+    "id": "st-fabio-teles",
+    "name": "Fábio Teles",
+    "email": "fabio.teles@vandi.test",
+    "password": "",
+    "phone": "(11) 90000-0027",
+    "role": "student"
+  },
+  {
+    "id": "st-giovana-pires",
+    "name": "Giovana Pires",
+    "email": "giovana.pires@vandi.test",
+    "password": "",
+    "phone": "(11) 90000-0028",
+    "role": "student"
+  },
+  {
+    "id": "st-hugo-salles",
+    "name": "Hugo Salles",
+    "email": "hugo.salles@vandi.test",
+    "password": "",
+    "phone": "(11) 90000-0029",
+    "role": "student"
+  },
+  {
+    "id": "st-isabela-cunha",
+    "name": "Isabela Cunha",
+    "email": "isabela.cunha@vandi.test",
+    "password": "",
+    "phone": "(11) 90000-0030",
+    "role": "student"
+  },
+  {
+    "id": "st-joao-lacerda",
+    "name": "João Vitor Lacerda",
+    "email": "joao.lacerda@vandi.test",
+    "password": "",
+    "phone": "(11) 90000-0031",
+    "role": "student"
+  },
+  {
+    "id": "st-karen-dutra",
+    "name": "Karen Dutra",
+    "email": "karen.dutra@vandi.test",
+    "password": "",
+    "phone": "(11) 90000-0032",
+    "role": "student"
+  },
+  {
+    "id": "st-luan-peixoto",
+    "name": "Luan Peixoto",
+    "email": "luan.peixoto@vandi.test",
+    "password": "",
+    "phone": "(11) 90000-0033",
+    "role": "student"
+  },
+  {
+    "id": "st-mariana-feitosa",
+    "name": "Mariana Feitosa",
+    "email": "mariana.feitosa@vandi.test",
+    "password": "",
+    "phone": "(11) 90000-0034",
+    "role": "student"
+  },
+  {
+    "id": "st-natalia-brandao",
+    "name": "Natália Brandão",
+    "email": "natalia.brandao@vandi.test",
+    "password": "",
+    "phone": "(11) 90000-0035",
+    "role": "student"
+  },
+  {
+    "id": "st-otto-vasconcelos",
+    "name": "Otto Vasconcelos",
+    "email": "otto.vasconcelos@vandi.test",
+    "password": "",
+    "phone": "(11) 90000-0036",
+    "role": "student"
+  },
+  {
+    "id": "st-paula-queiroz",
+    "name": "Paula Queiroz",
+    "email": "paula.queiroz@vandi.test",
+    "password": "",
+    "phone": "(11) 90000-0037",
+    "role": "student"
+  }
+]
