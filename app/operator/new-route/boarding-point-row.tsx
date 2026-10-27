@@ -1,6 +1,7 @@
 import { X } from "lucide-react"
 
 import { FormField } from "@/components/form-field"
+import { TimeField } from "@/components/time-field"
 import { Button } from "@/components/ui/button"
 
 export function BoardingPointRow({
@@ -34,7 +35,7 @@ export function BoardingPointRow({
           />
         </div>
         <div className="w-24 flex-none">
-          <FormField id={`point-time-${rowKey}`} name="pointTime" type="time" label="Horário" className="px-2" error={error?.time} />
+          <TimeField id={`point-time-${rowKey}`} name="pointTime" label="Horário" className="px-2" error={error?.time} />
         </div>
       </div>
       {onRemove && (

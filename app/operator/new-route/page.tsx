@@ -4,6 +4,7 @@ import { Lock, Plus } from "lucide-react"
 
 import { BackHeader } from "@/components/back-header"
 import { FormField } from "@/components/form-field"
+import { TimeField } from "@/components/time-field"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -86,20 +87,8 @@ export default function NewRoutePage() {
             )}
           </fieldset>
           <div className="grid grid-cols-2 gap-3">
-            <FormField
-              id="outboundTime"
-              name="outboundTime"
-              type="time"
-              label="Horário de ida"
-              error={fieldErrors.outboundTime}
-            />
-            <FormField
-              id="returnTime"
-              name="returnTime"
-              type="time"
-              label="Horário de volta"
-              error={fieldErrors.returnTime}
-            />
+            <TimeField id="outboundTime" name="outboundTime" label="Horário de ida" error={fieldErrors.outboundTime} />
+            <TimeField id="returnTime" name="returnTime" label="Horário de volta" error={fieldErrors.returnTime} />
           </div>
         </CardContent>
       </Card>
