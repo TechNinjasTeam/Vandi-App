@@ -15,7 +15,7 @@ O `CLAUDE.md` de `Documents\GitHub` (fluxo `feature-flow`, skill `issue-control`
 
 Fonte da verdade de decisões e conhecimento: repositório privado `TechNinjasTeam/Vandi-Cofre` (cofre do Obsidian), clonado em:
 
-`C:\Users\gabriel.rodrigues\Documents\GitHub\UPX\Vandi-Cofre`
+`../Vandi-Cofre` (pasta irmã deste repositório, em qualquer máquina)
 
 - Decisões: uma nota por decisão em `Decisões/` (`DEC-NNN`), índice em `Decisões.md`. Antes de decidir algo de novo, leia a decisão.
 - Telas: `Design System/Telas/` (HTML e PNG de cada tela, claro e escuro).
