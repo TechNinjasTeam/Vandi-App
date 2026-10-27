@@ -62,7 +62,7 @@ function PickerColumn({
             onClick={() => onSelect(option)}
             className={cn(
               "flex min-h-12 w-full flex-none items-center justify-center rounded-md text-base tabular-nums outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
-              option === selected ? "bg-secondary text-primary" : "text-foreground"
+              option === selected ? "bg-secondary text-secondary-foreground" : "text-foreground"
             )}
           >
             {option}
@@ -106,7 +106,9 @@ export function TimeField({ id, name, label, error, className }: TimeFieldProps)
 
   return (
     <div className="flex flex-col gap-1.5">
-      <Label htmlFor={id}>{label}</Label>
+      <Label id={`${id}-label`} htmlFor={id}>
+        {label}
+      </Label>
       <input ref={hidden} type="hidden" name={name} value={value} />
       <Drawer open={open} onOpenChange={onOpenChange}>
         <DrawerTrigger asChild>
@@ -114,6 +116,7 @@ export function TimeField({ id, name, label, error, className }: TimeFieldProps)
             id={id}
             type="button"
             aria-haspopup="dialog"
+            aria-labelledby={`${id}-label ${id}-value`}
             data-invalid={error ? "true" : undefined}
             aria-describedby={error ? `${id}-error` : undefined}
             className={cn(
@@ -123,7 +126,9 @@ export function TimeField({ id, name, label, error, className }: TimeFieldProps)
               className
             )}
           >
-            <span className={cn(!value && "text-muted-foreground")}>{value || "--:--"}</span>
+            <span id={`${id}-value`} className={cn(!value && "text-muted-foreground")}>
+              {value || "--:--"}
+            </span>
             <Clock className="size-4 flex-none text-muted-foreground" aria-hidden="true" />
           </button>
         </DrawerTrigger>
