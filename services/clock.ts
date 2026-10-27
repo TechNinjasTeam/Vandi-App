@@ -1,7 +1,9 @@
 import type { Weekday } from "@/types"
 
 // Dates as "YYYY-MM-DD" strings; date math in UTC to avoid DST.
-const WEEKDAYS: Weekday[] = ["mon", "tue", "wed", "thu", "fri", "sat"]
+export const WEEKDAYS: Weekday[] = ["mon", "tue", "wed", "thu", "fri", "sat"]
+
+const DAY_NAMES = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"]
 
 /** The phone's LOCAL date (not toISOString). */
 export function getToday(): string {
@@ -28,6 +30,6 @@ export function getNextTripDate(weekdays: Weekday[], today: string): string {
 
 /** "Segunda, 26/10" for "2026-10-26" (DEC-038, DEC-051). */
 export function formatDayCaption(date: string): string {
-  void date
-  throw new Error("not implemented")
+  const day = DAY_NAMES[new Date(`${date}T00:00:00Z`).getUTCDay()]
+  return `${day}, ${date.slice(8, 10)}/${date.slice(5, 7)}`
 }
