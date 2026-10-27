@@ -68,7 +68,7 @@ export type SignUpResult =
 export type NewRouteInput = {
   origin: string
   weekdays: Weekday[]
-  outboundTime: string; returnTime: string      // "HH:mm", or "" when empty (input type="time")
+  outboundTime: string; returnTime: string      // "HH:mm", or "" when empty (from the time picker)
   seats: string                                 // as typed: "15"
   monthlyPrice: string                          // as typed: "350", "350,00", "R$ 350,00"
   boardingPoints: { name: string; time: string }[] // in the order the van passes
