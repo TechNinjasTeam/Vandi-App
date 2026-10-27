@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest"
 import type { Weekday } from "@/types"
-import { addDays, getNextTripDate, getToday } from "./clock"
+import { addDays, formatDayCaption, getNextTripDate, getToday } from "./clock"
 
 afterEach(() => {
   vi.useRealTimers()
@@ -34,5 +34,16 @@ describe("getNextTripDate", () => {
     expect(getNextTripDate(monWedFri, "2026-10-26")).toBe("2026-10-28")
     expect(getNextTripDate(monWedFri, "2026-10-30")).toBe("2026-11-02")
     expect(getNextTripDate(monWedFri, "2026-10-31")).toBe("2026-11-02")
+  })
+})
+
+describe("formatDayCaption", () => {
+  it.each([
+    ["2026-10-26", "Segunda, 26/10"],
+    ["2026-10-30", "Sexta, 30/10"],
+    ["2026-10-31", "Sábado, 31/10"],
+    ["2026-11-01", "Domingo, 01/11"],
+  ])("%s reads %s", (date, caption) => {
+    expect(formatDayCaption(date)).toBe(caption)
   })
 })

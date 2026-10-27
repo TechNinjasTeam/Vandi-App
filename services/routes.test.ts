@@ -1,8 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import routesMock from "@/mocks/routes.json"
-import type { NewRouteFieldErrors, NewRouteInput } from "@/types"
+import type { NewRouteFieldErrors, NewRouteInput, Weekday } from "@/types"
 import { clearAll, read, seed, write } from "./storage"
-import { createRoute, listOperatorRoutes, occupiedSeats } from "./routes"
+import { createRoute, formatWeekdays, listOperatorRoutes, occupiedSeats } from "./routes"
 import { restoreDemoData } from "./session"
 
 function makeFake(overrides: Record<string, unknown> = {}) {
@@ -271,5 +271,18 @@ describe("createRoute write", () => {
     await restoreDemoData("2026-10-30")
     expect(read("routes")).toEqual(routesMock)
     expect(await listOperatorRoutes("op-julia-avila")).toEqual([])
+  })
+})
+
+describe("formatWeekdays", () => {
+  it.each<[Weekday[], string]>([
+    [["mon", "tue", "wed", "thu", "fri"], "seg a sex"],
+    [["mon", "wed", "fri"], "seg, qua, sex"],
+    [["mon", "tue"], "seg a ter"],
+    [["mon", "tue", "wed", "thu", "fri", "sat"], "seg a sáb"],
+    [["sat"], "sáb"],
+    [["fri", "mon", "tue"], "seg, ter, sex"], // unordered input is sorted, and not contiguous
+  ])("%j reads %j", (weekdays, label) => {
+    expect(formatWeekdays(weekdays)).toBe(label)
   })
 })
