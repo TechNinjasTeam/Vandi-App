@@ -175,8 +175,9 @@ describe("signUp validation", () => {
   })
 
   it.each(["1599990000", "(15) 99999-0000"])("accepts the phone %j with 10 or 11 digits", async (phone) => {
-    expect((await fieldErrorsOf({ phone })).phone).toBeUndefined()
-    expect((await signUp({ ...valid, phone })).ok).toBe(true)
+    const result = await signUp({ ...valid, phone })
+    expect(result.ok).toBe(true)
+    expect(result.ok ? undefined : result.fieldErrors?.phone).toBeUndefined()
   })
 
   it("requires 8 characters in the password", async () => {
