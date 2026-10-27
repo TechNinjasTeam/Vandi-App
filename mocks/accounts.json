@@ -4,7 +4,7 @@
     "name": "Carlos Almeida",
     "email": "carlos@vandi.test",
     "password": "vandi123",
-    "phone": "(11) 99876-5432",
+    "phone": "(11) 90000-0040",
     "role": "operator"
   },
   {
@@ -52,7 +52,7 @@
     "name": "Lia Ferraz",
     "email": "aluno.falta@vandi.test",
     "password": "vandi123",
-    "phone": "(11) 97700-1122",
+    "phone": "(11) 90000-0041",
     "role": "student"
   },
   {
@@ -116,7 +116,7 @@
     "name": "Caio Mendes",
     "email": "caio.mendes@vandi.test",
     "password": "",
-    "phone": "(11) 99812-3344",
+    "phone": "(11) 90000-0042",
     "role": "student"
   },
   {
