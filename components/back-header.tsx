@@ -3,12 +3,21 @@ import { ChevronLeft } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 
-// ponytail: destino fixo (/sign-in); ganha props href/label quando outra tela voltar para outro lugar.
-export function BackHeader({ title, description }: { title: string; description?: string }) {
+export function BackHeader({
+  title,
+  description,
+  href = "/sign-in",
+  label = "Voltar para Entrar",
+}: {
+  title: string
+  description?: string
+  href?: string
+  label?: string
+}) {
   return (
     <header className="flex flex-col gap-2">
       <Button asChild variant="ghost" size="icon" className="-ml-2.5 text-foreground">
-        <Link href="/sign-in" aria-label="Voltar para Entrar">
+        <Link href={href} aria-label={label}>
           <ChevronLeft />
         </Link>
       </Button>
