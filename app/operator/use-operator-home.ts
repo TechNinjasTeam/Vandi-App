@@ -42,8 +42,17 @@ export function useOperatorHome() {
   // Com cacheComponents a rota vive em <Activity>: este efeito roda de novo cada vez que a tela volta a aparecer,
   // e é isso que lista a rota criada na Tela 4. Sem ref de "só na montagem".
   // setState só dentro do .then: regra react-hooks/set-state-in-effect
+  // O cleanup roda quando a rota é escondida: volta a "loading" pra não mostrar, no 1º quadro ao reaparecer,
+  // os dados da conta anterior. `active` descarta carga que termina depois de escondida.
   useEffect(() => {
-    load().then(setState)
+    let active = true
+    load().then((next) => {
+      if (active) setState(next)
+    })
+    return () => {
+      active = false
+      setState({ status: "loading" })
+    }
   }, [])
 
   // "Tentar de novo": em handler, setState direto é permitido
