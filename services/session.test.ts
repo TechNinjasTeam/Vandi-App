@@ -62,11 +62,18 @@ describe("getInitialPath", () => {
     ["st-beatriz-campos", "/student/my-route"], // requested: Minha rota shows "aguardando"
     ["st-mateus-lima", "/student/my-route"],
     ["st-lia-ferraz", "/student/my-route"],
+    ["st-laura-bastos", "/student/my-route"], // requested + accepted
     ["st-julia-prado", "/student/my-route"], // pending booking
     ["st-gustavo-reis", "/student/my-route"], // paid booking
   ])("%s lands on %s", async (id, path) => {
     writeSession(id)
     expect(await getInitialPath()).toBe(path)
+  })
+
+  it.each(["declined", "cancelled"] as const)("a %s enrollment alone does not count as a route", async (status) => {
+    write("enrollments", read("enrollments").map((e) => (e.id === "enr-beatriz-campos" ? { ...e, status } : e)))
+    writeSession("st-beatriz-campos")
+    expect(await getInitialPath()).toBe("/student/vans")
   })
 
   it("a cancelled single-trip booking no longer counts as a route", async () => {
