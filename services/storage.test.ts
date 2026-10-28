@@ -268,15 +268,15 @@ describe("history seed", () => {
 
   it("makes Friday the weekday with the highest absence rate, per route and overall", () => {
     seed("2026-10-27")
-    const accepted = (routeId: string) =>
-      read("enrollments").filter((e) => e.routeId === routeId && e.status === "accepted").length
+    const confirmed = (routeId: string) =>
+      read("enrollments").filter((e) => e.routeId === routeId && e.status === "confirmed").length
     const rates = (ids: string[]) => {
       const abs: Record<string, number> = {}
       const cap: Record<string, number> = {}
       for (const t of read("trips")) {
         if (!ids.includes(t.routeId)) continue
         const d = weekdayOf(t.date)
-        cap[d] = (cap[d] ?? 0) + accepted(t.routeId)
+        cap[d] = (cap[d] ?? 0) + confirmed(t.routeId)
         abs[d] = abs[d] ?? 0
       }
       for (const a of read("absences")) {
