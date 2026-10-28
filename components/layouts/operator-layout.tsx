@@ -1,7 +1,7 @@
 "use client"
 
 import { usePathname } from "next/navigation"
-import { House, User, Users } from "lucide-react"
+import { Bus, House, User, Users } from "lucide-react"
 
 import { BottomNav, type BottomNavItem } from "@/components/bottom-nav"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -12,8 +12,11 @@ export function OperatorLayout({ children }: { children: React.ReactNode }) {
   const { status, pendingRequests } = useAreaLayout("operator")
   const pathname = usePathname()
 
+  const hideBar = pathname === "/operator/new-route" || /^\/operator\/routes\/[^/]+\/edit$/.test(pathname)
+
   const items: BottomNavItem[] = [
     { href: "/operator", label: "Início", icon: House },
+    { href: "/operator/routes", label: "Minha rota", icon: Bus },
     { href: "/operator/requests", label: "Pedidos", icon: Users, count: pendingRequests },
     { href: "/operator/profile", label: "Perfil", icon: User },
   ]
@@ -28,8 +31,8 @@ export function OperatorLayout({ children }: { children: React.ReactNode }) {
       ) : (
         <>
           <main className="flex flex-1 flex-col gap-6 px-4 pt-6 pb-6">{children}</main>
-          {/* DEC-052: criar rota usa rodapé de ação, sem barra. */}
-          {pathname !== "/operator/new-route" && <BottomNav items={items} />}
+          {/* DEC-052, DEC-064: criar e editar rota usam rodapé de ação, sem barra. */}
+          {!hideBar && <BottomNav items={items} />}
         </>
       )}
     </div>
