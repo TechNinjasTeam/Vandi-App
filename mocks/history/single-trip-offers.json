@@ -1,0 +1,597 @@
+[
+  {
+    "id": "offer-carlos-w7-mon",
+    "routeId": "route-carlos",
+    "date": "week-7-mon",
+    "seats": 4,
+    "createdAt": "week-7-monT14:00"
+  },
+  {
+    "id": "offer-ana-w7-mon",
+    "routeId": "route-ana",
+    "date": "week-7-mon",
+    "seats": 8,
+    "createdAt": "week-7-monT14:00"
+  },
+  {
+    "id": "offer-marcia-w7-mon",
+    "routeId": "route-marcia",
+    "date": "week-7-mon",
+    "seats": 2,
+    "createdAt": "week-7-monT14:00"
+  },
+  {
+    "id": "offer-carlos-w7-tue",
+    "routeId": "route-carlos",
+    "date": "week-7-tue",
+    "seats": 4,
+    "createdAt": "week-7-tueT14:00"
+  },
+  {
+    "id": "offer-carlos-w7-wed",
+    "routeId": "route-carlos",
+    "date": "week-7-wed",
+    "seats": 5,
+    "createdAt": "week-7-wedT14:00"
+  },
+  {
+    "id": "offer-ana-w7-wed",
+    "routeId": "route-ana",
+    "date": "week-7-wed",
+    "seats": 8,
+    "createdAt": "week-7-wedT14:00"
+  },
+  {
+    "id": "offer-marcia-w7-wed",
+    "routeId": "route-marcia",
+    "date": "week-7-wed",
+    "seats": 1,
+    "createdAt": "week-7-wedT14:00"
+  },
+  {
+    "id": "offer-carlos-w7-thu",
+    "routeId": "route-carlos",
+    "date": "week-7-thu",
+    "seats": 4,
+    "createdAt": "week-7-thuT14:00"
+  },
+  {
+    "id": "offer-carlos-w7-fri",
+    "routeId": "route-carlos",
+    "date": "week-7-fri",
+    "seats": 7,
+    "createdAt": "week-7-friT14:00"
+  },
+  {
+    "id": "offer-ana-w7-fri",
+    "routeId": "route-ana",
+    "date": "week-7-fri",
+    "seats": 10,
+    "createdAt": "week-7-friT14:00"
+  },
+  {
+    "id": "offer-marcia-w7-fri",
+    "routeId": "route-marcia",
+    "date": "week-7-fri",
+    "seats": 2,
+    "createdAt": "week-7-friT14:00"
+  },
+  {
+    "id": "offer-carlos-w6-mon",
+    "routeId": "route-carlos",
+    "date": "week-6-mon",
+    "seats": 5,
+    "createdAt": "week-6-monT14:00"
+  },
+  {
+    "id": "offer-ana-w6-mon",
+    "routeId": "route-ana",
+    "date": "week-6-mon",
+    "seats": 7,
+    "createdAt": "week-6-monT14:00"
+  },
+  {
+    "id": "offer-marcia-w6-mon",
+    "routeId": "route-marcia",
+    "date": "week-6-mon",
+    "seats": 1,
+    "createdAt": "week-6-monT14:00"
+  },
+  {
+    "id": "offer-carlos-w6-tue",
+    "routeId": "route-carlos",
+    "date": "week-6-tue",
+    "seats": 5,
+    "createdAt": "week-6-tueT14:00"
+  },
+  {
+    "id": "offer-carlos-w6-wed",
+    "routeId": "route-carlos",
+    "date": "week-6-wed",
+    "seats": 4,
+    "createdAt": "week-6-wedT14:00"
+  },
+  {
+    "id": "offer-ana-w6-wed",
+    "routeId": "route-ana",
+    "date": "week-6-wed",
+    "seats": 8,
+    "createdAt": "week-6-wedT14:00"
+  },
+  {
+    "id": "offer-marcia-w6-wed",
+    "routeId": "route-marcia",
+    "date": "week-6-wed",
+    "seats": 2,
+    "createdAt": "week-6-wedT14:00"
+  },
+  {
+    "id": "offer-carlos-w6-thu",
+    "routeId": "route-carlos",
+    "date": "week-6-thu",
+    "seats": 4,
+    "createdAt": "week-6-thuT14:00"
+  },
+  {
+    "id": "offer-carlos-w6-fri",
+    "routeId": "route-carlos",
+    "date": "week-6-fri",
+    "seats": 7,
+    "createdAt": "week-6-friT14:00"
+  },
+  {
+    "id": "offer-ana-w6-fri",
+    "routeId": "route-ana",
+    "date": "week-6-fri",
+    "seats": 10,
+    "createdAt": "week-6-friT14:00"
+  },
+  {
+    "id": "offer-marcia-w6-fri",
+    "routeId": "route-marcia",
+    "date": "week-6-fri",
+    "seats": 2,
+    "createdAt": "week-6-friT14:00"
+  },
+  {
+    "id": "offer-carlos-w5-mon",
+    "routeId": "route-carlos",
+    "date": "week-5-mon",
+    "seats": 4,
+    "createdAt": "week-5-monT14:00"
+  },
+  {
+    "id": "offer-ana-w5-mon",
+    "routeId": "route-ana",
+    "date": "week-5-mon",
+    "seats": 8,
+    "createdAt": "week-5-monT14:00"
+  },
+  {
+    "id": "offer-marcia-w5-mon",
+    "routeId": "route-marcia",
+    "date": "week-5-mon",
+    "seats": 2,
+    "createdAt": "week-5-monT14:00"
+  },
+  {
+    "id": "offer-carlos-w5-tue",
+    "routeId": "route-carlos",
+    "date": "week-5-tue",
+    "seats": 4,
+    "createdAt": "week-5-tueT14:00"
+  },
+  {
+    "id": "offer-carlos-w5-wed",
+    "routeId": "route-carlos",
+    "date": "week-5-wed",
+    "seats": 3,
+    "createdAt": "week-5-wedT14:00"
+  },
+  {
+    "id": "offer-ana-w5-wed",
+    "routeId": "route-ana",
+    "date": "week-5-wed",
+    "seats": 9,
+    "createdAt": "week-5-wedT14:00"
+  },
+  {
+    "id": "offer-marcia-w5-wed",
+    "routeId": "route-marcia",
+    "date": "week-5-wed",
+    "seats": 1,
+    "createdAt": "week-5-wedT14:00"
+  },
+  {
+    "id": "offer-carlos-w5-thu",
+    "routeId": "route-carlos",
+    "date": "week-5-thu",
+    "seats": 5,
+    "createdAt": "week-5-thuT14:00"
+  },
+  {
+    "id": "offer-carlos-w5-fri",
+    "routeId": "route-carlos",
+    "date": "week-5-fri",
+    "seats": 6,
+    "createdAt": "week-5-friT14:00"
+  },
+  {
+    "id": "offer-ana-w5-fri",
+    "routeId": "route-ana",
+    "date": "week-5-fri",
+    "seats": 10,
+    "createdAt": "week-5-friT14:00"
+  },
+  {
+    "id": "offer-marcia-w5-fri",
+    "routeId": "route-marcia",
+    "date": "week-5-fri",
+    "seats": 3,
+    "createdAt": "week-5-friT14:00"
+  },
+  {
+    "id": "offer-carlos-w4-mon",
+    "routeId": "route-carlos",
+    "date": "week-4-mon",
+    "seats": 3,
+    "createdAt": "week-4-monT14:00"
+  },
+  {
+    "id": "offer-ana-w4-mon",
+    "routeId": "route-ana",
+    "date": "week-4-mon",
+    "seats": 8,
+    "createdAt": "week-4-monT14:00"
+  },
+  {
+    "id": "offer-marcia-w4-mon",
+    "routeId": "route-marcia",
+    "date": "week-4-mon",
+    "seats": 1,
+    "createdAt": "week-4-monT14:00"
+  },
+  {
+    "id": "offer-carlos-w4-tue",
+    "routeId": "route-carlos",
+    "date": "week-4-tue",
+    "seats": 3,
+    "createdAt": "week-4-tueT14:00"
+  },
+  {
+    "id": "offer-carlos-w4-wed",
+    "routeId": "route-carlos",
+    "date": "week-4-wed",
+    "seats": 5,
+    "createdAt": "week-4-wedT14:00"
+  },
+  {
+    "id": "offer-ana-w4-wed",
+    "routeId": "route-ana",
+    "date": "week-4-wed",
+    "seats": 8,
+    "createdAt": "week-4-wedT14:00"
+  },
+  {
+    "id": "offer-marcia-w4-wed",
+    "routeId": "route-marcia",
+    "date": "week-4-wed",
+    "seats": 1,
+    "createdAt": "week-4-wedT14:00"
+  },
+  {
+    "id": "offer-carlos-w4-thu",
+    "routeId": "route-carlos",
+    "date": "week-4-thu",
+    "seats": 4,
+    "createdAt": "week-4-thuT14:00"
+  },
+  {
+    "id": "offer-carlos-w4-fri",
+    "routeId": "route-carlos",
+    "date": "week-4-fri",
+    "seats": 7,
+    "createdAt": "week-4-friT14:00"
+  },
+  {
+    "id": "offer-ana-w4-fri",
+    "routeId": "route-ana",
+    "date": "week-4-fri",
+    "seats": 9,
+    "createdAt": "week-4-friT14:00"
+  },
+  {
+    "id": "offer-marcia-w4-fri",
+    "routeId": "route-marcia",
+    "date": "week-4-fri",
+    "seats": 2,
+    "createdAt": "week-4-friT14:00"
+  },
+  {
+    "id": "offer-carlos-w3-mon",
+    "routeId": "route-carlos",
+    "date": "week-3-mon",
+    "seats": 4,
+    "createdAt": "week-3-monT14:00"
+  },
+  {
+    "id": "offer-ana-w3-mon",
+    "routeId": "route-ana",
+    "date": "week-3-mon",
+    "seats": 7,
+    "createdAt": "week-3-monT14:00"
+  },
+  {
+    "id": "offer-marcia-w3-mon",
+    "routeId": "route-marcia",
+    "date": "week-3-mon",
+    "seats": 2,
+    "createdAt": "week-3-monT14:00"
+  },
+  {
+    "id": "offer-carlos-w3-tue",
+    "routeId": "route-carlos",
+    "date": "week-3-tue",
+    "seats": 5,
+    "createdAt": "week-3-tueT14:00"
+  },
+  {
+    "id": "offer-carlos-w3-wed",
+    "routeId": "route-carlos",
+    "date": "week-3-wed",
+    "seats": 3,
+    "createdAt": "week-3-wedT14:00"
+  },
+  {
+    "id": "offer-ana-w3-wed",
+    "routeId": "route-ana",
+    "date": "week-3-wed",
+    "seats": 8,
+    "createdAt": "week-3-wedT14:00"
+  },
+  {
+    "id": "offer-marcia-w3-wed",
+    "routeId": "route-marcia",
+    "date": "week-3-wed",
+    "seats": 1,
+    "createdAt": "week-3-wedT14:00"
+  },
+  {
+    "id": "offer-carlos-w3-thu",
+    "routeId": "route-carlos",
+    "date": "week-3-thu",
+    "seats": 4,
+    "createdAt": "week-3-thuT14:00"
+  },
+  {
+    "id": "offer-carlos-w3-fri",
+    "routeId": "route-carlos",
+    "date": "week-3-fri",
+    "seats": 6,
+    "createdAt": "week-3-friT14:00"
+  },
+  {
+    "id": "offer-ana-w3-fri",
+    "routeId": "route-ana",
+    "date": "week-3-fri",
+    "seats": 9,
+    "createdAt": "week-3-friT14:00"
+  },
+  {
+    "id": "offer-marcia-w3-fri",
+    "routeId": "route-marcia",
+    "date": "week-3-fri",
+    "seats": 2,
+    "createdAt": "week-3-friT14:00"
+  },
+  {
+    "id": "offer-carlos-w2-mon",
+    "routeId": "route-carlos",
+    "date": "week-2-mon",
+    "seats": 4,
+    "createdAt": "week-2-monT14:00"
+  },
+  {
+    "id": "offer-ana-w2-mon",
+    "routeId": "route-ana",
+    "date": "week-2-mon",
+    "seats": 9,
+    "createdAt": "week-2-monT14:00"
+  },
+  {
+    "id": "offer-marcia-w2-mon",
+    "routeId": "route-marcia",
+    "date": "week-2-mon",
+    "seats": 2,
+    "createdAt": "week-2-monT14:00"
+  },
+  {
+    "id": "offer-carlos-w2-tue",
+    "routeId": "route-carlos",
+    "date": "week-2-tue",
+    "seats": 5,
+    "createdAt": "week-2-tueT14:00"
+  },
+  {
+    "id": "offer-carlos-w2-wed",
+    "routeId": "route-carlos",
+    "date": "week-2-wed",
+    "seats": 3,
+    "createdAt": "week-2-wedT14:00"
+  },
+  {
+    "id": "offer-ana-w2-wed",
+    "routeId": "route-ana",
+    "date": "week-2-wed",
+    "seats": 7,
+    "createdAt": "week-2-wedT14:00"
+  },
+  {
+    "id": "offer-marcia-w2-wed",
+    "routeId": "route-marcia",
+    "date": "week-2-wed",
+    "seats": 1,
+    "createdAt": "week-2-wedT14:00"
+  },
+  {
+    "id": "offer-carlos-w2-thu",
+    "routeId": "route-carlos",
+    "date": "week-2-thu",
+    "seats": 4,
+    "createdAt": "week-2-thuT14:00"
+  },
+  {
+    "id": "offer-carlos-w2-fri",
+    "routeId": "route-carlos",
+    "date": "week-2-fri",
+    "seats": 7,
+    "createdAt": "week-2-friT14:00"
+  },
+  {
+    "id": "offer-ana-w2-fri",
+    "routeId": "route-ana",
+    "date": "week-2-fri",
+    "seats": 9,
+    "createdAt": "week-2-friT14:00"
+  },
+  {
+    "id": "offer-marcia-w2-fri",
+    "routeId": "route-marcia",
+    "date": "week-2-fri",
+    "seats": 2,
+    "createdAt": "week-2-friT14:00"
+  },
+  {
+    "id": "offer-carlos-w1-mon",
+    "routeId": "route-carlos",
+    "date": "week-1-mon",
+    "seats": 4,
+    "createdAt": "week-1-monT14:00"
+  },
+  {
+    "id": "offer-ana-w1-mon",
+    "routeId": "route-ana",
+    "date": "week-1-mon",
+    "seats": 9,
+    "createdAt": "week-1-monT14:00"
+  },
+  {
+    "id": "offer-carlos-w1-tue",
+    "routeId": "route-carlos",
+    "date": "week-1-tue",
+    "seats": 4,
+    "createdAt": "week-1-tueT14:00"
+  },
+  {
+    "id": "offer-carlos-w1-wed",
+    "routeId": "route-carlos",
+    "date": "week-1-wed",
+    "seats": 4,
+    "createdAt": "week-1-wedT14:00"
+  },
+  {
+    "id": "offer-ana-w1-wed",
+    "routeId": "route-ana",
+    "date": "week-1-wed",
+    "seats": 8,
+    "createdAt": "week-1-wedT14:00"
+  },
+  {
+    "id": "offer-carlos-w1-thu",
+    "routeId": "route-carlos",
+    "date": "week-1-thu",
+    "seats": 4,
+    "createdAt": "week-1-thuT14:00"
+  },
+  {
+    "id": "offer-carlos-w1-fri",
+    "routeId": "route-carlos",
+    "date": "week-1-fri",
+    "seats": 7,
+    "createdAt": "week-1-friT14:00"
+  },
+  {
+    "id": "offer-ana-w1-fri",
+    "routeId": "route-ana",
+    "date": "week-1-fri",
+    "seats": 9,
+    "createdAt": "week-1-friT14:00"
+  },
+  {
+    "id": "offer-marcia-w1-fri",
+    "routeId": "route-marcia",
+    "date": "week-1-fri",
+    "seats": 3,
+    "createdAt": "week-1-friT14:00"
+  },
+  {
+    "id": "offer-carlos-w0-mon",
+    "routeId": "route-carlos",
+    "date": "week-0-mon",
+    "seats": 3,
+    "createdAt": "week-0-monT14:00"
+  },
+  {
+    "id": "offer-ana-w0-mon",
+    "routeId": "route-ana",
+    "date": "week-0-mon",
+    "seats": 8,
+    "createdAt": "week-0-monT14:00"
+  },
+  {
+    "id": "offer-marcia-w0-mon",
+    "routeId": "route-marcia",
+    "date": "week-0-mon",
+    "seats": 2,
+    "createdAt": "week-0-monT14:00"
+  },
+  {
+    "id": "offer-carlos-w0-tue",
+    "routeId": "route-carlos",
+    "date": "week-0-tue",
+    "seats": 5,
+    "createdAt": "week-0-tueT14:00"
+  },
+  {
+    "id": "offer-carlos-w0-wed",
+    "routeId": "route-carlos",
+    "date": "week-0-wed",
+    "seats": 3,
+    "createdAt": "week-0-wedT14:00"
+  },
+  {
+    "id": "offer-ana-w0-wed",
+    "routeId": "route-ana",
+    "date": "week-0-wed",
+    "seats": 8,
+    "createdAt": "week-0-wedT14:00"
+  },
+  {
+    "id": "offer-carlos-w0-thu",
+    "routeId": "route-carlos",
+    "date": "week-0-thu",
+    "seats": 3,
+    "createdAt": "week-0-thuT14:00"
+  },
+  {
+    "id": "offer-carlos-w0-fri",
+    "routeId": "route-carlos",
+    "date": "week-0-fri",
+    "seats": 6,
+    "createdAt": "week-0-friT14:00"
+  },
+  {
+    "id": "offer-ana-w0-fri",
+    "routeId": "route-ana",
+    "date": "week-0-fri",
+    "seats": 10,
+    "createdAt": "week-0-friT14:00"
+  },
+  {
+    "id": "offer-marcia-w0-fri",
+    "routeId": "route-marcia",
+    "date": "week-0-fri",
+    "seats": 3,
+    "createdAt": "week-0-friT14:00"
+  }
+]
