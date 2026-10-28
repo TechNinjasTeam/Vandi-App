@@ -2,7 +2,9 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import routesMock from "@/mocks/routes.json"
 import type { NewRouteFieldErrors, NewRouteInput, Weekday } from "@/types"
 import { clearAll, read, seed, write } from "./storage"
-import { createRoute, formatWeekdays, listOperatorRoutes, occupiedSeats } from "./routes"
+import {
+  POINT_IN_USE, createRoute, formatMonthlyPrice, formatWeekdays, getOperatorRoute, listOperatorRoutes, occupiedSeats, updateRoute,
+} from "./routes"
 import { restoreDemoData } from "./session"
 
 function makeFake(overrides: Record<string, unknown> = {}) {
@@ -284,5 +286,192 @@ describe("formatWeekdays", () => {
     [["fri", "mon", "tue"], "seg, ter, sex"], // unordered input is sorted, and not contiguous
   ])("%j reads %j", (weekdays, label) => {
     expect(formatWeekdays(weekdays)).toBe(label)
+  })
+})
+
+const carlos: NewRouteInput = {
+  origin: "Itu",
+  weekdays: ["mon", "tue", "wed", "thu", "fri"],
+  outboundTime: "17:50",
+  returnTime: "22:50",
+  seats: "15",
+  monthlyPrice: "380",
+  boardingPoints: [
+    { id: "bp-carlos-matriz", name: "Praça da Matriz", time: "17:50" },
+    { id: "bp-carlos-rodoviaria", name: "Rodoviária de Itu", time: "18:00" },
+  ],
+}
+
+function snapshot() {
+  return { routes: read("routes"), boardingPoints: read("boardingPoints"), enrollments: read("enrollments") }
+}
+
+describe("getOperatorRoute", () => {
+  it("returns the owner's route with sorted points, seats and the points with active enrollments", async () => {
+    write("boardingPoints", [...read("boardingPoints")].reverse())
+    const route = await getOperatorRoute("op-carlos", "route-carlos")
+    expect(route).toMatchObject({ id: "route-carlos", occupiedSeats: 12 })
+    expect(route?.boardingPoints.map((p) => p.id)).toEqual(["bp-carlos-matriz", "bp-carlos-rodoviaria"])
+    expect([...(route?.pointsInUse ?? [])].sort()).toEqual(["bp-carlos-matriz", "bp-carlos-rodoviaria"])
+  })
+
+  it("another operator's route and a missing route are null", async () => {
+    expect(await getOperatorRoute("op-ana", "route-carlos")).toBeNull()
+    expect(await getOperatorRoute("op-carlos", "route-x")).toBeNull()
+  })
+
+  it("a route without enrollments has no point in use", async () => {
+    const created = await createRoute("op-carlos", valid)
+    const route = await getOperatorRoute("op-carlos", created.ok ? created.data.id : "")
+    expect(route?.pointsInUse).toEqual([])
+  })
+
+  it("only requested, accepted and confirmed enrollments put a point in use", async () => {
+    write("enrollments", read("enrollments").map((e) =>
+      e.boardingPointId === "bp-carlos-rodoviaria" ? { ...e, status: "cancelled" as const } : e,
+    ))
+    expect((await getOperatorRoute("op-carlos", "route-carlos"))?.pointsInUse).toEqual(["bp-carlos-matriz"])
+    write("enrollments", read("enrollments").map((e) =>
+      e.boardingPointId === "bp-carlos-matriz" ? { ...e, status: "declined" as const } : e,
+    ))
+    expect((await getOperatorRoute("op-carlos", "route-carlos"))?.pointsInUse).toEqual([])
+  })
+})
+
+describe("updateRoute", () => {
+  it("saves the changes, keeps the route and the kept points' ids, and gives the new point an id", async () => {
+    const enrollments = read("enrollments")
+    const result = await updateRoute("op-carlos", "route-carlos", {
+      ...carlos,
+      monthlyPrice: "400",
+      boardingPoints: [
+        { id: "bp-carlos-matriz", name: "Praça Matriz", time: "17:55" },
+        { id: "bp-carlos-rodoviaria", name: "Rodoviária de Itu", time: "18:00" },
+        { name: "Posto Shell", time: "18:10" },
+      ],
+    })
+    expect(result).toEqual({
+      ok: true,
+      data: {
+        id: "route-carlos",
+        operatorId: "op-carlos",
+        origin: "Itu",
+        destination: "Facens",
+        weekdays: ["mon", "tue", "wed", "thu", "fri"],
+        outboundTime: "17:50",
+        returnTime: "22:50",
+        seats: 15,
+        monthlyPrice: 40000,
+      },
+    })
+    expect(read("routes").find((r) => r.id === "route-carlos")).toEqual(result.ok && result.data)
+    expect(read("boardingPoints")).toHaveLength(7)
+    expect(read("boardingPoints").filter((p) => p.routeId === "route-carlos")).toEqual([
+      { id: "bp-carlos-matriz", routeId: "route-carlos", name: "Praça Matriz", time: "17:55", order: 1 },
+      { id: "bp-carlos-rodoviaria", routeId: "route-carlos", name: "Rodoviária de Itu", time: "18:00", order: 2 },
+      { id: "bp-carlos-posto-shell", routeId: "route-carlos", name: "Posto Shell", time: "18:10", order: 3 },
+    ])
+    expect(read("enrollments")).toEqual(enrollments)
+  })
+
+  it("points sent in another order keep their ids and swap their order; the origin can change", async () => {
+    const result = await updateRoute("op-carlos", "route-carlos", {
+      ...carlos,
+      origin: "Salto",
+      boardingPoints: [...carlos.boardingPoints].reverse(),
+    })
+    expect(result.ok && result.data).toMatchObject({ id: "route-carlos", origin: "Salto" })
+    const points = read("boardingPoints").filter((p) => p.routeId === "route-carlos")
+    expect(points.find((p) => p.id === "bp-carlos-rodoviaria")?.order).toBe(1)
+    expect(points.find((p) => p.id === "bp-carlos-matriz")?.order).toBe(2)
+  })
+
+  it("a point id of another route does not take that point over: it becomes a new point", async () => {
+    const anaPoints = read("boardingPoints").filter((p) => p.routeId === "route-ana")
+    const result = await updateRoute("op-carlos", "route-carlos", {
+      ...carlos,
+      boardingPoints: [...carlos.boardingPoints, { id: "bp-ana-igreja", name: "Posto Shell", time: "18:10" }],
+    })
+    expect(result.ok).toBe(true)
+    expect(read("boardingPoints").filter((p) => p.routeId === "route-ana")).toEqual(anaPoints)
+    expect(read("boardingPoints").filter((p) => p.routeId === "route-carlos")).toHaveLength(3)
+  })
+
+  it.each([
+    ["origin", { origin: "" }, "Digite a cidade de onde a van sai."],
+    ["weekdays", { weekdays: [] }, "Escolha pelo menos um dia."],
+    ["returnTime", { returnTime: "17:50" }, "A volta tem que ser depois da ida."],
+    ["seats", { seats: "0" }, "Informe quantos lugares a van tem, de 1 em diante."],
+    ["monthlyPrice", { monthlyPrice: "0" }, "Informe a mensalidade, maior que zero."],
+    ["boardingPoints", { boardingPoints: [] }, "Adicione pelo menos um ponto de embarque."],
+  ] as const)("invalid %s gets the createRoute message in the field and in error, and nothing is written", async (field, change, message) => {
+    const before = snapshot()
+    const result = await updateRoute("op-carlos", "route-carlos", { ...carlos, ...change } as NewRouteInput)
+    expect(result).toMatchObject({ ok: false, error: message, fieldErrors: { [field]: message } })
+    expect(snapshot()).toEqual(before)
+  })
+
+  it("seats below the occupied ones are refused, equal is accepted", async () => {
+    const before = snapshot()
+    const result = await updateRoute("op-carlos", "route-carlos", { ...carlos, seats: "11" })
+    expect(result).toMatchObject({ ok: false, error: "Já tem 12 alunos na rota", fieldErrors: { seats: "Já tem 12 alunos na rota" } })
+    expect(snapshot()).toEqual(before)
+
+    const equal = await updateRoute("op-carlos", "route-carlos", { ...carlos, seats: "12" })
+    expect(equal.ok && equal.data.seats).toBe(12)
+  })
+
+  it("seats 0 on a route with a student gets the validation message, not the occupied one", async () => {
+    const created = await createRoute("op-carlos", valid)
+    const routeId = created.ok ? created.data.id : ""
+    write("enrollments", [
+      ...read("enrollments"),
+      {
+        id: "enr-t",
+        routeId,
+        studentId: "st-t",
+        boardingPointId: "bp-sorocaba-terminal-santo-antonio",
+        status: "confirmed",
+        requestedAt: "2026-10-30T10:00:00-03:00",
+      },
+    ])
+    const result = await updateRoute("op-carlos", routeId, { ...valid, seats: "0" })
+    expect(result).toMatchObject({ ok: false, fieldErrors: { seats: "Informe quantos lugares a van tem, de 1 em diante." } })
+  })
+
+  it("removing a point with an active enrollment is refused and nothing is written", async () => {
+    const before = snapshot()
+    const result = await updateRoute("op-carlos", "route-carlos", { ...carlos, boardingPoints: [carlos.boardingPoints[0]] })
+    expect(result).toMatchObject({ ok: false, error: POINT_IN_USE, fieldErrors: { boardingPoints: POINT_IN_USE } })
+    expect(snapshot()).toEqual(before)
+  })
+
+  it("a point without active enrollments can be removed", async () => {
+    write("enrollments", read("enrollments").map((e) =>
+      e.boardingPointId === "bp-carlos-rodoviaria" ? { ...e, status: "cancelled" as const } : e,
+    ))
+    const result = await updateRoute("op-carlos", "route-carlos", { ...carlos, boardingPoints: [carlos.boardingPoints[0]] })
+    expect(result.ok).toBe(true)
+    expect(read("boardingPoints").filter((p) => p.routeId === "route-carlos").map((p) => p.id)).toEqual(["bp-carlos-matriz"])
+  })
+
+  it.each([
+    ["another operator's route", "op-ana", "route-carlos"],
+    ["a missing route", "op-carlos", "route-x"],
+  ])("%s is not found, with no field errors, and nothing is written", async (_label, operatorId, routeId) => {
+    const before = snapshot()
+    expect(await updateRoute(operatorId, routeId, carlos)).toEqual({ ok: false, error: "Rota não encontrada." })
+    expect(snapshot()).toEqual(before)
+  })
+})
+
+describe("formatMonthlyPrice", () => {
+  it.each([
+    [38000, "R$ 380"],
+    [35050, "R$ 350,50"],
+    [120000, "R$ 1.200"],
+    [5, "R$ 0,05"],
+  ])("%i cents read %j", (cents, label) => {
+    expect(formatMonthlyPrice(cents)).toBe(label)
   })
 })
