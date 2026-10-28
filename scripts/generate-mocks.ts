@@ -71,7 +71,7 @@ const offers: { id: string; routeId: string; date: string; seats: number; create
 const bookings: Booking[] = []
 const stats = { seats: 0, occupied: 0, paid: 0 }
 const paidByWeek = Array<number>(WEEKS).fill(0)
-// Absences and accepted-seat capacity per weekday: overall and per route (Friday must be the peak).
+// Absences and confirmed-seat capacity per weekday: overall and per route (Friday must be the peak).
 const overall: Record<string, { abs: number; cap: number }> = {}
 const perRoute: Record<string, Record<string, { abs: number; cap: number }>> = {}
 
@@ -82,8 +82,8 @@ for (let week = WEEKS - 1; week >= 0; week--) {
       const name = short(route.id, "route")
       const token = `week-${week}-${day}`
       const suffix = `w${week}-${day}`
-      const accepted = enrollments.filter((e) => e.routeId === route.id && e.status === "accepted")
-      const supportAccepted = accepted.filter((e) => support.has(e.studentId))
+      const confirmed = enrollments.filter((e) => e.routeId === route.id && e.status === "confirmed")
+      const supportConfirmed = confirmed.filter((e) => support.has(e.studentId))
       const enrolledIds = new Set(enrollments.filter((e) => e.routeId === route.id).map((e) => e.studentId))
       const routePoints = points.filter((p) => p.routeId === route.id)
 
@@ -91,8 +91,8 @@ for (let week = WEEKS - 1; week >= 0; week--) {
 
       // Absences
       const jitter = pick(day === "fri" ? FRIDAY_JITTER : OTHER_JITTER)
-      const count = Math.min(Math.max((ABSENCE_BASE[route.id][day] ?? 1) + jitter, 0), supportAccepted.length)
-      const tripAbsences: Absence[] = shuffle(supportAccepted).slice(0, count).map((e, i) => ({
+      const count = Math.min(Math.max((ABSENCE_BASE[route.id][day] ?? 1) + jitter, 0), supportConfirmed.length)
+      const tripAbsences: Absence[] = shuffle(supportConfirmed).slice(0, count).map((e, i) => ({
         id: `abs-${name}-${suffix}-${short(e.studentId, "st")}`,
         studentId: e.studentId,
         routeId: route.id,
@@ -102,11 +102,11 @@ for (let week = WEEKS - 1; week >= 0; week--) {
       absences.push(...tripAbsences)
       for (const bucket of [(overall[day] ??= { abs: 0, cap: 0 }), ((perRoute[route.id] ??= {})[day] ??= { abs: 0, cap: 0 })]) {
         bucket.abs += count
-        bucket.cap += accepted.length
+        bucket.cap += confirmed.length
       }
 
       // Offer
-      const fixed = accepted.length - count
+      const fixed = confirmed.length - count
       const leftover = route.seats - fixed
       stats.seats += route.seats
       if (leftover <= 0) {
