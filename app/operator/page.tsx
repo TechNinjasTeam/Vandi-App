@@ -1,7 +1,7 @@
 "use client"
 
 // CAMADA 1 · TELA 3 (Início do operador). Só desenha e chama o hook. Moldura e barra vêm do OperatorLayout.
-import { ArrowRight, Bus, ChartColumn, ClipboardList, Plus, type LucideIcon } from "lucide-react"
+import { ArrowRight, Bus, ChartColumn, ChevronRight, ClipboardList, Plus, type LucideIcon } from "lucide-react"
 import Link from "next/link"
 
 import { Alert, AlertDescription } from "@/components/ui/alert"
@@ -18,7 +18,7 @@ const TONES = {
   secondary: "bg-secondary text-secondary-foreground",
 }
 
-// "Em breve": destino que ainda não existe. Não navega (DEC-051); #5, #6 e #9 trocam por link.
+// "Em breve": destino que ainda não existe. Não navega (DEC-051); #5 e #6 trocam por link.
 function ComingSoonCard({ icon: Icon, title, tone }: { icon: LucideIcon; title: string; tone: keyof typeof TONES }) {
   return (
     <button
@@ -145,7 +145,19 @@ export default function OperatorHomePage() {
         <h2 id="management-title" className="titulo-card">
           Gestão
         </h2>
-        <ComingSoonCard icon={ChartColumn} tone="secondary" title="Ver painel" />
+        <Link
+          href="/operator/dashboard"
+          className="flex min-h-[68px] w-full items-center gap-3 rounded-xl bg-card px-4 py-3.5 text-left shadow-card"
+        >
+          <span aria-hidden="true" className={`flex size-10 flex-none items-center justify-center rounded-full ${TONES.secondary}`}>
+            <ChartColumn className="size-5" />
+          </span>
+          <span className="flex flex-1 flex-col gap-0.5">
+            <span className="corpo-forte">Ver painel</span>
+            <span className="apoio text-muted-foreground">Ver ocupação e avulsos da semana</span>
+          </span>
+          <ChevronRight aria-hidden="true" className="size-5 text-muted-foreground" />
+        </Link>
       </section>
     </>
   )
