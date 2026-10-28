@@ -88,9 +88,9 @@ mocks/                JSON fictício
 
 ### Dados e sessão
 
-- `storage.ts`: todo acesso com `try/catch`; sem localStorage, segue com o JSON na memória. Chave `vandi:v1:<assunto>`; mudou o formato dos mocks, sobe a versão.
-- "Restaurar dados de demonstração" apaga `vandi:v1:*` e volta ao JSON.
-- Três contas fictícias: operador, aluno com vaga fixa, aluno sem vaga. Conta tem `role: "operator" | "student"`. A sessão (`vandi:v1:session`) guarda só o id; o papel é lido da conta.
+- `storage.ts`: todo acesso com `try/catch`; sem localStorage, segue com o JSON na memória. Chave `vandi:v2:<assunto>`; mudou o formato dos mocks, sobe a versão.
+- "Restaurar dados de demonstração" apaga `vandi:v2:*` e volta ao JSON.
+- Três contas fictícias: operador, aluno com vaga fixa, aluno sem vaga. Conta tem `role: "operator" | "student"`. A sessão (`vandi:v2:session`) guarda só o id; o papel é lido da conta.
 - A guarda fica em `components/layouts/`: sem sessão ou papel errado → `/sign-in`.
 
 ### Nomes
@@ -122,6 +122,11 @@ Rota (serviço recorrente) é diferente de Viagem (a saída de um dia, ida ou vo
 | Matrícula (vaga fixa) | `Enrollment`: `requested`, `accepted`, `declined` |
 | Lugares ocupados | `occupiedSeats` (matrículas `accepted`, DEC-048) |
 | Viagem | `Trip`, `direction: "outbound" \| "return"` |
+| Desempenho (painel do operador) | `Dashboard` |
+| "Todas" ou uma rota (abas do painel) | `RouteFilter` |
+| Sobraram / vendidos / vazios | `leftover` / `sold` / `empty` |
+| Dinheiro dos avulsos | `earnings` (soma de `operatorShare`, DEC-054) |
+| Melhorou / Piorou / Igual | `better` / `worse` / `same` (`Trend`) |
 | Ausência ("Não vou amanhã") | `Absence` |
 | Chamada de retorno | `ReturnCall`, `ReturnCallResponse` |
 | Volto / Não volto / Sem resposta | `returning` / `not_returning` / `no_response` |
@@ -146,6 +151,7 @@ npm run dev      # servidor local
 npm run lint     # ESLint
 npm run build    # build de produção (também checa tipos)
 npm test -- <caminho>   # Vitest, sempre por caminho
+npm run mocks   # gera o histórico de 8 semanas (mocks/history/)
 ```
 
 ## Segurança

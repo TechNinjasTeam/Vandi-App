@@ -86,3 +86,46 @@ export type NewRouteResult =
   | { ok: false; error: string; fieldErrors?: NewRouteFieldErrors }
 /** Computed, never stored: an operator's route with its points (by `order`) and occupied seats (DEC-048). */
 export type OperatorRoute = Route & { boardingPoints: BoardingPoint[]; occupiedSeats: number }
+
+/** Dashboard tab: "all" ("Todas") or a routeId. */
+export type RouteFilter = "all" | string
+/** What metrics.ts reads. `routes` = the operator's routes; the other lists may hold any route (filtered by routeId inside). */
+export type MetricsInput = {
+  routes: Route[]; enrollments: Enrollment[]; trips: Trip[]; absences: Absence[]
+  singleTripOffers: SingleTripOffer[]; singleTripBookings: SingleTripBooking[]
+}
+/** Sum of the outbound trips of one Mon–Sat week, dates from `start` to `end`. Computed, never stored. */
+export type WeekMetrics = {
+  start: string; end: string                    // Monday; last day counted (today in the current week, else Saturday)
+  tripCount: number                             // outbound trips counted; 0 = no data ("—")
+  seats: number                                 // Σ route.seats
+  fixed: number                                 // Σ accepted − absences ("fixos que vão")
+  sold: number                                  // Σ paid bookings ("vendidos" = "avulsos")
+  occupied: number                              // fixed + sold
+  rate: number | null                           // occupied / seats, 0..1; null when tripCount is 0
+  leftover: number                              // seats − fixed ("sobraram")
+  empty: number                                 // leftover − sold, never below 0 ("vazios")
+  earnings: number                              // cents: Σ operatorShare of paid bookings
+}
+export type Trend = "better" | "worse" | "same"
+/** One per card. null = no comparison (badge hidden). */
+export type WeekComparison = { occupancy: Trend | null; leftover: Trend | null; earnings: Trend | null }
+/** One bar of "Lugares ocupados por semana". fixed + singles + empty = seats of the week. */
+export type WeeklyPoint = { weekStart: string; tripCount: number; fixed: number; singles: number; empty: number }
+/** Absences per 100 accepted students on that weekday, 8-week average. null = no filtered trip that day. */
+export type WeekdayAbsence = { weekday: Exclude<Weekday, "sat">; percent: number | null }
+/** Everything Tela 12 draws. Computed, never stored. */
+export type Dashboard =
+  | { status: "empty"; week: { start: string; end: string } }
+  | {
+      status: "ready"
+      week: { start: string; end: string }        // = current.start / current.end
+      filter: RouteFilter                         // echo; unknown routeId → "all"
+      routes: { id: string; label: string }[]    // operator's routes, storage order; label = origin
+      current: WeekMetrics
+      previous: WeekMetrics
+      comparison: WeekComparison
+      weeks: WeeklyPoint[]                        // 8, oldest first; the last is the current week
+      absences: WeekdayAbsence[]                  // mon, tue, wed, thu, fri
+      peakWeekday: Exclude<Weekday, "sat"> | null // null when every day is null or the max is tied
+    }
