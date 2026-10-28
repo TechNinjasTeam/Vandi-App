@@ -86,17 +86,17 @@ describe("read", () => {
 
   it("falls back to the mocks when the stored JSON is corrupted", () => {
     seed("2026-10-30")
-    fake.map.set("vandi:v1:routes", "{not json")
+    fake.map.set("vandi:v2:routes", "{not json")
     expect(read("routes")).toEqual(routes)
   })
 })
 
 describe("write", () => {
-  it("persists under vandi:v1:<subject> and survives a reload", async () => {
+  it("persists under vandi:v2:<subject> and survives a reload", async () => {
     seed("2026-10-30")
     write("routes", changedRoutes)
     expect(read("routes")).toEqual(changedRoutes)
-    expect(fake.map.get("vandi:v1:routes")).toBe(JSON.stringify(changedRoutes))
+    expect(fake.map.get("vandi:v2:routes")).toBe(JSON.stringify(changedRoutes))
     vi.resetModules()
     const reloaded = await import("./storage")
     expect(reloaded.read("routes")).toEqual(changedRoutes)
@@ -124,12 +124,12 @@ describe("session", () => {
     expect(readSession()).toBe("op-carlos")
     writeSession(null)
     expect(readSession()).toBeNull()
-    expect(fake.map.has("vandi:v1:session")).toBe(false)
+    expect(fake.map.has("vandi:v2:session")).toBe(false)
   })
 })
 
 describe("clearAll", () => {
-  it("removes every vandi:v1:* key, keeps foreign keys and returns true", () => {
+  it("removes every vandi:v2:* key, keeps foreign keys and returns true", () => {
     seed("2026-10-30")
     writeSession("op-carlos")
     fake.map.set("theme", "dark")

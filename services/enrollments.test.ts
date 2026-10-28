@@ -31,7 +31,7 @@ afterEach(() => {
 
 describe("countPendingRequests", () => {
   it("counts only requested enrollments on the operator's routes", async () => {
-    expect(await countPendingRequests("op-carlos")).toBe(1)
+    expect(await countPendingRequests("op-carlos")).toBe(4)
     expect(await countPendingRequests("op-ana")).toBe(0)
   })
 })

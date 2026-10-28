@@ -33,3 +33,13 @@ export function formatDayCaption(date: string): string {
   const day = DAY_NAMES[new Date(`${date}T00:00:00Z`).getUTCDay()]
   return `${day}, ${date.slice(8, 10)}/${date.slice(5, 7)}`
 }
+
+/** Now with the phone's offset: "2026-10-27T20:15:07-03:00". */
+export function getNow(): string {
+  throw new Error("not implemented")
+}
+
+/** "sáb, 17/10" for "2026-10-17". */
+export function formatShortDay(_date: string): string {
+  throw new Error("not implemented")
+}

@@ -10,7 +10,7 @@ export type Account = Operator | Student
 export type Role = Account["role"]
 
 export type Weekday = "mon" | "tue" | "wed" | "thu" | "fri" | "sat"
-export type EnrollmentStatus = "requested" | "accepted" | "declined"
+export type EnrollmentStatus = "requested" | "accepted" | "confirmed" | "declined" | "cancelled" // DEC-057
 export type TripDirection = "outbound" | "return"
 export type ReturnStatus = "returning" | "not_returning" | "no_response" // no_response is never stored
 export type PaymentStatus = "pending" | "paid" | "cancelled"
@@ -71,7 +71,7 @@ export type NewRouteInput = {
   outboundTime: string; returnTime: string      // "HH:mm", or "" when empty (from the time picker)
   seats: string                                 // as typed: "15"
   monthlyPrice: string                          // as typed: "350", "350,00", "R$ 350,00"
-  boardingPoints: { name: string; time: string }[] // in the order the van passes
+  boardingPoints: { id?: string; name: string; time: string }[] // in van order; id only on Editar rota, for a point that stays
 }
 /** Message of each invalid new-route field. `boardingPoints`: no point at all (no field: Alert above the button). */
 export type NewRouteFieldErrors = Partial<
@@ -84,5 +84,36 @@ export type NewRouteFieldErrors = Partial<
 export type NewRouteResult =
   | { ok: true; data: Route }
   | { ok: false; error: string; fieldErrors?: NewRouteFieldErrors }
-/** Computed, never stored: an operator's route with its points (by `order`) and occupied seats (DEC-048). */
+/** Computed, never stored: an operator's route with its points (by `order`) and occupied seats (DEC-058). */
 export type OperatorRoute = Route & { boardingPoints: BoardingPoint[]; occupiedSeats: number }
+
+/** Computed, never stored: a route as the student sees it on Tela 6 and Tela 7. */
+export type VanListing = Route & {
+  operatorName: string; operatorPhone: string
+  boardingPoints: BoardingPoint[]               // by `order`
+  freeSeats: number                             // seats - occupiedSeats, never below 0
+  full: boolean                                 // freeSeats === 0
+}
+/** Computed: Tela 7 with what the student already has. */
+export type VanDetail = VanListing & {
+  hasConfirmedSeat: boolean                     // "confirmed" on any route
+  hasActiveRequest: boolean                     // "requested" or "accepted" on this route
+}
+/** Computed: one of the student's enrollments as Minha rota shows it. */
+export type MyEnrollment = Enrollment & {
+  route: Route; operatorName: string; operatorPhone: string; boardingPoint: BoardingPoint
+}
+/** Computed: Tela 8. getMyRoute returns null when there is nothing to list (empty state). */
+export type MyRoute =
+  | { kind: "confirmed"; enrollment: MyEnrollment }
+  | { kind: "requests"; enrollments: MyEnrollment[] } // requested, accepted, declined; newest first
+/** Computed: one enrollment as the operator sees it on Tela 5. */
+export type SeatRequest = Enrollment & { studentName: string; studentPhone: string; boardingPoint: BoardingPoint }
+/** Computed: Tela 5 for one route of the operator. */
+export type RouteRequests = {
+  route: OperatorRoute
+  requested: SeatRequest[]                      // oldest first
+  accepted: SeatRequest[]                       // "Esperando o aluno confirmar", oldest first
+}
+/** Computed: Editar rota. pointsInUse: ids of points with a requested, accepted or confirmed enrollment. */
+export type EditableRoute = OperatorRoute & { pointsInUse: string[] }

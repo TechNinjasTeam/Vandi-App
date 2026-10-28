@@ -36,8 +36,8 @@ afterEach(() => {
 
 describe("occupiedSeats", () => {
   it.each([
-    ["route-carlos", 12], // its "requested" enrollment is not counted
-    ["route-ana", 8],
+    ["route-carlos", 12], // its requested enrollments are not counted
+    ["route-ana", 9],
     ["route-marcia", 15],
     ["route-x", 0],
   ])("%s has %i occupied seats", async (routeId, expected) => {
@@ -56,7 +56,7 @@ describe("occupiedSeats", () => {
         requestedAt: "2026-10-30T10:00:00-03:00",
       },
     ])
-    expect(await occupiedSeats("route-ana")).toBe(8)
+    expect(await occupiedSeats("route-ana")).toBe(9)
   })
 })
 

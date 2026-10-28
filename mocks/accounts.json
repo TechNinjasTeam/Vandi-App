@@ -334,5 +334,29 @@
     "password": "",
     "phone": "(11) 90000-0037",
     "role": "student"
+  },
+  {
+    "id": "st-laura-bastos",
+    "name": "Laura Bastos",
+    "email": "aluno.escolher@vandi.test",
+    "password": "vandi123",
+    "phone": "(11) 90000-0043",
+    "role": "student"
+  },
+  {
+    "id": "st-bruna-lopes",
+    "name": "Bruna Lopes",
+    "email": "bruna.lopes@vandi.test",
+    "password": "",
+    "phone": "(11) 90000-0044",
+    "role": "student"
+  },
+  {
+    "id": "st-vitor-nogueira",
+    "name": "Vitor Nogueira",
+    "email": "vitor.nogueira@vandi.test",
+    "password": "",
+    "phone": "(11) 90000-0045",
+    "role": "student"
   }
 ]

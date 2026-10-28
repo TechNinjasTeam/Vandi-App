@@ -1,15 +1,18 @@
-import type { BoardingPoint, NewRouteFieldErrors, NewRouteInput, NewRouteResult, OperatorRoute, Route, Weekday } from "@/types"
+import type {
+  BoardingPoint, EditableRoute, NewRouteFieldErrors, NewRouteInput, NewRouteResult, OperatorRoute, Route, Weekday,
+} from "@/types"
 import { WEEKDAYS } from "./clock"
 import { slugOf } from "./session"
 import { read, write } from "./storage"
 
 // Error copy verbatim from DEC-050.
 const TIME = /^([01]\d|2[0-3]):[0-5]\d$/
+export const POINT_IN_USE = "Tem aluno embarcando nesse ponto"
 const PRICE = /^(?:R\$\s*)?(\d{1,3}(?:\.\d{3})+|\d+)(?:[,.](\d{1,2}))?$/
 
-/** Enrollments with status "accepted" on the route (DEC-048). The only seat count in the app. */
+/** Enrollments with status "accepted" or "confirmed" on the route (DEC-058). The only seat count in the app. */
 export async function occupiedSeats(routeId: string): Promise<number> {
-  return read("enrollments").filter((e) => e.routeId === routeId && e.status === "accepted").length
+  return read("enrollments").filter((e) => e.routeId === routeId && (e.status === "accepted" || e.status === "confirmed")).length
 }
 
 /** Only the operator's routes, in storage order, each with its points sorted by `order` and occupiedSeats. [] when none. */
@@ -34,7 +37,7 @@ function parseCents(text: string): number {
 }
 
 /** `base`, else `base-2`, `base-3`… the first not in `taken`. */
-function uniqueId(base: string, taken: Set<string>): string {
+export function uniqueId(base: string, taken: Set<string>): string {
   let id = base
   for (let n = 2; taken.has(id); n++) id = `${base}-${n}`
   return id
@@ -105,4 +108,19 @@ export function formatWeekdays(weekdays: Weekday[]): string {
   const labels = days.map((d) => DAY_LABELS[d])
   const contiguous = WEEKDAYS.indexOf(days[days.length - 1]) - WEEKDAYS.indexOf(days[0]) === days.length - 1
   return days.length > 1 && contiguous ? `${labels[0]} a ${labels[labels.length - 1]}` : labels.join(", ")
+}
+
+/** null when the route does not exist or is another operator's. */
+export async function getOperatorRoute(_operatorId: string, _routeId: string): Promise<EditableRoute | null> {
+  throw new Error("not implemented")
+}
+
+/** Same validation as createRoute (DEC-050) plus DEC-064; keeps the route id and the ids of points that stay. */
+export async function updateRoute(_operatorId: string, _routeId: string, _input: NewRouteInput): Promise<NewRouteResult> {
+  throw new Error("not implemented")
+}
+
+/** "R$ 380" for 38000, "R$ 350,50", "R$ 1.200". */
+export function formatMonthlyPrice(_cents: number): string {
+  throw new Error("not implemented")
 }

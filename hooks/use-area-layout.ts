@@ -35,3 +35,10 @@ export function useAreaLayout(role: Role): { status: "checking" | "allowed"; pen
 
   return { status, pendingRequests }
 }
+
+export const PENDING_REQUESTS_CHANGED = "vandi:pending-requests-changed"
+
+/** Tela 5 calls it after accepting or declining: the operator bar recounts its badge. */
+export function notifyPendingRequestsChanged(): void {
+  window.dispatchEvent(new Event(PENDING_REQUESTS_CHANGED))
+}
