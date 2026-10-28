@@ -1,6 +1,7 @@
 "use client"
 
-import { MapPin, Search, User } from "lucide-react"
+import { usePathname } from "next/navigation"
+import { MapPin,Search, User } from "lucide-react"
 
 import { BottomNav, type BottomNavItem } from "@/components/bottom-nav"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -15,6 +16,7 @@ const items: BottomNavItem[] = [
 // Guarda + moldura do aluno: sem sessão ou papel errado vai para /sign-in.
 export function StudentLayout({ children }: { children: React.ReactNode }) {
   const { status } = useAreaLayout("student")
+  const pathname = usePathname()
 
   return (
     <div className="mx-auto flex min-h-dvh w-full max-w-[480px] flex-col bg-background">
@@ -26,7 +28,8 @@ export function StudentLayout({ children }: { children: React.ReactNode }) {
       ) : (
         <>
           <main className="flex flex-1 flex-col gap-6 px-4 pt-6 pb-6">{children}</main>
-          <BottomNav items={items} />
+          {/* Tela 7 (Ver a van): rodapé de ação fixo, sem barra (VerVan.dc.html, DEC-052). */}
+          {!/^\/student\/vans\/[^/]+$/.test(pathname) && <BottomNav items={items} />}
         </>
       )}
     </div>

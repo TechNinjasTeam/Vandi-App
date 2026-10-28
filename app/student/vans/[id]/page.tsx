@@ -145,21 +145,22 @@ export default function VanDetailPage() {
         </Card>
       )}
 
-      {submitError && (
-        <Alert variant="destructive">
-          <AlertDescription>{submitError}</AlertDescription>
-        </Alert>
-      )}
-
-      {sent ? (
-        <Button asChild size="lg" variant="secondary" className="w-full">
-          <Link href="/student/my-route">Ver Minha rota</Link>
-        </Button>
-      ) : (
-        <Button size="lg" className="w-full" disabled={blocked || !point || submitting} onClick={request}>
-          {buttonLabel}
-        </Button>
-      )}
+      <div className="sticky bottom-0 -mx-4 -mb-6 mt-auto flex flex-col gap-3 border-t border-border bg-card px-4 pt-3 pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
+        {submitError && (
+          <Alert variant="destructive">
+            <AlertDescription>{submitError}</AlertDescription>
+          </Alert>
+        )}
+        {sent ? (
+          <Button asChild size="lg" variant="secondary" className="w-full">
+            <Link href="/student/my-route">Ver Minha rota</Link>
+          </Button>
+        ) : (
+          <Button size="lg" className="w-full" disabled={blocked || !point || submitting} onClick={request}>
+            {buttonLabel}
+          </Button>
+        )}
+      </div>
     </>
   )
 }
