@@ -16,20 +16,31 @@ export function useAreaLayout(role: Role): { status: "checking" | "allowed"; pen
 
   useEffect(() => {
     let active = true
+    let operatorId: string | null = null
+    const recount = () => {
+      if (operatorId) countPendingRequests(operatorId).then((n) => active && setPendingRequests(n))
+    }
+    if (role === "operator") window.addEventListener(PENDING_REQUESTS_CHANGED, recount)
     getCurrentAccount()
       .then(async (account) => {
         if (!account || account.role !== role) {
           router.replace("/sign-in")
           return
         }
-        const pending = account.role === "operator" ? await countPendingRequests(account.id) : 0
+        if (account.role === "operator") operatorId = account.id
+        const pending = operatorId ? await countPendingRequests(operatorId) : 0
         if (!active) return
         setPendingRequests(pending)
         setStatus("allowed")
       })
       .catch(() => router.replace("/sign-in"))
     return () => {
+      window.removeEventListener(PENDING_REQUESTS_CHANGED, recount)
       active = false
+      // Activity hides the area by running this cleanup: back to the start so the next
+      // account never sees, not even for one frame, the previous badge or data.
+      setStatus("checking")
+      setPendingRequests(0)
     }
   }, [role, router])
 
