@@ -68,6 +68,13 @@ describe("listRequests", () => {
     })
   })
 
+  it("orders by the instant of requestedAt, not by its text, when the offsets differ", async () => {
+    const at = { "enr-bruna-lopes": "2026-10-27T23:00:00-03:00", "enr-vitor-nogueira": "2026-10-28T01:00:00+00:00" } // 02:00Z, 01:00Z
+    write("enrollments", read("enrollments").map((e) => (e.id in at ? { ...e, requestedAt: at[e.id as keyof typeof at] } : e)))
+    const [item] = await listRequests("op-carlos")
+    expect(item.requested.slice(0, 2).map((r) => r.id)).toEqual(["enr-vitor-nogueira", "enr-bruna-lopes"])
+  })
+
   it("confirmed enrollments are in neither list", async () => {
     const [item] = await listRequests("op-carlos")
     expect(item.accepted).toEqual([])
