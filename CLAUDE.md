@@ -122,6 +122,11 @@ Rota (serviço recorrente) é diferente de Viagem (a saída de um dia, ida ou vo
 | Matrícula (vaga fixa) | `Enrollment`: `requested`, `accepted`, `confirmed`, `declined`, `cancelled` (DEC-057) |
 | Lugares ocupados | `occupiedSeats` (matrículas `accepted` e `confirmed`, DEC-058) |
 | Viagem | `Trip`, `direction: "outbound" \| "return"` |
+| Desempenho (painel do operador) | `Dashboard` |
+| "Todas" ou uma rota (abas do painel) | `RouteFilter` |
+| Sobraram / vendidos / vazios | `leftover` / `sold` / `empty` |
+| Dinheiro dos avulsos | `earnings` (soma de `operatorShare`, DEC-054) |
+| Melhorou / Piorou / Igual | `better` / `worse` / `same` (`Trend`) |
 | Ausência ("Não vou amanhã") | `Absence` |
 | Chamada de retorno | `ReturnCall`, `ReturnCallResponse` |
 | Volto / Não volto / Sem resposta | `returning` / `not_returning` / `no_response` |
@@ -146,6 +151,7 @@ npm run dev      # servidor local
 npm run lint     # ESLint
 npm run build    # build de produção (também checa tipos)
 npm test -- <caminho>   # Vitest, sempre por caminho
+npm run mocks   # gera o histórico de 8 semanas (mocks/history/)
 ```
 
 ## Segurança

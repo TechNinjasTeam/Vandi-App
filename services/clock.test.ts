@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest"
 import type { Weekday } from "@/types"
-import { addDays, formatDayCaption, formatShortDay, getNextTripDate, getNow, getToday } from "./clock"
+import { addDays, formatDayCaption, formatShortDay, getNextTripDate, getNow, getToday, getWeekStart } from "./clock"
 
 afterEach(() => {
   vi.useRealTimers()
@@ -68,5 +68,19 @@ describe("getNow", () => {
     expect(now).toMatch(/^2026-10-27T20:15:07[+-]\d{2}:\d{2}$/)
     expect(new Date(now).getTime()).toBe(set.getTime())
     expect(now.slice(0, 10)).toBe(getToday())
+  })
+})
+
+describe("getWeekStart", () => {
+  it("returns the Monday of the Mon-Sat week", () => {
+    expect(getWeekStart("2026-10-26")).toBe("2026-10-26")
+    expect(getWeekStart("2026-10-27")).toBe("2026-10-26")
+    expect(getWeekStart("2026-10-31")).toBe("2026-10-26")
+    expect(getWeekStart("2026-11-02")).toBe("2026-11-02")
+    expect(getWeekStart("2026-10-01")).toBe("2026-09-28")
+  })
+
+  it("keeps a Sunday in the week that just ended", () => {
+    expect(getWeekStart("2026-11-01")).toBe("2026-10-26")
   })
 })
