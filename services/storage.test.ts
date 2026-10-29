@@ -94,17 +94,17 @@ describe("read", () => {
 
   it("falls back to the mocks when the stored JSON is corrupted", () => {
     seed("2026-10-30")
-    fake.map.set("vandi:v2:routes", "{not json")
+    fake.map.set("vandi:v3:routes", "{not json")
     expect(read("routes")).toEqual(routes)
   })
 })
 
 describe("write", () => {
-  it("persists under vandi:v2:<subject> and survives a reload", async () => {
+  it("persists under vandi:v3:<subject> and survives a reload", async () => {
     seed("2026-10-30")
     write("routes", changedRoutes)
     expect(read("routes")).toEqual(changedRoutes)
-    expect(fake.map.get("vandi:v2:routes")).toBe(JSON.stringify(changedRoutes))
+    expect(fake.map.get("vandi:v3:routes")).toBe(JSON.stringify(changedRoutes))
     vi.resetModules()
     const reloaded = await import("./storage")
     expect(reloaded.read("routes")).toEqual(changedRoutes)
@@ -132,12 +132,12 @@ describe("session", () => {
     expect(readSession()).toBe("op-carlos")
     writeSession(null)
     expect(readSession()).toBeNull()
-    expect(fake.map.has("vandi:v2:session")).toBe(false)
+    expect(fake.map.has("vandi:v3:session")).toBe(false)
   })
 })
 
 describe("clearAll", () => {
-  it("removes every vandi:v2:* key, keeps foreign keys and returns true", () => {
+  it("removes every vandi:v3:* key, keeps foreign keys and returns true", () => {
     seed("2026-10-30")
     writeSession("op-carlos")
     fake.map.set("theme", "dark")
@@ -293,13 +293,26 @@ describe("history seed", () => {
     }
   })
 
-  it("stores under vandi:v2 and leaves old vandi:v1 keys alone", () => {
+  it("stores under vandi:v3 and leaves old vandi:v1 keys alone", () => {
     fake.map.set("vandi:v1:routes", "[]")
     seed("2026-10-27")
-    expect(fake.map.has("vandi:v2:trips")).toBe(true)
+    expect(fake.map.has("vandi:v3:trips")).toBe(true)
     expect(read("routes")).toEqual(routes)
     clearAll()
-    expect(fake.map.has("vandi:v2:trips")).toBe(false)
+    expect(fake.map.has("vandi:v3:trips")).toBe(false)
     expect(fake.map.has("vandi:v1:routes")).toBe(true)
+  })
+
+  it("ignores old-format vandi:v2 data: seeds fresh v3 and leaves the v2 entries untouched", () => {
+    const oldAccounts = JSON.stringify([{ id: "st-mateus-lima", name: "Mateus Lima" }])
+    const oldEnrollments = JSON.stringify([{ id: "enr-mateus-lima", studentId: "st-mateus-lima", status: "accepted" }])
+    fake.map.set("vandi:v2:accounts", oldAccounts)
+    fake.map.set("vandi:v2:enrollments", oldEnrollments)
+    seed("2026-10-27")
+    expect(read("enrollments").find((e) => e.id === "enr-mateus-lima")?.status).toBe("confirmed")
+    expect(read("accounts").some((a) => a.email === "aluno.escolher@vandi.test")).toBe(true)
+    expect(fake.map.has("vandi:v3:enrollments")).toBe(true)
+    expect(fake.map.get("vandi:v2:accounts")).toBe(oldAccounts)
+    expect(fake.map.get("vandi:v2:enrollments")).toBe(oldEnrollments)
   })
 })
