@@ -4,6 +4,7 @@
 import { useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 
+import { readRouteForm, type PointRow } from "@/components/route-form"
 import { createRoute } from "@/services/routes"
 import { getCurrentAccount } from "@/services/session"
 import type { NewRouteFieldErrors, Weekday } from "@/types"
@@ -14,18 +15,18 @@ export function useNewRoute() {
   const router = useRouter()
   const [weekdays, setWeekdays] = useState<Weekday[]>(defaultWeekdays)
   const nextKey = useRef(1)
-  const [rows, setRows] = useState<number[]>([0])
+  const [rows, setRows] = useState<PointRow[]>([{ key: 0 }])
   const [submitting, setSubmitting] = useState(false)
   const [fieldErrors, setFieldErrors] = useState<NewRouteFieldErrors>({})
   const [formError, setFormError] = useState<string | null>(null)
 
   function addRow() {
-    setRows((current) => [...current, nextKey.current++])
+    setRows((current) => [...current, { key: nextKey.current++ }])
   }
 
   // Erros de linha são por posição: ao remover uma linha, somem para não cair na linha errada.
   function removeRow(key: number) {
-    setRows((current) => current.filter((k) => k !== key))
+    setRows((current) => current.filter((row) => row.key !== key))
     setFieldErrors((current) => ({ ...current, boardingPointRows: undefined }))
   }
 
@@ -33,21 +34,7 @@ export function useNewRoute() {
     event.preventDefault()
     // currentTarget some depois do 1º await
     const form = event.currentTarget
-    const data = new FormData(form)
-    const field = (name: string) => String(data.get(name) ?? "")
-    const pointTimes = data.getAll("pointTime")
-    const input = {
-      origin: field("origin"),
-      weekdays,
-      outboundTime: field("outboundTime"),
-      returnTime: field("returnTime"),
-      seats: field("seats"),
-      monthlyPrice: field("monthlyPrice"),
-      boardingPoints: data.getAll("pointName").map((name, i) => ({
-        name: String(name),
-        time: String(pointTimes[i] ?? ""),
-      })),
-    }
+    const input = readRouteForm(form, weekdays)
     setSubmitting(true)
     setFieldErrors({})
     setFormError(null)
@@ -63,7 +50,7 @@ export function useNewRoute() {
       // O Activity guarda o formulário entre navegações: zera no sucesso.
       form.reset()
       setWeekdays(defaultWeekdays)
-      setRows([0])
+      setRows([{ key: 0 }])
       nextKey.current = 1
       router.replace("/operator")
     } catch {
