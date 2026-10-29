@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect, useRef } from "react"
 import { Lock, Plus } from "lucide-react"
 
 import { BoardingPointRow } from "@/components/boarding-point-row"
@@ -81,9 +82,24 @@ export function RouteForm({
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void
 }) {
   const footerError = fieldErrors.boardingPoints ?? formError
+  const formRef = useRef<HTMLFormElement>(null)
+  const wasSubmitting = useRef(false)
+
+  // Salvar falhou: leva o primeiro campo com erro ao centro da tela, longe do rodapé fixo.
+  // Só reage ao fim de um envio (submitting true → false), não à montagem nem ao digitar.
+  useEffect(() => {
+    if (wasSubmitting.current && !submitting) {
+      const invalid = formRef.current?.querySelector<HTMLElement>(
+        '[aria-invalid="true"], [data-invalid="true"], [aria-describedby="weekdays-error"]'
+      )
+      invalid?.focus({ preventScroll: true })
+      invalid?.scrollIntoView({ block: "center" })
+    }
+    wasSubmitting.current = submitting
+  }, [submitting])
 
   return (
-    <form noValidate onSubmit={onSubmit} className="flex flex-1 flex-col gap-6">
+    <form ref={formRef} noValidate onSubmit={onSubmit} className="flex flex-1 flex-col gap-6">
       {header}
 
       <Card className="py-5">
