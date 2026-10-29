@@ -8,9 +8,9 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
+import { RouteCard } from "@/components/route-card"
 import { Skeleton } from "@/components/ui/skeleton"
 
-import { RouteCard } from "./route-card"
 import { useOperatorHome } from "./use-operator-home"
 
 const TONES = {
@@ -93,11 +93,12 @@ export default function OperatorHomePage() {
           </div>
           <span aria-hidden="true" className="mb-2.5 size-3 rounded-full bg-highlight" />
         </div>
-        <Button type="button" aria-disabled="true" size="lg" className="w-full bg-card text-secondary-foreground hover:bg-card">
-          Ver pedidos
-          <ArrowRight aria-hidden="true" />
+        <Button asChild size="lg" className="w-full bg-card text-secondary-foreground hover:bg-card">
+          <Link href="/operator/requests">
+            Ver pedidos
+            <ArrowRight aria-hidden="true" />
+          </Link>
         </Button>
-        <span className="apoio text-center text-primary-foreground/80">Em breve</span>
       </Card>
 
       <section aria-labelledby="routes-title" className="flex flex-col gap-3">

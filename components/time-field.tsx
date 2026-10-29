@@ -79,23 +79,24 @@ type TimeFieldProps = {
   label: string
   error?: string
   className?: string
+  defaultValue?: string
 }
 
 // Seletor de horário em Drawer (DEC-053). O valor segue "HH:mm", ou "" quando vazio.
-export function TimeField({ id, name, label, error, className }: TimeFieldProps) {
-  const [value, setValue] = React.useState("")
+export function TimeField({ id, name, label, error, className, defaultValue = "" }: TimeFieldProps) {
+  const [value, setValue] = React.useState(defaultValue)
   const [draft, setDraft] = React.useState(defaultDraft)
   const [open, setOpen] = React.useState(false)
   const hidden = React.useRef<HTMLInputElement>(null)
 
-  // form.reset() não limpa o estado do React: o campo volta a --:-- ao ouvir o reset.
+  // form.reset() não limpa o estado do React: o campo volta ao valor inicial ao ouvir o reset.
   React.useEffect(() => {
     const form = hidden.current?.form
     if (!form) return
-    const reset = () => setValue("")
+    const reset = () => setValue(defaultValue)
     form.addEventListener("reset", reset)
     return () => form.removeEventListener("reset", reset)
-  }, [])
+  }, [defaultValue])
 
   function onOpenChange(next: boolean) {
     if (next) setDraft(value || defaultDraft)

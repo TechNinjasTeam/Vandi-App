@@ -23,13 +23,13 @@ function outboundTrips(input: MetricsInput, filter: RouteFilter, from: string, t
   })
 }
 
-/** Accepted students of a route and how many of them are absent that day. */
-function acceptedAndAbsent(input: MetricsInput, routeId: string, date: string) {
-  const accepted = new Set(
-    input.enrollments.filter((e) => e.routeId === routeId && e.status === "accepted").map((e) => e.studentId),
+/** Confirmed students of a route and how many of them are absent that day. */
+function confirmedAndAbsent(input: MetricsInput, routeId: string, date: string) {
+  const confirmed = new Set(
+    input.enrollments.filter((e) => e.routeId === routeId && e.status === "confirmed").map((e) => e.studentId),
   )
-  const absent = input.absences.filter((a) => a.routeId === routeId && a.date === date && accepted.has(a.studentId)).length
-  return { accepted: accepted.size, absent }
+  const absent = input.absences.filter((a) => a.routeId === routeId && a.date === date && confirmed.has(a.studentId)).length
+  return { confirmed: confirmed.size, absent }
 }
 
 /** Outbound trips of the filtered routes with weekStart ≤ date ≤ min(untilDate, Saturday), summed (spec "Por viagem de ida"). */
@@ -39,10 +39,10 @@ export function computeWeek(input: MetricsInput, filter: RouteFilter, weekStart:
   let seats = 0, fixed = 0, sold = 0, leftover = 0, empty = 0, earnings = 0
   const trips = outboundTrips(input, filter, weekStart, end)
   for (const { trip, route } of trips) {
-    const { accepted, absent } = acceptedAndAbsent(input, route.id, trip.date)
+    const { confirmed, absent } = confirmedAndAbsent(input, route.id, trip.date)
     const offerIds = input.singleTripOffers.filter((o) => o.routeId === route.id && o.date === trip.date).map((o) => o.id)
     const paid = input.singleTripBookings.filter((b) => b.status === "paid" && offerIds.includes(b.offerId))
-    const tripFixed = Math.max(0, accepted - absent)
+    const tripFixed = Math.max(0, confirmed - absent)
     const tripLeftover = route.seats - tripFixed
     seats += route.seats
     fixed += tripFixed
@@ -85,7 +85,7 @@ export function weeklySeries(input: MetricsInput, filter: RouteFilter, today: st
   })
 }
 
-/** mon..fri: round(100 × absences / (accepted × trips)) over the `weeks` weeks up to today; peak null on tie or no data. */
+/** mon..fri: round(100 × absences / (confirmed × trips)) over the `weeks` weeks up to today; peak null on tie or no data. */
 export function absencesByWeekday(
   input: MetricsInput, filter: RouteFilter, today: string, weeks = 8,
 ): { days: WeekdayAbsence[]; peak: Peak | null } {
@@ -93,9 +93,9 @@ export function absencesByWeekday(
   const totals = new Map<Weekday, { absent: number; capacity: number }>()
   for (const { trip, route } of outboundTrips(input, filter, from, today)) {
     const day = WEEKDAYS[(new Date(`${trip.date}T00:00:00Z`).getUTCDay() + 6) % 7]
-    const { accepted, absent } = acceptedAndAbsent(input, route.id, trip.date)
+    const { confirmed, absent } = confirmedAndAbsent(input, route.id, trip.date)
     const t = totals.get(day) ?? { absent: 0, capacity: 0 }
-    totals.set(day, { absent: t.absent + absent, capacity: t.capacity + accepted })
+    totals.set(day, { absent: t.absent + absent, capacity: t.capacity + confirmed })
   }
   const days = WEEKDAYS.slice(0, 5).map((weekday) => {
     const t = totals.get(weekday)

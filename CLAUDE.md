@@ -88,9 +88,9 @@ mocks/                JSON fictício
 
 ### Dados e sessão
 
-- `storage.ts`: todo acesso com `try/catch`; sem localStorage, segue com o JSON na memória. Chave `vandi:v2:<assunto>`; mudou o formato dos mocks, sobe a versão.
-- "Restaurar dados de demonstração" apaga `vandi:v2:*` e volta ao JSON.
-- Três contas fictícias: operador, aluno com vaga fixa, aluno sem vaga. Conta tem `role: "operator" | "student"`. A sessão (`vandi:v2:session`) guarda só o id; o papel é lido da conta.
+- `storage.ts`: todo acesso com `try/catch`; sem localStorage, segue com o JSON na memória. Chave `vandi:v3:<assunto>`; mudou o formato dos mocks, sobe a versão.
+- "Restaurar dados de demonstração" apaga `vandi:v3:*` e volta ao JSON.
+- Três contas fictícias: operador, aluno com vaga fixa, aluno sem vaga. Conta tem `role: "operator" | "student"`. A sessão (`vandi:v3:session`) guarda só o id; o papel é lido da conta.
 - A guarda fica em `components/layouts/`: sem sessão ou papel errado → `/sign-in`.
 
 ### Nomes
@@ -119,8 +119,8 @@ Rota (serviço recorrente) é diferente de Viagem (a saída de um dia, ida ou vo
 | Conta (operador ou aluno) | `Account = Operator \| Student`, role `"operator" \| "student"` |
 | Rota | `Route` |
 | Ponto de embarque | `BoardingPoint` |
-| Matrícula (vaga fixa) | `Enrollment`: `requested`, `accepted`, `declined` |
-| Lugares ocupados | `occupiedSeats` (matrículas `accepted`, DEC-048) |
+| Matrícula (vaga fixa) | `Enrollment`: `requested`, `accepted`, `confirmed`, `declined`, `cancelled` (DEC-057) |
+| Lugares ocupados | `occupiedSeats` (matrículas `accepted` e `confirmed`, DEC-058) |
 | Viagem | `Trip`, `direction: "outbound" \| "return"` |
 | Desempenho (painel do operador) | `Dashboard` |
 | "Todas" ou uma rota (abas do painel) | `RouteFilter` |

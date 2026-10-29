@@ -1,4 +1,4 @@
-import type { Account, Result, Role, SignUpFieldErrors, SignUpResult } from "@/types"
+import type { Account, EnrollmentStatus, Result, Role, SignUpFieldErrors, SignUpResult } from "@/types"
 import { clearAll, read, readSession, seed, write, writeSession } from "./storage"
 
 export type InitialPath = "/sign-in" | "/operator" | "/student/my-route" | "/student/vans"
@@ -8,12 +8,14 @@ export async function getCurrentAccount(): Promise<Account | null> {
   return read("accounts").find((a) => a.id === id) ?? null
 }
 
+const ACTIVE: EnrollmentStatus[] = ["requested", "accepted", "confirmed"]
+
 export async function getInitialPath(): Promise<InitialPath> {
   const account = await getCurrentAccount()
   if (!account) return "/sign-in"
   if (account.role === "operator") return "/operator"
   const hasRoute =
-    read("enrollments").some((e) => e.studentId === account.id && e.status !== "declined") ||
+    read("enrollments").some((e) => e.studentId === account.id && ACTIVE.includes(e.status)) ||
     read("singleTripBookings").some((b) => b.studentId === account.id && b.status !== "cancelled")
   return hasRoute ? "/student/my-route" : "/student/vans"
 }

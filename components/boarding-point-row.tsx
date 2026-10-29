@@ -8,15 +8,24 @@ export function BoardingPointRow({
   rowKey,
   position,
   error,
+  pointId,
+  defaultName,
+  defaultTime,
+  blockedError,
   onRemove,
 }: {
   rowKey: number
   position: number
   error?: { name?: string; time?: string }
+  pointId?: string
+  defaultName?: string
+  defaultTime?: string
+  blockedError?: string // Editar rota: ponto com aluno não sai (DEC-064)
   onRemove?: () => void
 }) {
   return (
     <div className="flex flex-col items-end">
+      <input type="hidden" name="pointId" value={pointId ?? ""} />
       <div className="flex w-full items-start gap-2">
         {/* mt-9: rótulo (~20px) + 6px de espaço + (48 - 28) / 2 = centro do campo */}
         <span
@@ -31,11 +40,12 @@ export function BoardingPointRow({
             name="pointName"
             label="Nome do ponto"
             placeholder="Ex.: Praça da Matriz"
-            error={error?.name}
+            defaultValue={defaultName}
+            error={error?.name ?? blockedError}
           />
         </div>
         <div className="w-24 flex-none">
-          <TimeField id={`point-time-${rowKey}`} name="pointTime" label="Horário" className="px-2" error={error?.time} />
+          <TimeField id={`point-time-${rowKey}`} name="pointTime" label="Horário" className="px-2" defaultValue={defaultTime} error={error?.time} />
         </div>
       </div>
       {onRemove && (

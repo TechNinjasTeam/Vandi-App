@@ -34,6 +34,21 @@ export function formatDayCaption(date: string): string {
   return `${day}, ${date.slice(8, 10)}/${date.slice(5, 7)}`
 }
 
+/** Now with the phone's offset: "2026-10-27T20:15:07-03:00". */
+export function getNow(): string {
+  const d = new Date()
+  const pad = (n: number) => String(n).padStart(2, "0")
+  const offset = -d.getTimezoneOffset()
+  const sign = offset < 0 ? "-" : "+"
+  const time = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`
+  return `${getToday()}T${time}${sign}${pad(Math.floor(Math.abs(offset) / 60))}:${pad(Math.abs(offset) % 60)}`
+}
+
+/** "sáb, 17/10" for "2026-10-17". */
+export function formatShortDay(date: string): string {
+  return `${DAY_NAMES[new Date(`${date}T00:00:00Z`).getUTCDay()].slice(0, 3).toLowerCase()}, ${date.slice(8, 10)}/${date.slice(5, 7)}`
+}
+
 /** Monday of the Mon–Sat week of `date`; a Sunday belongs to the week that just ended. */
 export function getWeekStart(date: string): string {
   return addDays(date, -((new Date(`${date}T00:00:00Z`).getUTCDay() + 6) % 7))

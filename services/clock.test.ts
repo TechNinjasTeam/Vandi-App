@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest"
 import type { Weekday } from "@/types"
-import { addDays, formatDayCaption, getNextTripDate, getToday, getWeekStart } from "./clock"
+import { addDays, formatDayCaption, formatShortDay, getNextTripDate, getNow, getToday, getWeekStart } from "./clock"
 
 afterEach(() => {
   vi.useRealTimers()
@@ -45,6 +45,29 @@ describe("formatDayCaption", () => {
     ["2026-11-01", "Domingo, 01/11"],
   ])("%s reads %s", (date, caption) => {
     expect(formatDayCaption(date)).toBe(caption)
+  })
+})
+
+describe("formatShortDay", () => {
+  it.each([
+    ["2026-10-17", "sáb, 17/10"],
+    ["2026-10-18", "dom, 18/10"],
+    ["2026-10-19", "seg, 19/10"],
+    ["2026-11-04", "qua, 04/11"],
+  ])("%s reads %s", (date, caption) => {
+    expect(formatShortDay(date)).toBe(caption)
+  })
+})
+
+describe("getNow", () => {
+  it("is the local time with the phone's offset, on any timezone", () => {
+    vi.useFakeTimers()
+    const set = new Date(2026, 9, 27, 20, 15, 7)
+    vi.setSystemTime(set)
+    const now = getNow()
+    expect(now).toMatch(/^2026-10-27T20:15:07[+-]\d{2}:\d{2}$/)
+    expect(new Date(now).getTime()).toBe(set.getTime())
+    expect(now.slice(0, 10)).toBe(getToday())
   })
 })
 

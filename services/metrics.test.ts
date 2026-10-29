@@ -50,9 +50,9 @@ const rC = route("rC", "Sorocaba", 15, ["mon", "tue", "wed", "thu", "fri"])
 const input: MetricsInput = {
   routes: [rA, rB, rC],
   enrollments: [
-    enrollment("rA", "s1", "accepted"), enrollment("rA", "s2", "accepted"), enrollment("rA", "s3", "accepted"),
+    enrollment("rA", "s1", "confirmed"), enrollment("rA", "s2", "confirmed"), enrollment("rA", "s3", "confirmed"),
     enrollment("rA", "s9", "requested"),
-    enrollment("rB", "s4", "accepted"), enrollment("rB", "s5", "accepted"), enrollment("rB", "s6", "declined"),
+    enrollment("rB", "s4", "confirmed"), enrollment("rB", "s5", "confirmed"), enrollment("rB", "s6", "declined"),
   ],
   trips: [
     // previous week: rA Mon-Fri, rB Mon/Wed/Fri
@@ -156,7 +156,7 @@ describe("computeWeek", () => {
   it("counts a seat sold for an absentee once (the absence already freed it)", () => {
     const small: MetricsInput = {
       routes: [route("r1", "Itu", 3, ["mon"])],
-      enrollments: [enrollment("r1", "a", "accepted"), enrollment("r1", "b", "accepted"), enrollment("r1", "c", "accepted")],
+      enrollments: [enrollment("r1", "a", "confirmed"), enrollment("r1", "b", "confirmed"), enrollment("r1", "c", "confirmed")],
       trips: [trip("r1", "2026-10-26")],
       absences: [absence("r1", "a", "2026-10-26")],
       singleTripOffers: [offer("o1", "r1", "2026-10-26")],
@@ -170,9 +170,9 @@ describe("computeWeek", () => {
   it("never lets fixed or empty go below 0", () => {
     const clamp: MetricsInput = {
       routes: [route("r1", "Itu", 3, ["mon"])],
-      enrollments: [enrollment("r1", "a", "accepted"), enrollment("r1", "b", "accepted")],
+      enrollments: [enrollment("r1", "a", "confirmed"), enrollment("r1", "b", "confirmed")],
       trips: [trip("r1", "2026-10-26")],
-      // both accepted students absent, plus a duplicated record of one of them: 3 absences for 2 students
+      // both confirmed students absent, plus a duplicated record of one of them: 3 absences for 2 students
       absences: [
         absence("r1", "a", "2026-10-26"), absence("r1", "b", "2026-10-26"),
         absence("r1", "a", "2026-10-26", "abs-dup"),
@@ -196,6 +196,31 @@ describe("computeWeek", () => {
   it("earnings is the sum of operatorShare of paid bookings only", () => {
     // rA 10-26 has a paid 1818 and a cancelled 1818; 10-27 a paid 2682 and a pending 2682
     expect(computeWeek(input, "rA", "2026-10-26", CURRENT_END).earnings).toBe(1818 + 2682)
+  })
+
+  describe("fixed seats (DEC-057: only a confirmed enrollment is a student who rides)", () => {
+    const mixed: MetricsInput = {
+      routes: [route("r1", "Itu", 5, ["mon", "tue", "wed"])],
+      enrollments: [
+        enrollment("r1", "a", "confirmed"), enrollment("r1", "b", "confirmed"),
+        enrollment("r1", "c", "accepted"), enrollment("r1", "d", "requested"), enrollment("r1", "e", "cancelled"),
+      ],
+      trips: [trip("r1", "2026-10-26"), trip("r1", "2026-10-27"), trip("r1", "2026-10-28")],
+      absences: [absence("r1", "c", "2026-10-26"), absence("r1", "a", "2026-10-27"), absence("r1", "b", "2026-10-27")],
+      singleTripOffers: [], singleTripBookings: [],
+    }
+
+    it("counts only the confirmed students: accepted, requested and cancelled are not riders", () => {
+      expect(computeWeek(mixed, "all", "2026-10-28", "2026-10-28")).toMatchObject({ fixed: 2, leftover: 3, empty: 3 })
+    })
+
+    it("an absence of an accepted (not yet confirmed) student does not free a seat", () => {
+      expect(computeWeek(mixed, "all", "2026-10-26", "2026-10-26")).toMatchObject({ fixed: 2, leftover: 3 })
+    })
+
+    it("an absence of a confirmed student frees a seat", () => {
+      expect(computeWeek(mixed, "all", "2026-10-27", "2026-10-27")).toMatchObject({ fixed: 0, leftover: 5 })
+    })
   })
 })
 
@@ -289,7 +314,7 @@ describe("weeklySeries", () => {
 })
 
 describe("absencesByWeekday", () => {
-  it("Todas: absences per 100 accepted students per weekday, peak on Friday", () => {
+  it("Todas: absences per 100 confirmed students per weekday, peak on Friday", () => {
     // mon 1/(3x2+2x2)=10, tue 3/(3x2)=50, wed 0/5, thu 0/3, fri 3/5=60.
     // The 10-28 trip and absence, the declined s6 and the return trip are not counted.
     expect(absencesByWeekday(input, "all", TODAY)).toEqual({
@@ -324,7 +349,7 @@ describe("absencesByWeekday", () => {
   it("gives no peak when the maximum is tied (50 and 50)", () => {
     const tie: MetricsInput = {
       routes: [route("r1", "Itu", 3, ["mon", "tue"])],
-      enrollments: [enrollment("r1", "a", "accepted"), enrollment("r1", "b", "accepted")],
+      enrollments: [enrollment("r1", "a", "confirmed"), enrollment("r1", "b", "confirmed")],
       trips: [trip("r1", "2026-10-26"), trip("r1", "2026-10-27")],
       absences: [absence("r1", "a", "2026-10-26"), absence("r1", "a", "2026-10-27")],
       singleTripOffers: [], singleTripBookings: [],
@@ -337,7 +362,7 @@ describe("absencesByWeekday", () => {
   it("gives no peak when every day is 0", () => {
     const zero: MetricsInput = {
       routes: [route("r1", "Itu", 3, ["mon", "tue"])],
-      enrollments: [enrollment("r1", "a", "accepted")],
+      enrollments: [enrollment("r1", "a", "confirmed")],
       trips: [trip("r1", "2026-10-26"), trip("r1", "2026-10-27")],
       absences: [], singleTripOffers: [], singleTripBookings: [],
     }
@@ -347,7 +372,7 @@ describe("absencesByWeekday", () => {
   it("only looks at the last 8 weeks: 2026-08-31 is out, 2026-09-07 is in", () => {
     const window: MetricsInput = {
       routes: [route("r1", "Itu", 3, ["mon"])],
-      enrollments: [enrollment("r1", "a", "accepted"), enrollment("r1", "b", "accepted")],
+      enrollments: [enrollment("r1", "a", "confirmed"), enrollment("r1", "b", "confirmed")],
       trips: [trip("r1", "2026-08-31"), trip("r1", "2026-09-07")],
       absences: [absence("r1", "a", "2026-09-07")],
       singleTripOffers: [], singleTripBookings: [],
@@ -361,7 +386,7 @@ describe("absencesByWeekday", () => {
   it("an absence on 2026-08-31 is not counted either", () => {
     const old: MetricsInput = {
       routes: [route("r1", "Itu", 3, ["mon"])],
-      enrollments: [enrollment("r1", "a", "accepted"), enrollment("r1", "b", "accepted")],
+      enrollments: [enrollment("r1", "a", "confirmed"), enrollment("r1", "b", "confirmed")],
       trips: [trip("r1", "2026-08-31"), trip("r1", "2026-09-07")],
       absences: [absence("r1", "a", "2026-08-31")],
       singleTripOffers: [], singleTripBookings: [],

@@ -62,11 +62,18 @@ describe("getInitialPath", () => {
     ["st-beatriz-campos", "/student/my-route"], // requested: Minha rota shows "aguardando"
     ["st-mateus-lima", "/student/my-route"],
     ["st-lia-ferraz", "/student/my-route"],
+    ["st-laura-bastos", "/student/my-route"], // requested + accepted
     ["st-julia-prado", "/student/my-route"], // pending booking
     ["st-gustavo-reis", "/student/my-route"], // paid booking
   ])("%s lands on %s", async (id, path) => {
     writeSession(id)
     expect(await getInitialPath()).toBe(path)
+  })
+
+  it.each(["declined", "cancelled"] as const)("a %s enrollment alone does not count as a route", async (status) => {
+    write("enrollments", read("enrollments").map((e) => (e.id === "enr-beatriz-campos" ? { ...e, status } : e)))
+    writeSession("st-beatriz-campos")
+    expect(await getInitialPath()).toBe("/student/vans")
   })
 
   it("a cancelled single-trip booking no longer counts as a route", async () => {
@@ -113,6 +120,7 @@ describe("signIn", () => {
     ["aluno.sem-vaga@vandi.test", "st-rafael-moura"],
     ["aluno.aguardando@vandi.test", "st-beatriz-campos"],
     ["aluno.fixo@vandi.test", "st-mateus-lima"],
+    ["aluno.escolher@vandi.test", "st-laura-bastos"],
     ["aluno.falta@vandi.test", "st-lia-ferraz"],
     ["aluno.avulso-pendente@vandi.test", "st-julia-prado"],
     ["aluno.avulso-pago@vandi.test", "st-gustavo-reis"],
@@ -191,7 +199,7 @@ describe("signUp validation", () => {
     if (result.ok) return
     expect(Object.keys(result.fieldErrors ?? {}).sort()).toEqual(["email", "name", "password", "phone"])
     expect(result.error).toBe("Digite seu nome.")
-    expect(read("accounts")).toHaveLength(42)
+    expect(read("accounts")).toHaveLength(45)
     expect(readSession()).toBeNull()
   })
 })
