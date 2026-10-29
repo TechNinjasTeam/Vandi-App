@@ -1,7 +1,7 @@
 "use client"
 
 import { usePathname } from "next/navigation"
-import { MapPin,Search, User } from "lucide-react"
+import { MapPin, Search, User } from "lucide-react"
 
 import { BottomNav, type BottomNavItem } from "@/components/bottom-nav"
 import { Skeleton } from "@/components/ui/skeleton"
