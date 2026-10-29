@@ -3,6 +3,7 @@
 // CAMADA 2 · HOOK da Tela 7 (Ver a van e pedir vaga). Só guarda o estado e chama os services.
 import { useEffect, useState } from "react"
 import { useParams } from "next/navigation"
+import { toast } from "sonner"
 
 import { getNow } from "@/services/clock"
 import { requestSeat } from "@/services/enrollments"
@@ -73,8 +74,10 @@ export function useVanDetail() {
       const account = await getCurrentAccount()
       if (!account) throw new Error("no session")
       const result = await requestSeat(account.id, id, pointId, getNow())
-      if (result.ok) setSent(true)
-      else setSubmitError(result.error)
+      if (result.ok) {
+        setSent(true)
+        toast.success("Pedido enviado! Acompanhe em Minha rota")
+      } else setSubmitError(result.error)
     } catch {
       setSubmitError("Não deu pra salvar. Tenta de novo.")
     } finally {
