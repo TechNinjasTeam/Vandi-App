@@ -10,7 +10,7 @@ export async function listRequests(operatorId: string): Promise<RouteRequests[]>
     const byAge = (status: EnrollmentStatus) =>
       enrollments
         .filter((e) => e.routeId === route.id && e.status === status)
-        .sort((a, b) => a.requestedAt.localeCompare(b.requestedAt))
+        .sort((a, b) => Date.parse(a.requestedAt) - Date.parse(b.requestedAt))
         .map((e) => {
           const student = accounts.find((a) => a.id === e.studentId)
           return {
