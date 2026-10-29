@@ -1,0 +1,530 @@
+[
+  {
+    "id": "trip-carlos-w7-mon",
+    "routeId": "route-carlos",
+    "date": "week-7-mon",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-ana-w7-mon",
+    "routeId": "route-ana",
+    "date": "week-7-mon",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-marcia-w7-mon",
+    "routeId": "route-marcia",
+    "date": "week-7-mon",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-carlos-w7-tue",
+    "routeId": "route-carlos",
+    "date": "week-7-tue",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-carlos-w7-wed",
+    "routeId": "route-carlos",
+    "date": "week-7-wed",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-ana-w7-wed",
+    "routeId": "route-ana",
+    "date": "week-7-wed",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-marcia-w7-wed",
+    "routeId": "route-marcia",
+    "date": "week-7-wed",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-carlos-w7-thu",
+    "routeId": "route-carlos",
+    "date": "week-7-thu",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-carlos-w7-fri",
+    "routeId": "route-carlos",
+    "date": "week-7-fri",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-ana-w7-fri",
+    "routeId": "route-ana",
+    "date": "week-7-fri",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-marcia-w7-fri",
+    "routeId": "route-marcia",
+    "date": "week-7-fri",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-carlos-w6-mon",
+    "routeId": "route-carlos",
+    "date": "week-6-mon",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-ana-w6-mon",
+    "routeId": "route-ana",
+    "date": "week-6-mon",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-marcia-w6-mon",
+    "routeId": "route-marcia",
+    "date": "week-6-mon",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-carlos-w6-tue",
+    "routeId": "route-carlos",
+    "date": "week-6-tue",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-carlos-w6-wed",
+    "routeId": "route-carlos",
+    "date": "week-6-wed",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-ana-w6-wed",
+    "routeId": "route-ana",
+    "date": "week-6-wed",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-marcia-w6-wed",
+    "routeId": "route-marcia",
+    "date": "week-6-wed",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-carlos-w6-thu",
+    "routeId": "route-carlos",
+    "date": "week-6-thu",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-carlos-w6-fri",
+    "routeId": "route-carlos",
+    "date": "week-6-fri",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-ana-w6-fri",
+    "routeId": "route-ana",
+    "date": "week-6-fri",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-marcia-w6-fri",
+    "routeId": "route-marcia",
+    "date": "week-6-fri",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-carlos-w5-mon",
+    "routeId": "route-carlos",
+    "date": "week-5-mon",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-ana-w5-mon",
+    "routeId": "route-ana",
+    "date": "week-5-mon",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-marcia-w5-mon",
+    "routeId": "route-marcia",
+    "date": "week-5-mon",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-carlos-w5-tue",
+    "routeId": "route-carlos",
+    "date": "week-5-tue",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-carlos-w5-wed",
+    "routeId": "route-carlos",
+    "date": "week-5-wed",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-ana-w5-wed",
+    "routeId": "route-ana",
+    "date": "week-5-wed",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-marcia-w5-wed",
+    "routeId": "route-marcia",
+    "date": "week-5-wed",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-carlos-w5-thu",
+    "routeId": "route-carlos",
+    "date": "week-5-thu",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-carlos-w5-fri",
+    "routeId": "route-carlos",
+    "date": "week-5-fri",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-ana-w5-fri",
+    "routeId": "route-ana",
+    "date": "week-5-fri",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-marcia-w5-fri",
+    "routeId": "route-marcia",
+    "date": "week-5-fri",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-carlos-w4-mon",
+    "routeId": "route-carlos",
+    "date": "week-4-mon",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-ana-w4-mon",
+    "routeId": "route-ana",
+    "date": "week-4-mon",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-marcia-w4-mon",
+    "routeId": "route-marcia",
+    "date": "week-4-mon",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-carlos-w4-tue",
+    "routeId": "route-carlos",
+    "date": "week-4-tue",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-carlos-w4-wed",
+    "routeId": "route-carlos",
+    "date": "week-4-wed",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-ana-w4-wed",
+    "routeId": "route-ana",
+    "date": "week-4-wed",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-marcia-w4-wed",
+    "routeId": "route-marcia",
+    "date": "week-4-wed",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-carlos-w4-thu",
+    "routeId": "route-carlos",
+    "date": "week-4-thu",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-carlos-w4-fri",
+    "routeId": "route-carlos",
+    "date": "week-4-fri",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-ana-w4-fri",
+    "routeId": "route-ana",
+    "date": "week-4-fri",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-marcia-w4-fri",
+    "routeId": "route-marcia",
+    "date": "week-4-fri",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-carlos-w3-mon",
+    "routeId": "route-carlos",
+    "date": "week-3-mon",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-ana-w3-mon",
+    "routeId": "route-ana",
+    "date": "week-3-mon",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-marcia-w3-mon",
+    "routeId": "route-marcia",
+    "date": "week-3-mon",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-carlos-w3-tue",
+    "routeId": "route-carlos",
+    "date": "week-3-tue",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-carlos-w3-wed",
+    "routeId": "route-carlos",
+    "date": "week-3-wed",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-ana-w3-wed",
+    "routeId": "route-ana",
+    "date": "week-3-wed",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-marcia-w3-wed",
+    "routeId": "route-marcia",
+    "date": "week-3-wed",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-carlos-w3-thu",
+    "routeId": "route-carlos",
+    "date": "week-3-thu",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-carlos-w3-fri",
+    "routeId": "route-carlos",
+    "date": "week-3-fri",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-ana-w3-fri",
+    "routeId": "route-ana",
+    "date": "week-3-fri",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-marcia-w3-fri",
+    "routeId": "route-marcia",
+    "date": "week-3-fri",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-carlos-w2-mon",
+    "routeId": "route-carlos",
+    "date": "week-2-mon",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-ana-w2-mon",
+    "routeId": "route-ana",
+    "date": "week-2-mon",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-marcia-w2-mon",
+    "routeId": "route-marcia",
+    "date": "week-2-mon",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-carlos-w2-tue",
+    "routeId": "route-carlos",
+    "date": "week-2-tue",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-carlos-w2-wed",
+    "routeId": "route-carlos",
+    "date": "week-2-wed",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-ana-w2-wed",
+    "routeId": "route-ana",
+    "date": "week-2-wed",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-marcia-w2-wed",
+    "routeId": "route-marcia",
+    "date": "week-2-wed",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-carlos-w2-thu",
+    "routeId": "route-carlos",
+    "date": "week-2-thu",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-carlos-w2-fri",
+    "routeId": "route-carlos",
+    "date": "week-2-fri",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-ana-w2-fri",
+    "routeId": "route-ana",
+    "date": "week-2-fri",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-marcia-w2-fri",
+    "routeId": "route-marcia",
+    "date": "week-2-fri",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-carlos-w1-mon",
+    "routeId": "route-carlos",
+    "date": "week-1-mon",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-ana-w1-mon",
+    "routeId": "route-ana",
+    "date": "week-1-mon",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-marcia-w1-mon",
+    "routeId": "route-marcia",
+    "date": "week-1-mon",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-carlos-w1-tue",
+    "routeId": "route-carlos",
+    "date": "week-1-tue",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-carlos-w1-wed",
+    "routeId": "route-carlos",
+    "date": "week-1-wed",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-ana-w1-wed",
+    "routeId": "route-ana",
+    "date": "week-1-wed",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-marcia-w1-wed",
+    "routeId": "route-marcia",
+    "date": "week-1-wed",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-carlos-w1-thu",
+    "routeId": "route-carlos",
+    "date": "week-1-thu",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-carlos-w1-fri",
+    "routeId": "route-carlos",
+    "date": "week-1-fri",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-ana-w1-fri",
+    "routeId": "route-ana",
+    "date": "week-1-fri",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-marcia-w1-fri",
+    "routeId": "route-marcia",
+    "date": "week-1-fri",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-carlos-w0-mon",
+    "routeId": "route-carlos",
+    "date": "week-0-mon",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-ana-w0-mon",
+    "routeId": "route-ana",
+    "date": "week-0-mon",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-marcia-w0-mon",
+    "routeId": "route-marcia",
+    "date": "week-0-mon",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-carlos-w0-tue",
+    "routeId": "route-carlos",
+    "date": "week-0-tue",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-carlos-w0-wed",
+    "routeId": "route-carlos",
+    "date": "week-0-wed",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-ana-w0-wed",
+    "routeId": "route-ana",
+    "date": "week-0-wed",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-marcia-w0-wed",
+    "routeId": "route-marcia",
+    "date": "week-0-wed",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-carlos-w0-thu",
+    "routeId": "route-carlos",
+    "date": "week-0-thu",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-carlos-w0-fri",
+    "routeId": "route-carlos",
+    "date": "week-0-fri",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-ana-w0-fri",
+    "routeId": "route-ana",
+    "date": "week-0-fri",
+    "direction": "outbound"
+  },
+  {
+    "id": "trip-marcia-w0-fri",
+    "routeId": "route-marcia",
+    "date": "week-0-fri",
+    "direction": "outbound"
+  }
+]
