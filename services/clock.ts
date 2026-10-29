@@ -33,3 +33,8 @@ export function formatDayCaption(date: string): string {
   const day = DAY_NAMES[new Date(`${date}T00:00:00Z`).getUTCDay()]
   return `${day}, ${date.slice(8, 10)}/${date.slice(5, 7)}`
 }
+
+/** Monday of the Mon–Sat week of `date`; a Sunday belongs to the week that just ended. */
+export function getWeekStart(date: string): string {
+  return addDays(date, -((new Date(`${date}T00:00:00Z`).getUTCDay() + 6) % 7))
+}
