@@ -1,6 +1,6 @@
 "use client"
 
-import { Bar, BarChart, XAxis, YAxis } from "recharts"
+import { Bar, BarChart, Cell, XAxis, YAxis } from "recharts"
 
 import { Card } from "@/components/ui/card"
 import { ChartContainer, type ChartConfig } from "@/components/ui/chart"
@@ -17,6 +17,7 @@ type Props = { weeks: DashboardView["weeks"]; selected: number; onSelect: (index
 
 export function WeeklyOccupancyChart({ weeks, selected, onSelect }: Props) {
   const detail = weeks[selected]
+  const dimOthers = weeks.map((w, i) => <Cell key={w.values.weekStart} fillOpacity={i === selected ? 1 : 0.5} />)
 
   return (
     <Card role="region" aria-labelledby="weekly-title">
@@ -57,9 +58,9 @@ export function WeeklyOccupancyChart({ weeks, selected, onSelect }: Props) {
                 </text>
               )}
             />
-            <Bar dataKey="fixed" stackId="week" fill="var(--color-fixed)" isAnimationActive={false} />
-            <Bar dataKey="singles" stackId="week" fill="var(--color-singles)" isAnimationActive={false} />
-            <Bar dataKey="empty" stackId="week" fill="var(--color-empty)" radius={[6, 6, 0, 0]} isAnimationActive={false} />
+            <Bar dataKey="fixed" stackId="week" fill="var(--color-fixed)" isAnimationActive={false}>{dimOthers}</Bar>
+            <Bar dataKey="singles" stackId="week" fill="var(--color-singles)" isAnimationActive={false}>{dimOthers}</Bar>
+            <Bar dataKey="empty" stackId="week" fill="var(--color-empty)" radius={[6, 6, 0, 0]} isAnimationActive={false}>{dimOthers}</Bar>
           </BarChart>
         </ChartContainer>
         <div className="absolute inset-0 grid grid-cols-8">
