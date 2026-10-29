@@ -1,6 +1,6 @@
 "use client"
 
-import { Bar, BarChart, ReferenceArea, XAxis, YAxis } from "recharts"
+import { Bar, BarChart, XAxis, YAxis } from "recharts"
 
 import { Card } from "@/components/ui/card"
 import { ChartContainer, type ChartConfig } from "@/components/ui/chart"
@@ -17,7 +17,6 @@ type Props = { weeks: DashboardView["weeks"]; selected: number; onSelect: (index
 
 export function WeeklyOccupancyChart({ weeks, selected, onSelect }: Props) {
   const detail = weeks[selected]
-  const labels = weeks.map((w) => w.label)
 
   return (
     <Card role="region" aria-labelledby="weekly-title">
@@ -35,7 +34,7 @@ export function WeeklyOccupancyChart({ weeks, selected, onSelect }: Props) {
           <Figure swatch="border border-border bg-card" label="Vazios" value={detail.empty} />
         </div>
       </div>
-      <div className="relative mx-4">
+      <div className="relative">
         <ChartContainer config={config} className="aspect-auto h-[180px] w-full" aria-hidden="true">
           <BarChart data={weeks.map((w) => ({ ...w.values, label: w.label }))} margin={{ top: 4, right: 0, bottom: 0, left: 0 }} barCategoryGap={6}>
             <YAxis hide />
@@ -57,15 +56,6 @@ export function WeeklyOccupancyChart({ weeks, selected, onSelect }: Props) {
                   {payload.value}
                 </text>
               )}
-            />
-            <ReferenceArea
-              x1={labels[selected]}
-              x2={labels[selected]}
-              fill="transparent"
-              stroke="var(--chart-5)"
-              strokeWidth={2}
-              radius={8}
-              ifOverflow="visible"
             />
             <Bar dataKey="fixed" stackId="week" fill="var(--color-fixed)" isAnimationActive={false} />
             <Bar dataKey="singles" stackId="week" fill="var(--color-singles)" isAnimationActive={false} />
