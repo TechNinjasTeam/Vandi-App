@@ -31,26 +31,23 @@ export async function requestSeat(
 }
 
 export async function getMyRoute(studentId: string): Promise<MyRoute | null> {
-  const mine = read("enrollments").filter((e) => e.studentId === studentId && e.status !== "cancelled")
   const routes = read("routes")
   const accounts = read("accounts")
   const points = read("boardingPoints")
-  const detail = (e: Enrollment): MyEnrollment => {
-    const route = routes.find((r) => r.id === e.routeId)!
-    const operator = accounts.find((a) => a.id === route.operatorId)
-    return {
-      ...e,
-      route,
-      operatorName: operator?.name ?? "",
-      operatorPhone: operator?.phone ?? "",
-      boardingPoint: points.find((p) => p.id === e.boardingPointId)!,
-    }
-  }
+  // An enrollment whose route or point vanished is skipped, never thrown.
+  const mine = read("enrollments")
+    .filter((e) => e.studentId === studentId && e.status !== "cancelled")
+    .flatMap((e): MyEnrollment[] => {
+      const route = routes.find((r) => r.id === e.routeId)
+      const boardingPoint = points.find((p) => p.id === e.boardingPointId)
+      if (!route || !boardingPoint) return []
+      const operator = accounts.find((a) => a.id === route.operatorId)
+      return [{ ...e, route, operatorName: operator?.name ?? "", operatorPhone: operator?.phone ?? "", boardingPoint }]
+    })
   const confirmed = mine.find((e) => e.status === "confirmed")
-  if (confirmed) return { kind: "confirmed", enrollment: detail(confirmed) }
+  if (confirmed) return { kind: "confirmed", enrollment: confirmed }
   if (mine.length === 0) return null
-  const newestFirst = [...mine].sort((a, b) => Date.parse(b.requestedAt) - Date.parse(a.requestedAt))
-  return { kind: "requests", enrollments: newestFirst.map(detail) }
+  return { kind: "requests", enrollments: mine.sort((a, b) => Date.parse(b.requestedAt) - Date.parse(a.requestedAt)) }
 }
 
 const NOT_FOUND = "Pedido não encontrado."

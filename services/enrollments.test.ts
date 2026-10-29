@@ -1,7 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
-import type { Enrollment, EnrollmentStatus } from "@/types"
+import type { Enrollment, EnrollmentStatus, NewRouteInput } from "@/types"
 import { clearAll, read, seed, write } from "./storage"
-import { occupiedSeats } from "./routes"
+import { occupiedSeats, updateRoute } from "./routes"
+import { declineRequest } from "./requests"
 import { confirmSeat, countPendingRequests, getMyRoute, requestSeat, withdrawRequest } from "./enrollments"
 
 function makeFake() {
@@ -245,5 +246,67 @@ describe("getMyRoute", () => {
     expect(mine?.kind).toBe("requests")
     if (mine?.kind !== "requests") return
     expect(mine.enrollments.map((e) => e.id)).toEqual(["enr-laura-bastos-ana"])
+  })
+
+  describe("when a boarding point was removed after its only enrollments were declined", () => {
+    const carlos: NewRouteInput = {
+      origin: "Itu",
+      weekdays: ["mon", "tue", "wed", "thu", "fri"],
+      outboundTime: "17:50",
+      returnTime: "22:50",
+      seats: "15",
+      monthlyPrice: "380",
+      boardingPoints: [
+        { id: "bp-carlos-matriz", name: "Praça da Matriz", time: "17:50" },
+        { id: "bp-carlos-rodoviaria", name: "Rodoviária de Itu", time: "18:00" },
+      ],
+    }
+
+    /** Carlos adds "Posto Shell"; the student asks for a seat there; Carlos declines and saves the route without the point. */
+    async function requestOnPointThenRemoveIt(studentId: string) {
+      const added = await updateRoute("op-carlos", "route-carlos", {
+        ...carlos, boardingPoints: [...carlos.boardingPoints, { name: "Posto Shell", time: "18:10" }],
+      })
+      expect(added.ok).toBe(true)
+      const shell = read("boardingPoints").find((p) => p.name === "Posto Shell")!
+      const requested = await requestSeat(studentId, "route-carlos", shell.id, NOW)
+      expect(requested.ok).toBe(true)
+      const { id } = (requested as { data: Enrollment }).data
+      expect((await declineRequest("op-carlos", id)).ok).toBe(true)
+      expect((await updateRoute("op-carlos", "route-carlos", carlos)).ok).toBe(true)
+      expect(read("boardingPoints").some((p) => p.id === shell.id)).toBe(false)
+      return id
+    }
+
+    it("a student whose only enrollment lost its point has nothing to list", async () => {
+      await requestOnPointThenRemoveIt("st-rafael-moura")
+      expect(await getMyRoute("st-rafael-moura")).toBeNull()
+    })
+
+    it("skips only the enrollment that lost its point and keeps the others", async () => {
+      const kept = await requestSeat("st-rafael-moura", "route-ana", "bp-ana-igreja", NOW)
+      const keptId = (kept as { data: Enrollment }).data.id
+      const orphanId = await requestOnPointThenRemoveIt("st-rafael-moura")
+      expect(orphanId).not.toBe(keptId)
+
+      const mine = await getMyRoute("st-rafael-moura")
+      expect(mine?.kind).toBe("requests")
+      if (mine?.kind !== "requests") return
+      expect(mine.enrollments.map((e) => e.id)).toEqual([keptId])
+      expect(mine.enrollments[0].boardingPoint).toMatchObject({ id: "bp-ana-igreja" })
+    })
+  })
+
+  it("an enrollment whose route no longer exists is skipped, not thrown", async () => {
+    const kept = await requestSeat("st-rafael-moura", "route-ana", "bp-ana-igreja", NOW)
+    const keptId = (kept as { data: Enrollment }).data.id
+    const gone = await requestSeat("st-rafael-moura", "route-carlos", "bp-carlos-matriz", NOW)
+    const goneId = (gone as { data: Enrollment }).data.id
+    write("enrollments", read("enrollments").map((e) => (e.id === goneId ? { ...e, routeId: "route-x" } : e)))
+
+    const mine = await getMyRoute("st-rafael-moura")
+    expect(mine?.kind).toBe("requests")
+    if (mine?.kind !== "requests") return
+    expect(mine.enrollments.map((e) => e.id)).toEqual([keptId])
   })
 })
