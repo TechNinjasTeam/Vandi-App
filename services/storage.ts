@@ -22,9 +22,9 @@ export type Store = {
   singleTripOffers: SingleTripOffer[]; singleTripBookings: SingleTripBooking[]
   monthlyFees: MonthlyFee[]; pushSubscriptions: PushSubscription[]
 }
-export type Subject = keyof Store // key: `vandi:v2:${subject}`
+export type Subject = keyof Store // key: `vandi:v3:${subject}`
 
-const PREFIX = "vandi:v2:"
+const PREFIX = "vandi:v3:"
 const TOKEN = /^(today([+-]\d+)?|next-trip|week-\d+-(mon|tue|wed|thu|fri|sat))(T\d{2}:\d{2})?$/
 
 // JSON infers plain strings (role, tokens): cast to the contract. Subjects without a mock start empty.
