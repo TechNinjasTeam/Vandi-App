@@ -40,10 +40,10 @@ export const SellSeatsDrawer = ({
         <div className="flex flex-1 flex-col gap-0.5">
           <span className="corpo-forte">Lugares avulsos · {sell.price}</span>
           <span className="apoio text-muted-foreground">
-            {noSeats
-              ? "Nenhum lugar sobrando nos dois trechos."
-              : offer
-                ? `${balance.outbound.sold} de ${offer.seats} reservados`
+            {offer
+              ? `${balance.outbound.sold} de ${offer.seats} reservados`
+              : noSeats
+                ? "Nenhum lugar sobrando nos dois trechos."
                 : "Nenhum lugar anunciado."}
           </span>
         </div>
