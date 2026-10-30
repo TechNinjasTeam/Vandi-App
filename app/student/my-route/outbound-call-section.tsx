@@ -115,7 +115,7 @@ export function OutboundCallSection({ studentId }: { studentId: string }) {
       <Card>
         <CardContent className="flex flex-col gap-0.5">
           <span className="corpo-forte">Seu crédito: {view.credit}</span>
-          <span className="apoio text-muted-foreground">Abate na sua próxima mensalidade.</span>
+          <span className="apoio text-muted-foreground">Fica guardado como crédito.</span>
         </CardContent>
       </Card>
     </section>

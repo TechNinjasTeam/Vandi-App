@@ -9,8 +9,6 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
 import { Skeleton } from "@/components/ui/skeleton"
-import { formatShortDay } from "@/services/clock"
-import { formatMoney } from "@/services/dashboard"
 
 import { firstName } from "./enrollment-card"
 import { PixDrawer } from "./pix-drawer"
@@ -50,9 +48,9 @@ export function SingleTripSection({ studentId, children }: { studentId: string; 
         const { booking, route, boardingPoint, operatorPhone } = trip
         const { variant, Icon, label } = STATUS[booking.status]
         return (
-          <Card key={booking.id} role="region" aria-label={`Diária · ${formatShortDay(trip.date)}`}>
+          <Card key={booking.id} role="region" aria-label={`Diária · ${trip.dayLabel}`}>
             <CardHeader className="flex-row items-center justify-between gap-2">
-              <CardTitle>Diária · {formatShortDay(trip.date)}</CardTitle>
+              <CardTitle>Diária · {trip.dayLabel}</CardTitle>
               <Badge variant={variant}>
                 <Icon aria-hidden="true" />
                 {label}
@@ -69,7 +67,7 @@ export function SingleTripSection({ studentId, children }: { studentId: string; 
               </span>
               {booking.status === "pending" && (
                 <Button size="lg" className="w-full" onClick={() => open("pay", trip)}>
-                  Pagar {formatMoney(booking.price)} com Pix
+                  Pagar {trip.priceLabel} com Pix
                 </Button>
               )}
               {trip.atRisk && (
@@ -85,7 +83,7 @@ export function SingleTripSection({ studentId, children }: { studentId: string; 
               )}
               {!trip.canCancel && booking.status !== "cancelled" && (
                 <span className="apoio text-muted-foreground">
-                  Não dá mais para cancelar: o prazo era 20h de {formatShortDay(trip.cancelUntil.slice(0, 10))}.
+                  Não dá mais para cancelar: o prazo era 20h de {trip.cancelDayLabel}.
                 </span>
               )}
               {booking.status === "cancelled" && (
@@ -110,7 +108,7 @@ export function SingleTripSection({ studentId, children }: { studentId: string; 
       })}
 
       <PixDrawer
-        amount={drawer?.action === "pay" ? formatMoney(drawer.trip.booking.price) : ""}
+        amount={drawer?.action === "pay" ? drawer.trip.priceLabel : ""}
         open={drawer?.action === "pay"}
         submitting={submitting}
         error={drawerError}
@@ -122,7 +120,10 @@ export function SingleTripSection({ studentId, children }: { studentId: string; 
         <DrawerContent>
           <DrawerHeader>
             <DrawerTitle>Cancelar a diária?</DrawerTitle>
-            <DrawerDescription>Seu lugar fica livre pra outro aluno.</DrawerDescription>
+            <DrawerDescription>
+              Seu lugar fica livre pra outro aluno.
+              {drawer?.trip.booking.status === "paid" && ` Você recebe ${drawer.trip.priceLabel} de volta.`}
+            </DrawerDescription>
           </DrawerHeader>
           {drawerError && (
             <Alert variant="destructive" className="mx-4 w-auto">
