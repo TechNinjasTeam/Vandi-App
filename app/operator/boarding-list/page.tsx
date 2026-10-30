@@ -108,7 +108,7 @@ export default function BoardingListPage() {
 
       <Card variant="destaque" role="region" aria-label="Resumo do trecho" className="px-5">
         <h2 className="numero-grande">
-          Vão {legBalance.going + legBalance.sold} de {balance.seats}
+          Lugares ocupados {legBalance.going + legBalance.sold} de {balance.seats}
         </h2>
         <div className="flex flex-wrap gap-2">
           <Badge variant="highlight">Sai às {leg === "outbound" ? route.outboundTime : route.returnTime}</Badge>
