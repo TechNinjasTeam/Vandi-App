@@ -52,9 +52,11 @@ const rowOf = (studentId: string) => responses().find((r) => r.studentId === stu
 const snapshot = () => JSON.stringify({ r: responses(), b: read("singleTripBookings") })
 const statusOf = (id: string) => read("singleTripBookings").find((b) => b.id === id)?.status
 
-const booking = (id: string, createdAt: string): SingleTripBooking => ({
+// The seeded createdAt carry -03:00 (DEC-038): build the extra ones from the seed, n × 10 min newer than booking-julia.
+const booking = (id: string, n: number): SingleTripBooking => ({
   id, offerId: "offer-carlos", studentId: `st-apoio-${id}`, boardingPointId: "bp-carlos-matriz",
-  price: 3000, vandiFee: 318, operatorShare: 2682, creditUsed: 0, status: "pending", createdAt,
+  price: 3000, vandiFee: 318, operatorShare: 2682, creditUsed: 0, status: "pending",
+  createdAt: new Date(Date.parse(read("singleTripBookings").find((b) => b.id === "booking-julia")!.createdAt) + n * 600_000).toISOString(),
 })
 const addBookings = (...rows: SingleTripBooking[]) => write("singleTripBookings", [...read("singleTripBookings"), ...rows])
 const setBookingStatus = (id: string, status: SingleTripBooking["status"]) =>
@@ -218,8 +220,7 @@ describe("answerOutboundCall", () => {
   it("re-taking a seat that was sold cancels only the most recent booking, until it fits", async () => {
     // 01:00: leftover 4 per leg. Four more bookings fill the van.
     addBookings(
-      booking("fit-1", at("2026-10-29", "22:00")), booking("fit-2", at("2026-10-29", "22:10")),
-      booking("fit-3", at("2026-10-29", "22:20")), booking("fit-4", at("2026-10-29", "22:30")),
+      booking("fit-1", 1), booking("fit-2", 2), booking("fit-3", 3), booking("fit-4", 4),
     )
     const full = await getSeatBalance("route-carlos", "2026-10-30", fri("01:00"))
     expect(full.outbound.leftover).toBe(0)
@@ -274,7 +275,7 @@ describe("reclaimSeat", () => {
   it("cancels only the bookings it takes to fit, most recent first", async () => {
     // 11:00 (after −12 h): going 6, sold 2. Seven more bookings leave leftover 0; Mateus taking back his seat makes it -1.
     const times = ["06:40", "06:50", "07:00", "07:10", "07:20", "07:30", "07:40"]
-    addBookings(...times.map((t) => booking(`rc-${t.replace(":", "")}`, fri(t))))
+    addBookings(...times.map((t, i) => booking(`rc-${t.replace(":", "")}`, i + 1)))
     const full = await getSeatBalance("route-carlos", "2026-10-30", fri("11:00"))
     expect(full.outbound.leftover).toBe(0)
     expect(full.return.leftover).toBe(0)
@@ -289,7 +290,7 @@ describe("reclaimSeat", () => {
 
   it("costs one booking per reclaim on a full van", async () => {
     // Two students reclaim in a row on a full van: each one costs one booking.
-    addBookings(...["06:40", "06:50", "07:00", "07:10", "07:20", "07:30", "07:40"].map((t) => booking(`rc-${t}`, fri(t))))
+    addBookings(...["06:40", "06:50", "07:00", "07:10", "07:20", "07:30", "07:40"].map((t, i) => booking(`rc-${t}`, i + 1)))
     await reclaimSeat("st-mateus-lima", "route-carlos", fri("11:00"))
     const result = await reclaimSeat("st-marcos-lima", "route-carlos", fri("11:10"))
     expect(result).toEqual({ ok: true, data: { cancelledBookings: 1 } })
@@ -300,6 +301,13 @@ describe("reclaimSeat", () => {
 })
 
 describe("getCredit", () => {
+  // The seeded answeredAt carry -03:00: re-stamp them in local time (same order) so they fall before −12 h in any timezone.
+  beforeEach(() => {
+    const rank = [...responses()].sort((a, b) => Date.parse(a.answeredAt) - Date.parse(b.answeredAt)).map((r) => r.id)
+    const base = Date.parse(thu("18:00"))
+    write("outboundCallResponses", responses().map((r) => ({ ...r, answeredAt: new Date(base + (rank.indexOf(r.id) + 1) * 300_000).toISOString() })))
+  })
+
   it("gives Lia the credit of both legs matched to the paid day pass, and Tiago nothing while his is only pending", async () => {
     expect(await getCredit("st-lia-ferraz")).toBe(864)
     expect(await getCredit("st-tiago-reis")).toBe(0)

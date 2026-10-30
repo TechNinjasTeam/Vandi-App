@@ -57,7 +57,7 @@ async function saveAndFit(studentId: string, target: Target, outbound: boolean, 
     const bookings = read("singleTripBookings")
     const newest = bookings
       .filter((b) => b.offerId === offerId && b.status !== "cancelled")
-      .reduce<(typeof bookings)[number] | null>((a, b) => (!a || Date.parse(b.createdAt) > Date.parse(a.createdAt) ? b : a), null)
+      .sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt))[0]
     if (!newest) break
     write("singleTripBookings", bookings.map((b) => (b.id === newest.id ? { ...b, status: "cancelled" as const } : b)))
     cancelled++
