@@ -32,7 +32,7 @@ export const SellSeatsDrawer = ({
 }) => {
   const sell = useSellSeats(operatorId, route, balance, onAnnounced)
   const { offer, sellable } = balance
-  const noSeats = sellable === 0 && !offer
+  const noSeats = sellable === 0
 
   return (
     <>
