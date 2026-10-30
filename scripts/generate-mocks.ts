@@ -25,8 +25,8 @@ type Account = { id: string; role: string; password: string }
 type BoardingPoint = { id: string; routeId: string }
 type Absence = { id: string; studentId: string; routeId: string; date: string; reportedAt: string }
 type Booking = {
-  id: string; offerId: string; studentId: string; boardingPointId: string; absenceId: string | null
-  price: number; vandiFee: number; operatorShare: number; creditAmount: number; creditUsed: 0
+  id: string; offerId: string; studentId: string; boardingPointId: string
+  price: number; vandiFee: number; operatorShare: number; creditUsed: 0
   status: "paid" | "pending" | "cancelled"; createdAt: string
 }
 
@@ -116,28 +116,26 @@ for (let week = WEEKS - 1; week >= 0; week--) {
       const offerId = `offer-${name}-${suffix}`
       offers.push({ id: offerId, routeId: route.id, date: token, seats: leftover, createdAt: `${token}T14:00` })
 
-      // Bookings: absentees' seats first, then seats with no owner (DEC-034); price per DEC-034 with 22 working days
+      // Bookings: the first `count` paid ones take an absentee's seat, so they carry the credit (DEC-034); price per DEC-034 with 22 working days
       const paidCount = Math.min(leftover, Math.floor(PAID_BASE[route.id] + random() * 2 + count / 2))
       const extra = random() < 0.35 && paidCount < leftover ? pick(["pending", "cancelled"] as const) : null
       const buyers = shuffle([...support].filter((id) => !enrolledIds.has(id)))
       const day22 = route.monthlyPrice / 22
       const price = Math.ceil((day22 * 1.6) / 500) * 500
       const vandiFee = Math.round((price - day22) / 4)
-      const plan: { status: Booking["status"]; absenceId: string | null }[] = []
-      for (let k = 0; k < paidCount; k++) plan.push({ status: "paid", absenceId: tripAbsences[k]?.id ?? null })
-      if (extra) plan.push({ status: extra, absenceId: null })
-      plan.forEach(({ status, absenceId }, k) => {
-        const creditAmount = absenceId ? Math.round(day22 / 2) : 0
+      const plan: { status: Booking["status"]; credited: boolean }[] = []
+      for (let k = 0; k < paidCount; k++) plan.push({ status: "paid", credited: k < count })
+      if (extra) plan.push({ status: extra, credited: false })
+      plan.forEach(({ status, credited }, k) => {
+        const credit = credited ? Math.round(day22 / 2) : 0
         bookings.push({
           id: `booking-${name}-${suffix}-${k + 1}`,
           offerId,
           studentId: buyers[k],
           boardingPointId: pick(routePoints).id,
-          absenceId,
           price,
           vandiFee,
-          operatorShare: price - vandiFee - creditAmount,
-          creditAmount,
+          operatorShare: price - vandiFee - credit,
           creditUsed: 0,
           status,
           createdAt: `${token}T${clock(14 * 60 + 10 + k * 10)}`,
@@ -156,14 +154,6 @@ for (const route of routes) {
   check(n === WEEKS * route.weekdays.length, `${route.id} needs ${WEEKS} weeks`)
 }
 for (const r of [...absences, ...bookings]) check(support.has(r.studentId), `${r.id} uses a login account`)
-const offerById = new Map(offers.map((o) => [o.id, o]))
-const absenceById = new Map(absences.map((a) => [a.id, a]))
-for (const b of bookings) {
-  if (!b.absenceId) continue
-  const a = absenceById.get(b.absenceId)
-  const offer = offerById.get(b.offerId)
-  check(!!a && !!offer && a.routeId === offer.routeId && a.date === offer.date, `${b.id} absence mismatch`)
-}
 for (const o of offers) {
   const live = bookings.filter((b) => b.offerId === o.id && b.status !== "cancelled").length
   check(live <= o.seats, `${o.id} oversold`)

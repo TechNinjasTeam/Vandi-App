@@ -96,12 +96,12 @@ describe("signOut", () => {
 
 describe("restoreDemoData", () => {
   it("returns to the mocks re-anchored on the given day and removes the login", async () => {
-    expect(read("singleTripOffers")[0].date).toBe("2026-11-02")
+    expect(read("singleTripOffers")[0].date).toBe("2026-10-30")
     write("routes", [])
     writeSession("op-carlos")
     expect(await restoreDemoData("2026-11-02")).toEqual({ ok: true, data: null })
     expect(read("routes")).toEqual(routes)
-    expect(read("singleTripOffers")[0].date).toBe("2026-11-03")
+    expect(read("singleTripOffers")[0].date).toBe("2026-11-02")
     expect(readSession()).toBeNull()
   })
 

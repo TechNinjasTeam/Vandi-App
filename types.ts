@@ -29,7 +29,7 @@ export type Enrollment = {
   status: EnrollmentStatus; requestedAt: string
 }
 export type Trip = { id: string; routeId: string; date: string; direction: TripDirection }
-export type Absence = { id: string; studentId: string; routeId: string; date: string; reportedAt: string } // reportedAt orders the sale (DEC-034)
+export type Absence = { id: string; studentId: string; routeId: string; date: string; reportedAt: string } // history only (panel #9); live answers are OutboundCallResponse
 export type ReturnCall = {
   id: string; routeId: string; date: string
   deadline: string; meetingPoint: string        // "22:40", "Estacionamento da Facens, portão 2"
@@ -42,18 +42,17 @@ export type ReturnCallResponse = {
 export type SingleTripOffer = { id: string; routeId: string; date: string; seats: number; createdAt: string }
 export type SingleTripBooking = {
   id: string; offerId: string; studentId: string; boardingPointId: string
-  absenceId: string | null                      // null = seat with no owner (DEC-036)
-  price: number; vandiFee: number; operatorShare: number
-  creditAmount: number                          // 0 for a seat with no owner
+  price: number; vandiFee: number               // DEC-034, frozen at booking
+  operatorShare: number                         // price − vandiFee; the credit is computed (DEC-036) and comes off the monthly fee
   creditUsed: number
-  status: PaymentStatus; createdAt: string
+  status: PaymentStatus; createdAt: string      // createdAt orders the credit (DEC-071); cancelled after paid = refund
 }
 export type MonthlyFee = {
   id: string; enrollmentId: string; month: string // "YYYY-MM"
   amount: number; creditUsed: number; status: PaymentStatus
 }
-/** Computed, never stored (DEC-036): one per paid booking with absenceId. */
-export type Credit = { studentId: string; bookingId: string; amount: number }
+/** Computed, never stored (DEC-036): one per leg of a paid booking matched to a leg released before −12 h. */
+export type Credit = { studentId: string; bookingId: string; leg: TripDirection; amount: number }
 /** Same name as the browser's PushSubscription: importing it from "@/types" shadows the DOM type in that file. */
 export type PushSubscription = { id: string; studentId: string; endpoint: string; createdAt: string }
 
@@ -160,3 +159,60 @@ export type Dashboard =
       absences: WeekdayAbsence[]                  // mon, tue, wed, thu, fri
       peakWeekday: Exclude<Weekday, "sat"> | null // null when every day is null or the max is tied
     }
+
+/** Tela 8 cards: Ida e volta, Só a ida, Só a volta, Não vou (DEC-071). */
+export type OutboundCallAnswer = "both" | "outbound_only" | "return_only" | "none"
+/** One per student + route + date. No row = Sem resposta (never stored). true = takes the seat on that leg. */
+export type OutboundCallResponse = {
+  id: string; studentId: string; routeId: string; date: string
+  outbound: boolean; return: boolean            // indexable by TripDirection
+  answeredAt: string                            // orders the credit (DEC-071)
+}
+/** `now` against the departure: −24 h opens, −12 h Sem resposta → não vai, −6 h ends the reclaim (DEC-066). */
+export type OutboundCallPhase = "not_open" | "open" | "after_deadline" | "after_reclaim"
+/** Local "YYYY-MM-DDTHH:mm" of one outbound trip: 0, −24, −12, −6 h. */
+export type CallDeadlines = { departure: string; opensAt: string; answerBy: string; reclaimUntil: string }
+/** Computed: Tela 8 for a vaga fixa student. */
+export type OutboundCall = CallDeadlines & {
+  routeId: string; date: string                 // next outbound not yet gone, today included
+  phase: OutboundCallPhase
+  response: OutboundCallResponse | null         // null = Sem resposta
+}
+/** Computed: one leg. leftover = seats − going − sold, may be < 0 until a fit cancels bookings. */
+export type LegBalance = { going: number; sold: number; leftover: number }
+/** Computed: lugares sobrando of one route + date (DEC-071). */
+export type SeatBalance = {
+  routeId: string; date: string; seats: number
+  outbound: LegBalance; return: LegBalance
+  sellable: number                              // max(0, min(outbound.leftover, return.leftover))
+  offer: SingleTripOffer | null                 // offer.seats = announced, booked ones included
+  onSale: number                                // offer ? max(0, min(offer.seats − outbound.sold, sellable)) : 0
+}
+/** Computed: one row of Tela 9. */
+export type Passenger = {
+  studentId: string; name: string; boardingPoint: BoardingPoint
+  kind: "fixed" | "single"                      // single = diária ("Avulso" tag)
+  noResponse: boolean                           // "Sem resposta" seal; fixed only
+}
+/** Computed: Tela 9 for one route and leg; #10 reads the return leg from here. */
+export type BoardingList = {
+  route: OperatorRoute; date: string; leg: TripDirection; phase: OutboundCallPhase
+  balance: SeatBalance
+  going: { boardingPoint: BoardingPoint; passengers: Passenger[] }[] // "Vou": route point order, only points with someone; fixed first, then single, each by name
+  notGoing: Passenger[]                         // "Não vou": released this leg; from −12 h also the Sem resposta (noResponse: true)
+  noResponse: Passenger[]                       // "Sem resposta": before −12 h only
+}
+/** Computed: one card of Tela 6 "Só um dia". */
+export type SingleTripCard = {
+  van: VanListing; offerId: string; date: string
+  price: number; available: number              // available = SeatBalance.onSale, > 0
+  reclaimUntil: string                          // local "YYYY-MM-DDTHH:mm" (aviso before paying, DEC-066)
+}
+/** Computed: one diária of the student on Tela 8. */
+export type MySingleTrip = {
+  booking: SingleTripBooking; route: Route; operatorName: string; operatorPhone: string
+  boardingPoint: BoardingPoint; date: string
+  cancelUntil: string; reclaimUntil: string     // local "YYYY-MM-DDTHH:mm": 20:00 of the eve; −6 h
+  canCancel: boolean                            // status !== "cancelled" && now < cancelUntil
+  atRisk: boolean                               // status !== "cancelled" && now < reclaimUntil
+}

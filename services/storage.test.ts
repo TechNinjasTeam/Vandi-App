@@ -1,11 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import accounts from "@/mocks/accounts.json"
-import handAbsences from "@/mocks/absences.json"
+import handResponses from "@/mocks/outbound-call-responses.json"
 import handBookings from "@/mocks/single-trip-bookings.json"
 import handOffers from "@/mocks/single-trip-offers.json"
 import routes from "@/mocks/routes.json"
 import type { Route, Weekday } from "@/types"
-import { WEEKDAYS, getNextTripDate } from "./clock"
+import { WEEKDAYS } from "./clock"
 import { clearAll, read, readSession, seed, write, writeSession, type Subject } from "./storage"
 
 function makeFake(overrides: Record<string, unknown> = {}) {
@@ -27,10 +27,11 @@ function makeFake(overrides: Record<string, unknown> = {}) {
   }
 }
 
-const TOKEN = /^(today([+-]\d+)?|next-trip|week-\d+-(mon|tue|wed|thu|fri|sat))(T\d{2}:\d{2})?$/
+const TOKEN = /^(today([+-]\d+)?|next-outbound([+-]\d+)?|week-\d+-(mon|tue|wed|thu|fri|sat))(T\d{2}:\d{2})?$/
 const subjects: Subject[] = [
   "accounts", "routes", "boardingPoints", "enrollments", "trips", "absences", "returnCalls",
-  "returnCallResponses", "singleTripOffers", "singleTripBookings", "monthlyFees", "pushSubscriptions",
+  "returnCallResponses", "singleTripOffers", "singleTripBookings", "outboundCallResponses", "monthlyFees",
+  "pushSubscriptions",
 ]
 const changedRoutes: Route[] = [{ ...(routes[0] as Route), seats: 3 }]
 
@@ -58,10 +59,14 @@ describe("seed", () => {
 
   it("resolves relative dates on the seed day, leaving no token behind", () => {
     seed("2026-10-30")
-    expect(read("singleTripOffers")[0].date).toBe("2026-11-02")
-    const hand = read("absences").filter((a) => ["abs-lia", "abs-tiago"].includes(a.id))
-    expect(hand.map((a) => a.date)).toEqual(["2026-11-02", "2026-11-02"])
-    expect(read("absences").find((a) => a.id === "abs-lia")?.reportedAt).toBe("2026-10-29T19:30:00-03:00")
+    expect(read("singleTripOffers").find((o) => o.id === "offer-carlos")?.date).toBe("2026-10-30")
+    expect(read("outboundCallResponses")).toHaveLength(9)
+    expect(read("outboundCallResponses").find((r) => r.id === "ocr-lia-ferraz")?.answeredAt).toBe(
+      "2026-10-29T18:05:00-03:00",
+    )
+    expect(read("singleTripBookings").find((b) => b.id === "booking-gustavo")?.createdAt).toBe(
+      "2026-10-29T21:00:00-03:00",
+    )
     for (const s of subjects) {
       for (const record of read(s) as unknown as Record<string, unknown>[]) {
         for (const v of Object.values(record)) {
@@ -71,9 +76,17 @@ describe("seed", () => {
     }
   })
 
-  it("anchors next-trip on the next route day after the seed day", () => {
+  it("anchors next-outbound on today until the departure", () => {
     seed("2026-10-26")
-    expect(read("singleTripOffers")[0].date).toBe("2026-10-27")
+    expect(read("singleTripOffers")[0].date).toBe("2026-10-26")
+  })
+
+  it("moves next-outbound to Monday after Friday's departure and on the weekend", () => {
+    seed("2026-10-30T18:00")
+    expect(read("singleTripOffers")[0].date).toBe("2026-11-02")
+    clearAll()
+    seed("2026-10-31")
+    expect(read("singleTripOffers")[0].date).toBe("2026-11-02")
   })
 
   it("does not re-anchor data already stored, even after a reload", async () => {
@@ -81,7 +94,7 @@ describe("seed", () => {
     vi.resetModules()
     const reloaded = await import("./storage")
     reloaded.seed("2026-10-30")
-    expect(reloaded.read("singleTripOffers")[0].date).toBe("2026-10-27")
+    expect(reloaded.read("singleTripOffers")[0].date).toBe("2026-10-26")
   })
 })
 
@@ -94,17 +107,17 @@ describe("read", () => {
 
   it("falls back to the mocks when the stored JSON is corrupted", () => {
     seed("2026-10-30")
-    fake.map.set("vandi:v3:routes", "{not json")
+    fake.map.set("vandi:v4:routes", "{not json")
     expect(read("routes")).toEqual(routes)
   })
 })
 
 describe("write", () => {
-  it("persists under vandi:v3:<subject> and survives a reload", async () => {
+  it("persists under vandi:v4:<subject> and survives a reload", async () => {
     seed("2026-10-30")
     write("routes", changedRoutes)
     expect(read("routes")).toEqual(changedRoutes)
-    expect(fake.map.get("vandi:v3:routes")).toBe(JSON.stringify(changedRoutes))
+    expect(fake.map.get("vandi:v4:routes")).toBe(JSON.stringify(changedRoutes))
     vi.resetModules()
     const reloaded = await import("./storage")
     expect(reloaded.read("routes")).toEqual(changedRoutes)
@@ -132,12 +145,12 @@ describe("session", () => {
     expect(readSession()).toBe("op-carlos")
     writeSession(null)
     expect(readSession()).toBeNull()
-    expect(fake.map.has("vandi:v3:session")).toBe(false)
+    expect(fake.map.has("vandi:v4:session")).toBe(false)
   })
 })
 
 describe("clearAll", () => {
-  it("removes every vandi:v3:* key, keeps foreign keys and returns true", () => {
+  it("removes every vandi:v4:* key, keeps foreign keys and returns true", () => {
     seed("2026-10-30")
     writeSession("op-carlos")
     fake.map.set("theme", "dark")
@@ -157,7 +170,7 @@ describe("clearAll", () => {
 
 const weekdayOf = (date: string): Weekday => WEEKDAYS[(new Date(`${date}T00:00:00Z`).getUTCDay() + 6) % 7]
 const dayOf = (iso: string) => iso.slice(0, 10)
-const handIds = new Set<string>([...handAbsences, ...handOffers, ...handBookings].map((r) => r.id))
+const handIds = new Set<string>([...handOffers, ...handBookings, ...handResponses].map((r) => r.id))
 const supportIds = new Set(accounts.filter((a) => a.role === "student" && a.password === "").map((a) => a.id))
 const tripsOf = (routeId: string) => read("trips").filter((t) => t.routeId === routeId)
 
@@ -241,20 +254,17 @@ describe("history seed", () => {
   it("appends the history after the hand-written records", () => {
     seed("2026-10-27")
     expect(read("singleTripOffers")[0].id).toBe("offer-carlos")
-    expect(read("absences").slice(0, handAbsences.length).map((a) => a.id)).toEqual(handAbsences.map((a) => a.id))
     expect(read("singleTripBookings").slice(0, handBookings.length).map((b) => b.id)).toEqual(
       handBookings.map((b) => b.id),
     )
-    expect(read("absences").length).toBeGreaterThan(handAbsences.length)
+    expect(read("absences").length).toBeGreaterThan(0)
     expect(read("singleTripBookings").length).toBeGreaterThan(handBookings.length)
   })
 
-  it("keeps the hand-written next-trip mocks as before", () => {
+  it("keeps the hand-written next-outbound mocks on the same date", () => {
     seed("2026-10-27")
-    const next = getNextTripDate(routes.find((r) => r.id === "route-carlos")!.weekdays as Weekday[], "2026-10-27")
-    expect(next).toBe("2026-10-28")
-    for (const id of ["abs-lia", "abs-tiago"]) expect(read("absences").find((a) => a.id === id)?.date).toBe(next)
-    expect(read("singleTripOffers").find((o) => o.id === "offer-carlos")?.date).toBe(next)
+    expect(read("singleTripOffers").find((o) => o.id === "offer-carlos")?.date).toBe("2026-10-27")
+    for (const r of read("outboundCallResponses")) expect(r.date).toBe("2026-10-27")
     expect(read("singleTripBookings").find((b) => b.id === "booking-gustavo")?.status).toBe("paid")
     expect(read("singleTripBookings").find((b) => b.id === "booking-julia")?.status).toBe("pending")
   })
@@ -293,26 +303,26 @@ describe("history seed", () => {
     }
   })
 
-  it("stores under vandi:v3 and leaves old vandi:v1 keys alone", () => {
+  it("stores under vandi:v4 and leaves old vandi:v1 keys alone", () => {
     fake.map.set("vandi:v1:routes", "[]")
     seed("2026-10-27")
-    expect(fake.map.has("vandi:v3:trips")).toBe(true)
+    expect(fake.map.has("vandi:v4:trips")).toBe(true)
     expect(read("routes")).toEqual(routes)
     clearAll()
-    expect(fake.map.has("vandi:v3:trips")).toBe(false)
+    expect(fake.map.has("vandi:v4:trips")).toBe(false)
     expect(fake.map.has("vandi:v1:routes")).toBe(true)
   })
 
-  it("ignores old-format vandi:v2 data: seeds fresh v3 and leaves the v2 entries untouched", () => {
+  it("ignores vandi:v3 data: seeds fresh v4 and leaves the v3 entries untouched", () => {
     const oldAccounts = JSON.stringify([{ id: "st-mateus-lima", name: "Mateus Lima" }])
     const oldEnrollments = JSON.stringify([{ id: "enr-mateus-lima", studentId: "st-mateus-lima", status: "accepted" }])
-    fake.map.set("vandi:v2:accounts", oldAccounts)
-    fake.map.set("vandi:v2:enrollments", oldEnrollments)
+    fake.map.set("vandi:v3:accounts", oldAccounts)
+    fake.map.set("vandi:v3:enrollments", oldEnrollments)
     seed("2026-10-27")
     expect(read("enrollments").find((e) => e.id === "enr-mateus-lima")?.status).toBe("confirmed")
     expect(read("accounts").some((a) => a.email === "aluno.escolher@vandi.test")).toBe(true)
-    expect(fake.map.has("vandi:v3:enrollments")).toBe(true)
-    expect(fake.map.get("vandi:v2:accounts")).toBe(oldAccounts)
-    expect(fake.map.get("vandi:v2:enrollments")).toBe(oldEnrollments)
+    expect(fake.map.has("vandi:v4:enrollments")).toBe(true)
+    expect(fake.map.get("vandi:v3:accounts")).toBe(oldAccounts)
+    expect(fake.map.get("vandi:v3:enrollments")).toBe(oldEnrollments)
   })
 })

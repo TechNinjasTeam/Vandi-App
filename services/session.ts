@@ -79,9 +79,9 @@ export async function signOut(): Promise<Result<null>> {
   return { ok: true, data: null }
 }
 
-/** clearAll + seed(today). Error: "Não foi possível restaurar os dados. Tente de novo." */
-export async function restoreDemoData(today: string): Promise<Result<null>> {
+/** clearAll + seed(now). Error: "Não foi possível restaurar os dados. Tente de novo." */
+export async function restoreDemoData(now: string): Promise<Result<null>> {
   if (!clearAll()) return { ok: false, error: "Não foi possível restaurar os dados. Tente de novo." }
-  seed(today)
+  seed(now)
   return { ok: true, data: null }
 }

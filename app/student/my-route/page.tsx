@@ -19,6 +19,8 @@ import {
 import { Skeleton } from "@/components/ui/skeleton"
 
 import { EnrollmentCard, firstName } from "./enrollment-card"
+import { OutboundCallSection } from "./outbound-call-section"
+import { SingleTripSection } from "./single-trip-section"
 import { useMyRoute } from "./use-my-route"
 
 export default function MyRoutePage() {
@@ -64,6 +66,7 @@ export default function MyRoutePage() {
     return (
       <>
         {header()}
+        <SingleTripSection studentId={state.accountId} />
         <div className="flex flex-col items-center gap-2 rounded-xl border border-dashed border-border bg-card px-5 py-8 text-center">
           <span aria-hidden="true" className="mb-1 flex size-12 items-center justify-center rounded-full bg-inverse text-inverse-foreground">
             <Bus className="size-5" />
@@ -86,6 +89,8 @@ export default function MyRoutePage() {
           {header(
             `${myRoute.enrollment.route.origin} → ${myRoute.enrollment.route.destination} · van de ${firstName(myRoute.enrollment.operatorName)}`,
           )}
+
+          <OutboundCallSection studentId={state.accountId} />
 
           <Card>
             <CardContent className="grid grid-cols-2 gap-2">
@@ -141,6 +146,8 @@ export default function MyRoutePage() {
           </ul>
         </>
       )}
+
+      <SingleTripSection studentId={state.accountId} />
 
       <Drawer open={drawer !== null} onOpenChange={(isOpen) => !isOpen && close()}>
         {drawer && (
