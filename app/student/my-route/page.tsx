@@ -66,16 +66,17 @@ export default function MyRoutePage() {
     return (
       <>
         {header()}
-        <SingleTripSection studentId={state.accountId} />
-        <div className="flex flex-col items-center gap-2 rounded-xl border border-dashed border-border bg-card px-5 py-8 text-center">
-          <span aria-hidden="true" className="mb-1 flex size-12 items-center justify-center rounded-full bg-inverse text-inverse-foreground">
-            <Bus className="size-5" />
-          </span>
-          <span className="titulo-card">Você ainda não tem vaga</span>
-          <Button asChild className="mt-2">
-            <Link href="/student/vans">Buscar vans</Link>
-          </Button>
-        </div>
+        <SingleTripSection studentId={state.accountId}>
+          <div className="flex flex-col items-center gap-2 rounded-xl border border-dashed border-border bg-card px-5 py-8 text-center">
+            <span aria-hidden="true" className="mb-1 flex size-12 items-center justify-center rounded-full bg-inverse text-inverse-foreground">
+              <Bus className="size-5" />
+            </span>
+            <span className="titulo-card">Você ainda não tem vaga</span>
+            <Button asChild className="mt-2">
+              <Link href="/student/vans">Buscar vans</Link>
+            </Button>
+          </div>
+        </SingleTripSection>
       </>
     )
   }
