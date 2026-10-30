@@ -1,12 +1,12 @@
 "use client"
 
 // CAMADA 1 · TELA 9 (Lista de embarque). Só desenha e chama o hook. Moldura e barra vêm do OperatorLayout.
-import { Inbox } from "lucide-react"
 import Link from "next/link"
 
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Badge } from "@/components/ui/badge"
 import { BackHeader } from "@/components/back-header"
+import { EmptyCard } from "@/components/empty-card"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -16,19 +16,6 @@ import type { Passenger, TripDirection } from "@/types"
 import { PassengerRow } from "./passenger-row"
 import { SellSeatsDrawer } from "./sell-seats-drawer"
 import { useBoardingList } from "./use-boarding-list"
-
-function EmptyCard({ title, description, children }: { title: string; description?: string; children?: React.ReactNode }) {
-  return (
-    <div className="flex flex-col items-center gap-2 rounded-xl border border-dashed border-border bg-card px-5 py-8 text-center">
-      <span aria-hidden="true" className="mb-1 flex size-12 items-center justify-center rounded-full bg-inverse text-inverse-foreground">
-        <Inbox className="size-5" />
-      </span>
-      <span className="titulo-card">{title}</span>
-      {description && <span className="apoio max-w-[280px] text-muted-foreground">{description}</span>}
-      {children}
-    </div>
-  )
-}
 
 function Rows({ passengers, group }: { passengers: Passenger[]; group: "going" | "notGoing" | "noResponse" }) {
   return (

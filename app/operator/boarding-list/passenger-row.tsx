@@ -7,11 +7,11 @@ import type { Passenger } from "@/types"
 // Linha de um passageiro. `group` diz em qual grupo da lista ele está; o selo segue a palavra + ícone + cor.
 export function PassengerRow({ passenger, group }: { passenger: Passenger; group: "going" | "notGoing" | "noResponse" }) {
   return (
-    <div className="flex min-h-[52px] items-center gap-3">
+    <div className="flex min-h-[52px] flex-wrap items-center gap-x-3 gap-y-1 py-1">
       <Avatar size="sm" aria-hidden="true">
         <AvatarFallback>{passenger.name.charAt(0).toUpperCase()}</AvatarFallback>
       </Avatar>
-      <span className="corpo min-w-0 flex-1 truncate">{passenger.name}</span>
+      <span className="corpo min-w-[8rem] flex-1 truncate">{passenger.name}</span>
       {group === "going" &&
         (passenger.kind === "single" ? (
           <Badge variant="contagem">
