@@ -28,10 +28,9 @@ Cada chamada é uma instância nova. O prompt carrega tudo de que ela precisa (w
 
 ## Convenções
 
-- Nome de branch: `<type>/<scope>-<o-que>-<n>`, 3 ou 4 palavras no total, dizendo o que a issue entrega (ex.: `feat/home-redirect-16`).
-- Feature (branch de integração): `<type>/<scope>-<o-que>-<n_mãe>`, sai de `origin/main`.
-- Stack (uma por sub-issue): `<type>/<scope>-<o-que>-<n_sub>`, sai de `origin/<feature>`, já com o contrato.
-- Worktrees fora do repositório, em `C:\Users\gabriel.rodrigues\Documents\GitHub\.worktrees\`: `vandi-<n_mãe>-feature` e `vandi-<n_sub>`.
+- Feature (branch de integração): `<type>/<scope>-<n_mãe>`, sai de `origin/main`.
+- Stack (uma por sub-issue): `<type>/<scope>-<n_sub>`, sai de `origin/<feature>`, já com o contrato.
+- Worktrees fora do repositório, em `../.worktrees/` (pasta irmã deste repositório): `vandi-<n_mãe>-feature` e `vandi-<n_sub>`.
 - Commits em Conventional Commits, sem `Co-Authored-By`. PRs usam `.github/pull_request_template.md`, verbatim.
 - Status no Project 2 (o `github-operator` move; **nunca para `Done`**):
 

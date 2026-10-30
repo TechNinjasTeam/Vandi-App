@@ -26,7 +26,7 @@ OID=$(echo "$FJ" | jq -r --arg s "<status>" '.fields[]|select(.name=="Status").o
 ```
 
 - Existing labels: `P0`, `P1`, `P2`, `fluxo-0` to `fluxo-4`, `bug`, `enhancement`, `documentation`.
-- Worktree root: `C:/Users/gabriel.rodrigues/Documents/GitHub/.worktrees/` (outside the repo).
+- Worktree root: `../.worktrees/`, relative to the main repo root (sibling folder, outside the repo).
 - Branch names: feature `<type>/<scope>-<n_mãe>`; stack `<type>/<scope>-<n_sub>`. The numbers keep names distinct, since git can't hold `feat/x` and `feat/x/y` together.
 
 ## Operations
@@ -59,7 +59,7 @@ gh project item-edit --id "$item" --project-id "$PID" --field-id "$FID" --single
 
 ```bash
 git fetch origin
-git worktree add C:/Users/gabriel.rodrigues/Documents/GitHub/.worktrees/vandi-<n_mãe>-feature -b <feature> origin/main
+git worktree add ../.worktrees/vandi-<n_mãe>-feature -b <feature> origin/main
 ```
 
 After `builder` commits the contract in that worktree: `git -C <worktree> push -u origin <feature>`. Branch already on the remote → reuse it, never overwrite.
@@ -70,8 +70,8 @@ Only after the contract is on the remote:
 
 ```bash
 git fetch origin
-git worktree add C:/Users/gabriel.rodrigues/Documents/GitHub/.worktrees/vandi-<n_sub> -b <type>/<scope>-<n_sub> origin/<feature>
-cd C:/Users/gabriel.rodrigues/Documents/GitHub/.worktrees/vandi-<n_sub> && npm ci
+git worktree add ../.worktrees/vandi-<n_sub> -b <type>/<scope>-<n_sub> origin/<feature>
+cd ../.worktrees/vandi-<n_sub> && npm ci
 ```
 
 The worktree ships with dependencies installed. Then move the sub-issue to `Doing`. Branch or worktree already exist → reuse, don't recreate.
