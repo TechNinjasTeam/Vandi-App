@@ -92,8 +92,12 @@ export function seed(now: string): void {
         ]),
       )
       // A week-token record resolving after today is not seeded (current week only up to today).
+      // History offers and bookings of today are not seeded either: today's live offers are hand-written.
+      const sellsToday = subject === "singleTripOffers" || subject === "singleTripBookings"
       const future = Object.entries(record).some(
-        ([k, v]) => typeof v === "string" && v.startsWith("week-") && String(resolved[k]).slice(0, 10) > today,
+        ([k, v]) =>
+          typeof v === "string" && v.startsWith("week-") &&
+          (sellsToday ? String(resolved[k]).slice(0, 10) >= today : String(resolved[k]).slice(0, 10) > today),
       )
       return future ? [] : [resolved]
     })
