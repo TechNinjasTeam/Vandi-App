@@ -1,0 +1,44 @@
+[
+  {
+    "id": "bp-carlos-matriz",
+    "routeId": "route-carlos",
+    "name": "Praça da Matriz",
+    "time": "17:50",
+    "order": 1
+  },
+  {
+    "id": "bp-carlos-rodoviaria",
+    "routeId": "route-carlos",
+    "name": "Rodoviária de Itu",
+    "time": "18:00",
+    "order": 2
+  },
+  {
+    "id": "bp-ana-rodoviaria",
+    "routeId": "route-ana",
+    "name": "Rodoviária de Salto",
+    "time": "18:00",
+    "order": 1
+  },
+  {
+    "id": "bp-ana-igreja",
+    "routeId": "route-ana",
+    "name": "Igreja Matriz de Salto",
+    "time": "18:10",
+    "order": 2
+  },
+  {
+    "id": "bp-marcia-independencia",
+    "routeId": "route-marcia",
+    "name": "Praça da Independência",
+    "time": "17:50",
+    "order": 1
+  },
+  {
+    "id": "bp-marcia-bom-jesus",
+    "routeId": "route-marcia",
+    "name": "Igreja do Bom Jesus",
+    "time": "18:00",
+    "order": 2
+  }
+]

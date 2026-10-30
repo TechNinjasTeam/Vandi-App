@@ -1,26 +1,253 @@
+/*
+ * Vandi · tema do shadcn/ui (Tailwind v4) · Azul calmo, claro e escuro
+ * Fonte: cofre do Obsidian, Vandi/Design System/Código/app/globals.css
+ * Copie este arquivo inteiro por cima do app/globals.css do projeto. Não edite à mão:
+ * mudou um valor? Mude no cofre (Tokens.md + este arquivo) e copie de novo.
+ */
 @import "tailwindcss";
+@import "tw-animate-css";
 
+@custom-variant dark (&:is(.dark *));
+
+/* ---------- Tema claro (padrão) ---------- */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --radius: 1.25rem; /* 20px. Os outros cantos saem daqui (ver @theme) */
+
+  /* Cores do shadcn */
+  --background: #F7F8FC;
+  --foreground: #141633;
+  --card: #FFFFFF;
+  --card-foreground: #141633;
+  --popover: #FFFFFF;
+  --popover-foreground: #141633;
+  --primary: #3D5AFE;
+  --primary-foreground: #FFFFFF;
+  --secondary: #EEF0FF;
+  --secondary-foreground: #2A3FC4;
+  --muted: #EEF0F6;
+  --muted-foreground: #5B6080;
+  --accent: #EEF0FF; /* igual a secondary: é o hover do ghost e dos menus */
+  --accent-foreground: #2A3FC4;
+  --destructive: #D92D20;
+  --border: #E3E6F3;
+  --input: #878DB2;
+  --ring: #3D5AFE;
+
+  /* Cores do Vandi (não existem no shadcn) */
+  --destructive-text: #D92D20; /* texto vermelho sem fundo: erro de campo */
+  --highlight: #C6F432; /* lima: só detalhe */
+  --highlight-foreground: #141633; /* texto sobre o lima, igual nos dois temas */
+  --volto: #C6F432;
+  --volto-foreground: #141633;
+  --nao-volto: #D92D20;
+  --nao-volto-foreground: #FFFFFF;
+  --sem-resposta: transparent; /* exceção: tracejado, sem fundo */
+  --sem-resposta-foreground: #5B6080;
+  --sem-resposta-border: #878DB2;
+  --inverse: #141633; /* bloco escuro: toast, contagem, avatar de lista */
+  --inverse-foreground: #FFFFFF;
+  --overlay: rgba(20, 22, 51, 0.45); /* fundo atrás do Drawer */
+
+  /* Gráficos (Tela 12 · Painel) */
+  --chart-1: #3D5AFE; /* fixos / barra em destaque */
+  --chart-2: #C6F432; /* avulsos */
+  --chart-3: #878DB2; /* barra comum */
+  --chart-4: #E3E6F3; /* sem dado / linha de base */
+  --chart-5: #141633; /* linha da meta */
+
+  /* Sombras */
+  --elevation-card: 0 1px 2px rgba(20, 22, 51, 0.06);
+  --elevation-drawer: 0 -8px 24px rgba(20, 22, 51, 0.12);
+  --elevation-tab: 0 1px 2px rgba(20, 22, 51, 0.08);
 }
 
+/* ---------- Tema escuro: classe "dark" no <html> (next-themes) ---------- */
+.dark {
+  --background: #0D0F22;
+  --foreground: #EEF0FA;
+  --card: #171A33;
+  --card-foreground: #EEF0FA;
+  --popover: #171A33;
+  --popover-foreground: #EEF0FA;
+  --primary: #3D5AFE;
+  --primary-foreground: #FFFFFF;
+  --secondary: #1F2654;
+  --secondary-foreground: #9DAEFF;
+  --muted: #232744;
+  --muted-foreground: #A3A8C9;
+  --accent: #1F2654;
+  --accent-foreground: #9DAEFF;
+  --destructive: #D92D20;
+  --border: #2C3054;
+  --input: #6E74A0;
+  --ring: #9DAEFF;
+
+  --destructive-text: #FF7A6E;
+  --highlight: #C6F432;
+  --highlight-foreground: #141633;
+  --volto: #C6F432;
+  --volto-foreground: #141633;
+  --nao-volto: #D92D20;
+  --nao-volto-foreground: #FFFFFF;
+  --sem-resposta: transparent;
+  --sem-resposta-foreground: #A3A8C9;
+  --sem-resposta-border: #6E74A0;
+  --inverse: #3A3F70;
+  --inverse-foreground: #FFFFFF;
+  --overlay: rgba(0, 0, 0, 0.6);
+
+  --chart-1: #3D5AFE;
+  --chart-2: #C6F432;
+  --chart-3: #6E74A0;
+  --chart-4: #2C3054;
+  --chart-5: #EEF0FA;
+
+  --elevation-card: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --elevation-drawer: 0 -8px 24px rgba(0, 0, 0, 0.45);
+  --elevation-tab: 0 1px 2px rgba(0, 0, 0, 0.45);
+}
+
+/* ---------- Ponte para as classes do Tailwind ---------- */
 @theme inline {
+  /* Fontes: as variáveis vêm do next/font no app/layout.tsx */
+  --font-sans: var(--font-nunito), system-ui, sans-serif;
+  --font-display: var(--font-bricolage), system-ui, sans-serif;
+
+  /* Cantos: rounded-sm 16 · rounded-md 18 · rounded-lg 20 · rounded-xl 24 · rounded-2xl 28 */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+
+  /* Sombras: shadow-card · shadow-drawer · shadow-tab */
+  --shadow-card: var(--elevation-card);
+  --shadow-drawer: var(--elevation-drawer);
+  --shadow-tab: var(--elevation-tab);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-destructive-text: var(--destructive-text);
+  --color-highlight: var(--highlight);
+  --color-highlight-foreground: var(--highlight-foreground);
+  --color-volto: var(--volto);
+  --color-volto-foreground: var(--volto-foreground);
+  --color-nao-volto: var(--nao-volto);
+  --color-nao-volto-foreground: var(--nao-volto-foreground);
+  --color-sem-resposta: var(--sem-resposta);
+  --color-sem-resposta-foreground: var(--sem-resposta-foreground);
+  --color-sem-resposta-border: var(--sem-resposta-border);
+  --color-inverse: var(--inverse);
+  --color-inverse-foreground: var(--inverse-foreground);
+  --color-overlay: var(--overlay);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ---------- Estilos de texto: use como classe (ex.: className="titulo-tela") ---------- */
+/* Display: Bricolage Grotesque */
+@utility numero-grande {
+  font-family: var(--font-bricolage), system-ui, sans-serif;
+  font-size: 46px;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+@utility titulo-tela {
+  font-family: var(--font-bricolage), system-ui, sans-serif;
+  font-size: 26px;
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+@utility titulo-janela {
+  font-family: var(--font-bricolage), system-ui, sans-serif;
+  font-size: 22px;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+@utility titulo-card {
+  font-family: var(--font-bricolage), system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.3;
+  font-weight: 700;
+}
+@utility botao {
+  font-family: var(--font-bricolage), system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1;
+  font-weight: 700;
+}
+/* Texto: Nunito Sans */
+@utility corpo {
+  font-family: var(--font-nunito), system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 400;
+}
+@utility corpo-forte {
+  font-family: var(--font-nunito), system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.4;
+  font-weight: 700;
+}
+@utility apoio {
+  font-family: var(--font-nunito), system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
+  font-weight: 600;
+}
+@utility legenda {
+  font-family: var(--font-nunito), system-ui, sans-serif;
+  font-size: 12px;
+  line-height: 1.4;
+  font-weight: 700;
+}
+@utility selo {
+  font-family: var(--font-nunito), system-ui, sans-serif;
+  font-size: 12px;
+  line-height: 1.2;
+  font-weight: 900;
+}
+/* micro: só rótulo numérico curto (eixo de gráfico, bolha da nav, "Abaixo da meta"). Nunca frase. */
+@utility micro {
+  font-family: var(--font-nunito), system-ui, sans-serif;
+  font-size: 11px;
+  line-height: 1.2;
+  font-weight: 900;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
   }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    @apply bg-background font-sans text-base text-foreground antialiased;
+  }
 }

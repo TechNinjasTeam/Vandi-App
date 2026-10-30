@@ -88,9 +88,9 @@ mocks/                JSON fictício
 
 ### Dados e sessão
 
-- `storage.ts`: todo acesso com `try/catch`; sem localStorage, segue com o JSON na memória. Chave `vandi:v1:<assunto>`; mudou o formato dos mocks, sobe a versão.
-- "Restaurar dados de demonstração" apaga `vandi:v1:*` e volta ao JSON.
-- Três contas fictícias: operador, aluno com vaga fixa, aluno sem vaga. Conta tem `role: "operator" | "student"`. A sessão (`vandi:v1:session`) guarda só o id; o papel é lido da conta.
+- `storage.ts`: todo acesso com `try/catch`; sem localStorage, segue com o JSON na memória. Chave `vandi:v3:<assunto>`; mudou o formato dos mocks, sobe a versão.
+- "Restaurar dados de demonstração" apaga `vandi:v3:*` e volta ao JSON.
+- Três contas fictícias: operador, aluno com vaga fixa, aluno sem vaga. Conta tem `role: "operator" | "student"`. A sessão (`vandi:v3:session`) guarda só o id; o papel é lido da conta.
 - A guarda fica em `components/layouts/`: sem sessão ou papel errado → `/sign-in`.
 
 ### Nomes
@@ -116,10 +116,17 @@ Rota (serviço recorrente) é diferente de Viagem (a saída de um dia, ida ou vo
 | Na tela | No código |
 |---|---|
 | Operador / Aluno | `Operator` / `Student` |
+| Conta (operador ou aluno) | `Account = Operator \| Student`, role `"operator" \| "student"` |
 | Rota | `Route` |
 | Ponto de embarque | `BoardingPoint` |
-| Matrícula (vaga fixa) | `Enrollment`: `requested`, `accepted`, `declined` |
+| Matrícula (vaga fixa) | `Enrollment`: `requested`, `accepted`, `confirmed`, `declined`, `cancelled` (DEC-057) |
+| Lugares ocupados | `occupiedSeats` (matrículas `accepted` e `confirmed`, DEC-058) |
 | Viagem | `Trip`, `direction: "outbound" \| "return"` |
+| Desempenho (painel do operador) | `Dashboard` |
+| "Todas" ou uma rota (abas do painel) | `RouteFilter` |
+| Sobraram / vendidos / vazios | `leftover` / `sold` / `empty` |
+| Dinheiro dos avulsos | `earnings` (soma de `operatorShare`, DEC-054) |
+| Melhorou / Piorou / Igual | `better` / `worse` / `same` (`Trend`) |
 | Ausência ("Não vou amanhã") | `Absence` |
 | Chamada de retorno | `ReturnCall`, `ReturnCallResponse` |
 | Volto / Não volto / Sem resposta | `returning` / `not_returning` / `no_response` |
@@ -144,6 +151,7 @@ npm run dev      # servidor local
 npm run lint     # ESLint
 npm run build    # build de produção (também checa tipos)
 npm test -- <caminho>   # Vitest, sempre por caminho
+npm run mocks   # gera o histórico de 8 semanas (mocks/history/)
 ```
 
 ## Segurança
@@ -155,7 +163,7 @@ npm test -- <caminho>   # Vitest, sempre por caminho
 
 ## Git
 
-- Base: `main`. Uma branch por issue: `<type>/<scope>-<n>` (ex.: `feat/criar-rota-12`).
+- Base: `main`. Uma branch por issue: `<type>/<scope>-<o-que>-<n>`, 3 ou 4 palavras no total (ex.: `feat/routes-create-route-12`, `feat/home-redirect-16`).
 - Commits em Conventional Commits: `<type>(<scope>): <descrição>`, imperativo, até 72 caracteres, sem ponto final, sem `Co-Authored-By`.
 - PR pequeno, para `main`, com print no celular, revisado e aprovado pelo Gabriel antes do merge. Revisão em lote, terça e sexta.
 - Specs e planos das features ficam no cofre (`Features/`), não neste repositório.
