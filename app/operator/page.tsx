@@ -1,7 +1,7 @@
 "use client"
 
 // CAMADA 1 · TELA 3 (Início do operador). Só desenha e chama o hook. Moldura e barra vêm do OperatorLayout.
-import { ArrowRight, Bus, ChartColumn, ChevronRight, ClipboardList, Plus, type LucideIcon } from "lucide-react"
+import { ArrowRight, Bus, ChartColumn, ChevronRight, ClipboardList, Plus } from "lucide-react"
 import Link from "next/link"
 
 import { Alert, AlertDescription } from "@/components/ui/alert"
@@ -16,25 +16,6 @@ import { useOperatorHome } from "./use-operator-home"
 const TONES = {
   highlight: "bg-highlight text-highlight-foreground",
   secondary: "bg-secondary text-secondary-foreground",
-}
-
-// "Em breve": destino que ainda não existe. Não navega (DEC-051); #5 e #6 trocam por link.
-function ComingSoonCard({ icon: Icon, title, tone }: { icon: LucideIcon; title: string; tone: keyof typeof TONES }) {
-  return (
-    <button
-      type="button"
-      aria-disabled="true"
-      className="flex min-h-[68px] w-full items-center gap-3 rounded-xl bg-card px-4 py-3.5 text-left shadow-card"
-    >
-      <span aria-hidden="true" className={`flex size-10 flex-none items-center justify-center rounded-full ${TONES[tone]}`}>
-        <Icon className="size-5" />
-      </span>
-      <span className="flex flex-1 flex-col gap-0.5">
-        <span className="corpo-forte">{title}</span>
-        <span className="apoio text-muted-foreground">Em breve</span>
-      </span>
-    </button>
-  )
 }
 
 export default function OperatorHomePage() {
@@ -139,7 +120,19 @@ export default function OperatorHomePage() {
         <h2 id="trips-title" className="titulo-card">
           Viagens
         </h2>
-        <ComingSoonCard icon={ClipboardList} tone="highlight" title="Lista de embarque de amanhã" />
+        <Link
+          href="/operator/boarding-list"
+          className="flex min-h-[68px] w-full items-center gap-3 rounded-xl bg-card px-4 py-3.5 text-left shadow-card"
+        >
+          <span aria-hidden="true" className={`flex size-10 flex-none items-center justify-center rounded-full ${TONES.highlight}`}>
+            <ClipboardList className="size-5" />
+          </span>
+          <span className="flex flex-1 flex-col gap-0.5">
+            <span className="corpo-forte">Lista de embarque</span>
+            <span className="apoio text-muted-foreground">Quem vai na próxima ida</span>
+          </span>
+          <ChevronRight aria-hidden="true" className="size-5 text-muted-foreground" />
+        </Link>
       </section>
 
       <section aria-labelledby="management-title" className="flex flex-col gap-3">
