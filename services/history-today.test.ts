@@ -46,8 +46,9 @@ describe("history of today on a day the van runs", () => {
     seed(today)
     const list = await getBoardingList(operatorId, routeId, "outbound", at(today, "01:00"))
     expect(list?.date).toBe(today)
-    const passengers = list!.going.flatMap((g) => g.passengers)
-    expect(passengers.length).toBeGreaterThan(0) // the fixed passengers are still there
+    // At 01:00 the call is still open: fixed passengers without an answer sit in `noResponse`, not in `going`.
+    const passengers = [...list!.going.flatMap((g) => g.passengers), ...list!.noResponse, ...list!.notGoing]
+    expect(passengers.filter((p) => p.kind === "fixed").length).toBeGreaterThan(0) // the fixed passengers are still there
     expect(passengers.filter((p) => p.kind === "single")).toEqual([])
   })
 
