@@ -358,5 +358,37 @@
     "password": "",
     "phone": "(11) 90000-0045",
     "role": "student"
+  },
+  {
+    "id": "st-renata-alencar",
+    "name": "Renata Alencar",
+    "email": "renata.alencar@vandi.test",
+    "password": "",
+    "phone": "(11) 90000-0046",
+    "role": "student"
+  },
+  {
+    "id": "st-samuel-barros",
+    "name": "Samuel Barros",
+    "email": "samuel.barros@vandi.test",
+    "password": "",
+    "phone": "(11) 90000-0047",
+    "role": "student"
+  },
+  {
+    "id": "st-taina-cordeiro",
+    "name": "Tainá Cordeiro",
+    "email": "taina.cordeiro@vandi.test",
+    "password": "",
+    "phone": "(11) 90000-0048",
+    "role": "student"
+  },
+  {
+    "id": "st-ulisses-duarte",
+    "name": "Ulisses Duarte",
+    "email": "ulisses.duarte@vandi.test",
+    "password": "",
+    "phone": "(11) 90000-0049",
+    "role": "student"
   }
 ]

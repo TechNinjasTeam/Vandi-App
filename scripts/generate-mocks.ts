@@ -64,6 +64,8 @@ const enrollments = readMock<Enrollment>("enrollments.json")
 const accounts = readMock<Account>("accounts.json")
 const points = readMock<BoardingPoint>("boarding-points.json")
 const support = new Set(accounts.filter((a) => a.role === "student" && a.password === "").map((a) => a.id))
+// DEC-058: confirmed and accepted enrollments hold a seat, so their students never buy a day pass on any route.
+const seatHolders = new Set(enrollments.filter((e) => e.status === "confirmed" || e.status === "accepted").map((e) => e.studentId))
 
 const trips: { id: string; routeId: string; date: string; direction: "outbound" }[] = []
 const absences: Absence[] = []
@@ -119,7 +121,7 @@ for (let week = WEEKS - 1; week >= 0; week--) {
       // Bookings: the first `count` paid ones take an absentee's seat, so they carry the credit (DEC-034); price per DEC-034 with 22 working days
       const paidCount = Math.min(leftover, Math.floor(PAID_BASE[route.id] + random() * 2 + count / 2))
       const extra = random() < 0.35 && paidCount < leftover ? pick(["pending", "cancelled"] as const) : null
-      const buyers = shuffle([...support].filter((id) => !enrolledIds.has(id)))
+      const buyers = shuffle([...support].filter((id) => !enrolledIds.has(id) && !seatHolders.has(id)))
       const day22 = route.monthlyPrice / 22
       const price = Math.ceil((day22 * 1.6) / 500) * 500
       const vandiFee = Math.round((price - day22) / 4)
