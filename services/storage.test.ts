@@ -244,6 +244,29 @@ describe("history seed", () => {
     }
   })
 
+  it.each(["2026-10-28", "2026-10-30"])("keeps the history of today (%s) out of the live offers and bookings", (today) => {
+    seed(today)
+    const offers = read("singleTripOffers")
+    const historyOffers = offers.filter((o) => !handIds.has(o.id))
+    expect(historyOffers.length).toBeGreaterThan(0)
+    for (const o of historyOffers) expect(o.date < today).toBe(true)
+    const historyBookings = read("singleTripBookings").filter((b) => !handIds.has(b.id))
+    expect(historyBookings.length).toBeGreaterThan(0)
+    for (const b of historyBookings) expect(dayOf(b.createdAt) < today).toBe(true)
+    // the hand-written live story stays
+    expect(offers.find((o) => o.id === "offer-carlos")?.date).toBe(today)
+    expect(read("singleTripBookings").find((b) => b.id === "booking-gustavo")?.status).toBe("paid")
+  })
+
+  it("never has a student with a fixed seat on any route buying a day pass in the history", () => {
+    seed("2026-10-31") // Saturday: the whole week is seeded
+    const enrollments = read("enrollments")
+    const holders = new Set(enrollments.filter((e) => e.status === "confirmed" || e.status === "accepted").map((e) => e.studentId))
+    const buyers = read("singleTripBookings").filter((b) => !handIds.has(b.id))
+    expect(buyers.length).toBeGreaterThan(0)
+    expect(buyers.filter((b) => holders.has(b.studentId)).map((b) => `${b.id}:${b.studentId}`)).toEqual([])
+  })
+
   it("resolves a time suffix to a same-day ISO timestamp", () => {
     seed("2026-10-27")
     const absence = read("absences").find((a) => !handIds.has(a.id))!

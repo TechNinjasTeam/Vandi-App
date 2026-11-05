@@ -199,7 +199,7 @@ describe("signUp validation", () => {
     if (result.ok) return
     expect(Object.keys(result.fieldErrors ?? {}).sort()).toEqual(["email", "name", "password", "phone"])
     expect(result.error).toBe("Digite seu nome.")
-    expect(read("accounts")).toHaveLength(45)
+    expect(read("accounts")).toHaveLength(49)
     expect(readSession()).toBeNull()
   })
 })

@@ -66,10 +66,12 @@ describe("announceSeats", () => {
     expect(cards[0].available).toBe(4)
   })
 
-  it("leaves the history offer of the same day untouched", async () => {
-    const before = read("singleTripOffers").find((o) => o.id === "offer-carlos-w0-fri")
+  it("leaves the history offers of past days untouched", async () => {
+    const history = () => read("singleTripOffers").filter((o) => o.date < "2026-10-30")
+    const before = history()
+    expect(before.length).toBeGreaterThan(0)
     await announceSeats("op-carlos", "route-carlos", 4, NOW)
-    expect(read("singleTripOffers").find((o) => o.id === "offer-carlos-w0-fri")).toEqual(before)
+    expect(history()).toEqual(before)
   })
 
   it("announcing twice keeps one offer per route + date", async () => {
@@ -154,8 +156,10 @@ describe("bookSingleTrip", () => {
   })
 
   it("prices by route: Ana's van costs less", async () => {
-    // offer-ana-w0-fri is the history offer of 30/10 (no hand-written offer on Ana's van).
-    const booking = await book("st-rafael-moura", NOW, "bp-ana-rodoviaria", "offer-ana-w0-fri")
+    // No hand-written offer on Ana's van: she announces one for today.
+    const offer = await announceSeats("op-ana", "route-ana", 2, NOW)
+    if (!offer.ok) throw new Error(offer.error)
+    const booking = await book("st-rafael-moura", NOW, "bp-ana-rodoviaria", offer.data.id)
     expect(booking).toMatchObject({ price: 2500, vandiFee: 261, operatorShare: 2239 })
   })
 
