@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 
-import { getToday } from "@/services/clock"
+import { getNow } from "@/services/clock"
 import { getCurrentAccount, restoreDemoData, signOut as endSession } from "@/services/session"
 import type { Account } from "@/types"
 
@@ -38,7 +38,7 @@ export function useProfile() {
 
   const restore = useCallback(async () => {
     setRestoring(true)
-    const result = await restoreDemoData(getToday())
+    const result = await restoreDemoData(getNow())
     setRestoring(false)
     if (result.ok) router.replace("/sign-in")
     else toast.error(result.error)

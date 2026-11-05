@@ -10,7 +10,7 @@ import type { MyEnrollment, MyRoute } from "@/types"
 type MyRouteState =
   | { status: "loading" }
   | { status: "error" }
-  | { status: "empty"; firstName: string }
+  | { status: "empty"; accountId: string; firstName: string }
   | { status: "ready"; accountId: string; firstName: string; myRoute: MyRoute }
 
 type Drawer = { action: "confirm" | "withdraw"; enrollment: MyEnrollment }
@@ -21,7 +21,7 @@ function load(): Promise<MyRouteState> {
       if (!account) throw new Error("no session")
       const firstName = account.name.trim().split(/\s+/)[0]
       const myRoute = await getMyRoute(account.id)
-      if (!myRoute) return { status: "empty", firstName }
+      if (!myRoute) return { status: "empty", accountId: account.id, firstName }
       return { status: "ready", accountId: account.id, firstName, myRoute }
     })
     .catch((): MyRouteState => ({ status: "error" }))

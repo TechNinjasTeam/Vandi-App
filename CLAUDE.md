@@ -88,9 +88,9 @@ mocks/                JSON fictício
 
 ### Dados e sessão
 
-- `storage.ts`: todo acesso com `try/catch`; sem localStorage, segue com o JSON na memória. Chave `vandi:v3:<assunto>`; mudou o formato dos mocks, sobe a versão.
-- "Restaurar dados de demonstração" apaga `vandi:v3:*` e volta ao JSON.
-- Três contas fictícias: operador, aluno com vaga fixa, aluno sem vaga. Conta tem `role: "operator" | "student"`. A sessão (`vandi:v3:session`) guarda só o id; o papel é lido da conta.
+- `storage.ts`: todo acesso com `try/catch`; sem localStorage, segue com o JSON na memória. Chave `vandi:v4:<assunto>`; mudou o formato dos mocks, sobe a versão.
+- "Restaurar dados de demonstração" apaga `vandi:v4:*` e volta ao JSON.
+- Três contas fictícias: operador, aluno com vaga fixa, aluno sem vaga. Conta tem `role: "operator" | "student"`. A sessão (`vandi:v4:session`) guarda só o id; o papel é lido da conta.
 - A guarda fica em `components/layouts/`: sem sessão ou papel errado → `/sign-in`.
 
 ### Nomes
@@ -127,13 +127,21 @@ Rota (serviço recorrente) é diferente de Viagem (a saída de um dia, ida ou vo
 | Sobraram / vendidos / vazios | `leftover` / `sold` / `empty` |
 | Dinheiro dos avulsos | `earnings` (soma de `operatorShare`, DEC-054) |
 | Melhorou / Piorou / Igual | `better` / `worse` / `same` (`Trend`) |
-| Ausência ("Não vou amanhã") | `Absence` |
+| Ausência no histórico do painel | `Absence` (a chamada grava `OutboundCallResponse`) |
 | Chamada de retorno | `ReturnCall`, `ReturnCallResponse` |
 | Volto / Não volto / Sem resposta | `returning` / `not_returning` / `no_response` |
-| Avulso ("Só um dia") | `SingleTripOffer`, `SingleTripBooking` |
+| Avulso, diária ("Só um dia") | `SingleTripOffer`, `SingleTripBooking`, `SingleTripCard`, `MySingleTrip` |
 | Mensalidade | `MonthlyFee` |
-| Crédito (cashback do lugar revendido) | `Credit` |
+| Crédito (cashback do lugar revendido, por trecho, calculado) | `Credit` |
 | Pagamento (Pix simulado) | `pending` / `paid` / `cancelled` |
+| Chamada da véspera (ida) | `OutboundCall`, `OutboundCallResponse`; fase `OutboundCallPhase`: `not_open` / `open` / `after_deadline` / `after_reclaim` |
+| Ida e volta / Só a ida / Só a volta / Não vou | `OutboundCallAnswer`: `both` / `outbound_only` / `return_only` / `none` |
+| Trecho (ida, volta) | `leg: TripDirection` |
+| Lugares sobrando por trecho | `SeatBalance`, `LegBalance` (`going`, `sold`, `leftover`) |
+| Dá pra vender / à venda | `sellable` / `onSale` |
+| Lista de embarque, passageiro | `BoardingList`, `Passenger` (`fixed` / `single`) |
+| Vou / Não vou / Sem resposta (Tela 9) | `going` / `notGoing` / `noResponse` |
+| Recorrer à vaga | `reclaimSeat` |
 | Assinatura da notificação (push) | `PushSubscription` |
 
 ### Fora até ter motivo

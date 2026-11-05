@@ -4,27 +4,23 @@
     "offerId": "offer-carlos",
     "studentId": "st-gustavo-reis",
     "boardingPointId": "bp-carlos-matriz",
-    "absenceId": "abs-lia",
     "price": 3000,
     "vandiFee": 318,
-    "operatorShare": 1818,
-    "creditAmount": 864,
+    "operatorShare": 2682,
     "creditUsed": 0,
     "status": "paid",
-    "createdAt": "today-1T21:00"
+    "createdAt": "next-outbound-1T21:00"
   },
   {
     "id": "booking-julia",
     "offerId": "offer-carlos",
     "studentId": "st-julia-prado",
     "boardingPointId": "bp-carlos-rodoviaria",
-    "absenceId": "abs-tiago",
     "price": 3000,
     "vandiFee": 318,
-    "operatorShare": 1818,
-    "creditAmount": 864,
+    "operatorShare": 2682,
     "creditUsed": 0,
     "status": "pending",
-    "createdAt": "today-1T21:15"
+    "createdAt": "next-outbound-1T21:15"
   }
 ]

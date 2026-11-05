@@ -2,8 +2,8 @@
   {
     "id": "offer-carlos",
     "routeId": "route-carlos",
-    "date": "next-trip",
+    "date": "next-outbound",
     "seats": 5,
-    "createdAt": "today-1T20:30"
+    "createdAt": "next-outbound-1T20:30"
   }
 ]

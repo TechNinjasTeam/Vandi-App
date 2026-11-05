@@ -1,0 +1,83 @@
+[
+  {
+    "id": "ocr-lia-ferraz",
+    "studentId": "st-lia-ferraz",
+    "routeId": "route-carlos",
+    "date": "next-outbound",
+    "outbound": false,
+    "return": false,
+    "answeredAt": "next-outbound-1T18:05"
+  },
+  {
+    "id": "ocr-davi-rocha",
+    "studentId": "st-davi-rocha",
+    "routeId": "route-carlos",
+    "date": "next-outbound",
+    "outbound": true,
+    "return": true,
+    "answeredAt": "next-outbound-1T18:10"
+  },
+  {
+    "id": "ocr-helena-prado",
+    "studentId": "st-helena-prado",
+    "routeId": "route-carlos",
+    "date": "next-outbound",
+    "outbound": true,
+    "return": true,
+    "answeredAt": "next-outbound-1T18:20"
+  },
+  {
+    "id": "ocr-tiago-reis",
+    "studentId": "st-tiago-reis",
+    "routeId": "route-carlos",
+    "date": "next-outbound",
+    "outbound": false,
+    "return": false,
+    "answeredAt": "next-outbound-1T18:40"
+  },
+  {
+    "id": "ocr-igor-matos",
+    "studentId": "st-igor-matos",
+    "routeId": "route-carlos",
+    "date": "next-outbound",
+    "outbound": true,
+    "return": false,
+    "answeredAt": "next-outbound-1T19:00"
+  },
+  {
+    "id": "ocr-julia-neves",
+    "studentId": "st-julia-neves",
+    "routeId": "route-carlos",
+    "date": "next-outbound",
+    "outbound": false,
+    "return": true,
+    "answeredAt": "next-outbound-1T19:20"
+  },
+  {
+    "id": "ocr-caio-mendes",
+    "studentId": "st-caio-mendes",
+    "routeId": "route-carlos",
+    "date": "next-outbound",
+    "outbound": true,
+    "return": true,
+    "answeredAt": "next-outbound-1T20:00"
+  },
+  {
+    "id": "ocr-fernanda-dias",
+    "studentId": "st-fernanda-dias",
+    "routeId": "route-carlos",
+    "date": "next-outbound",
+    "outbound": true,
+    "return": true,
+    "answeredAt": "next-outbound-1T20:30"
+  },
+  {
+    "id": "ocr-pedro-alves",
+    "studentId": "st-pedro-alves",
+    "routeId": "route-carlos",
+    "date": "next-outbound",
+    "outbound": true,
+    "return": true,
+    "answeredAt": "next-outbound-1T21:10"
+  }
+]

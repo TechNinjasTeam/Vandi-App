@@ -28,11 +28,11 @@ function offer(id: string, routeId: string, date: string): SingleTripOffer {
   return { id, routeId, date, seats: 5, createdAt: `${date}T09:00` }
 }
 function booking(
-  id: string, offerId: string, status: SingleTripBooking["status"], operatorShare: number, absenceId: string | null,
+  id: string, offerId: string, status: SingleTripBooking["status"], operatorShare: number,
 ): SingleTripBooking {
   return {
-    id, offerId, studentId: "st-buyer", boardingPointId: "bp-x", absenceId,
-    price: 3000, vandiFee: 300, operatorShare, creditAmount: 0, creditUsed: 0, status, createdAt: "2026-10-20T10:00",
+    id, offerId, studentId: "st-buyer", boardingPointId: "bp-x",
+    price: 3000, vandiFee: 300, operatorShare, creditUsed: 0, status, createdAt: "2026-10-20T10:00",
   }
 }
 function week(overrides: Partial<WeekMetrics> = {}): WeekMetrics {
@@ -76,13 +76,13 @@ const input: MetricsInput = {
     offer("oA26", "rA", "2026-10-26"), offer("oA27", "rA", "2026-10-27"),
   ],
   singleTripBookings: [
-    booking("b5", "oA23", "paid", 1818, "abs-rA-s1-2026-10-23"),
-    booking("b6", "oA23", "paid", 1818, "abs-rA-s2-2026-10-23"),
-    booking("b7", "oB23", "paid", 1000, "abs-rB-s4-2026-10-23"),
-    booking("b1", "oA26", "paid", 1818, "abs-rA-s1-2026-10-26"),
-    booking("b2", "oA26", "cancelled", 1818, null),
-    booking("b3", "oA27", "paid", 2682, null),
-    booking("b4", "oA27", "pending", 2682, null),
+    booking("b5", "oA23", "paid", 1818),
+    booking("b6", "oA23", "paid", 1818),
+    booking("b7", "oB23", "paid", 1000),
+    booking("b1", "oA26", "paid", 1818),
+    booking("b2", "oA26", "cancelled", 1818),
+    booking("b3", "oA27", "paid", 2682),
+    booking("b4", "oA27", "pending", 2682),
   ],
 }
 
@@ -160,7 +160,7 @@ describe("computeWeek", () => {
       trips: [trip("r1", "2026-10-26")],
       absences: [absence("r1", "a", "2026-10-26")],
       singleTripOffers: [offer("o1", "r1", "2026-10-26")],
-      singleTripBookings: [booking("bk1", "o1", "paid", 1800, "abs-r1-a-2026-10-26")],
+      singleTripBookings: [booking("bk1", "o1", "paid", 1800)],
     }
     expect(computeWeek(small, "all", "2026-10-26", "2026-10-26")).toMatchObject({
       fixed: 2, sold: 1, occupied: 3, leftover: 1, empty: 0, rate: 1,
@@ -179,8 +179,8 @@ describe("computeWeek", () => {
       ],
       singleTripOffers: [offer("o1", "r1", "2026-10-26")],
       singleTripBookings: [
-        booking("k1", "o1", "paid", 100, null), booking("k2", "o1", "paid", 100, null),
-        booking("k3", "o1", "paid", 100, null),
+        booking("k1", "o1", "paid", 100), booking("k2", "o1", "paid", 100),
+        booking("k3", "o1", "paid", 100),
       ],
     }
     expect(computeWeek(clamp, "all", "2026-10-26", "2026-10-26")).toMatchObject({
@@ -188,7 +188,7 @@ describe("computeWeek", () => {
     })
     const oversold: MetricsInput = {
       ...clamp,
-      singleTripBookings: [...clamp.singleTripBookings, booking("k4", "o1", "paid", 100, null)],
+      singleTripBookings: [...clamp.singleTripBookings, booking("k4", "o1", "paid", 100)],
     }
     expect(computeWeek(oversold, "all", "2026-10-26", "2026-10-26")).toMatchObject({ sold: 4, empty: 0 })
   })

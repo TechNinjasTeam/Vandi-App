@@ -1,6 +1,9 @@
 import { afterEach, describe, expect, it, vi } from "vitest"
 import type { Weekday } from "@/types"
-import { addDays, formatDayCaption, formatShortDay, getNextTripDate, getNow, getToday, getWeekStart } from "./clock"
+import {
+  addDays, formatDayCaption, formatShortDay, getNextOutboundDate, getNextTripDate, getNow, getToday, getWeekStart,
+  hoursBefore, toInstant, toLocalDateTime,
+} from "./clock"
 
 afterEach(() => {
   vi.useRealTimers()
@@ -82,5 +85,51 @@ describe("getWeekStart", () => {
 
   it("keeps a Sunday in the week that just ended", () => {
     expect(getWeekStart("2026-11-01")).toBe("2026-10-26")
+  })
+})
+
+const at = (date: string, time: string) => new Date(toInstant(date, time)).toISOString()
+
+describe("toInstant", () => {
+  it("is local: one day apart is 24 h and the hour is the typed one", () => {
+    expect(toInstant("2026-10-30", "17:50") - toInstant("2026-10-29", "17:50")).toBe(86_400_000)
+    expect(new Date(toInstant("2026-10-30", "17:50")).getHours()).toBe(17)
+  })
+
+  it("is NaN when the time is not HH:mm", () => {
+    expect(toInstant("2026-10-30", "")).toBeNaN()
+    expect(toInstant("2026-10-30", "25:00")).toBeNaN()
+  })
+})
+
+describe("hoursBefore", () => {
+  it("subtracts whole hours in ms", () => {
+    const x = toInstant("2026-10-30", "17:50")
+    expect(hoursBefore(x, 12)).toBe(x - 43_200_000)
+  })
+})
+
+describe("toLocalDateTime", () => {
+  it("formats the phone's local time without seconds", () => {
+    expect(toLocalDateTime(toInstant("2026-10-30", "05:50"))).toBe("2026-10-30T05:50")
+  })
+
+  it("is empty for NaN", () => {
+    expect(toLocalDateTime(NaN)).toBe("")
+  })
+})
+
+describe("getNextOutboundDate", () => {
+  const monToFri: Weekday[] = ["mon", "tue", "wed", "thu", "fri"]
+  const monWedFri: Weekday[] = ["mon", "wed", "fri"]
+
+  it("keeps today until the departure, then moves to the next route day", () => {
+    expect(getNextOutboundDate(monToFri, "17:50", at("2026-10-30", "17:49"))).toBe("2026-10-30")
+    expect(getNextOutboundDate(monToFri, "17:50", at("2026-10-30", "17:50"))).toBe("2026-11-02")
+  })
+
+  it("skips the weekend and days off", () => {
+    expect(getNextOutboundDate(monToFri, "17:50", at("2026-10-31", "08:00"))).toBe("2026-11-02")
+    expect(getNextOutboundDate(monWedFri, "17:50", at("2026-10-29", "10:00"))).toBe("2026-10-30")
   })
 })
