@@ -1,6 +1,6 @@
 "use client"
 
-// CAMADA 1 · TELA. Só desenha e chama o hook. Nunca importa `mocks/` nem `services/storage/storage.ts`.
+// CAMADA 1 · TELA. Só desenha e chama o hook. Nunca importa `mocks/` nem `services/storage.ts`.
 // Fora das áreas protegidas (/operator, /student): sem guarda de papel e sem barra inferior.
 // Toda tela nova começa copiando esta pasta. Passo a passo em README.md.
 import { Search } from "lucide-react"

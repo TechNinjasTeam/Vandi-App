@@ -3,7 +3,7 @@ import path from "node:path"
 import type { Weekday } from "../types"
 
 // Writes the eight-week demo history (mocks/history/*.json). Deterministic: fixed seed, no clock.
-// Dates are week tokens ("week-3-fri[THH:mm]"), resolved by services/storage/storage.ts against today's week.
+// Dates are week tokens ("week-3-fri[THH:mm]"), resolved by services/storage.ts against today's week.
 
 const SEED = 20261027
 const WEEKS = 8
