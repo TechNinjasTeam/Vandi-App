@@ -67,20 +67,22 @@ components/
   ui/                 shadcn, gerado: não editar à mão
   layouts/            guarda de papel + navegação de cada área
 hooks/                estado de tela usado em 2+ telas
-services/             regra de negócio + dados, funções simples
-  storage.ts          único arquivo que toca em localStorage
-  metrics.ts          métricas do painel (funções puras)
+services/             regra de negócio + dados, funções simples; uma pasta por módulo, com código e teste
+  <módulo>/           <módulo>.ts + <módulo>.test.ts (ex.: routes/routes.ts)
+  storage/storage.ts  único arquivo que toca em localStorage
+  metrics/metrics.ts  métricas do painel (funções puras)
 types.ts              entidades: o contrato
 mocks/                JSON fictício
 ```
 
 ### Camadas
 
-`page.tsx` (UI) → `use-<tela>.ts` (estado) → `services/*.ts` (regra) → `storage.ts` → localStorage, semeado por `mocks/`.
+`page.tsx` (UI) → `use-<tela>.ts` (estado) → `services/<módulo>/<módulo>.ts` (regra) → `storage.ts` → localStorage, semeado por `mocks/`.
 
 - **Tela nunca importa de `mocks/` nem de `storage.ts`.** Só chama o hook.
 - **Hook só guarda estado** (carregando, vazio, erro, sucesso) e chama o service. Nasce ao lado da tela; sobe pra `hooks/` no segundo uso. Componente, igual: sobe pra `components/` no segundo uso.
 - **Regra de negócio só em `services/`** (lotação, papel, dono da rota). Função exportada, sem classe, sem interface com uma implementação.
+- Import pelo caminho completo, sem `index.ts`: `@/services/clock/clock`. Dentro de `services/`, um módulo importa outro por `../<módulo>/<módulo>`.
 - Todo service é `async`. Leitura devolve o dado. Gravação devolve `{ ok: true, data } | { ok: false, error: string }`, com `error` em português, pronto pra tela. Nunca `throw` pra erro de regra.
 - Uma função por intenção do usuário (`requestSeat`, não `insertEnrollment`). Data de "hoje" entra por parâmetro.
 - Mudou a assinatura de um service? `types.ts` muda no mesmo commit.
@@ -158,7 +160,7 @@ Desenhado para 390 × 844 e testado a partir de 360 px. Janela que sobe é Drawe
 npm run dev      # servidor local
 npm run lint     # ESLint
 npm run build    # build de produção (também checa tipos)
-npm test -- <caminho>   # Vitest, sempre por caminho
+npm test -- services/<módulo>/<módulo>.test.ts   # Vitest, sempre por caminho
 npm run mocks   # gera o histórico de 8 semanas (mocks/history/)
 ```
 
