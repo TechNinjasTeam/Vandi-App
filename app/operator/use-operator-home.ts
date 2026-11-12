@@ -3,10 +3,10 @@
 // CAMADA 2 · HOOK da Tela 3 (Início do operador). Só guarda o estado e chama os services.
 import { useEffect, useState } from "react"
 
-import { formatDayCaption, getToday } from "@/services/clock"
-import { countPendingRequests } from "@/services/enrollments"
-import { formatWeekdays, listOperatorRoutes } from "@/services/routes"
-import { getCurrentAccount } from "@/services/session"
+import { formatDayCaption, getToday } from "@/services/clock/clock"
+import { countPendingRequests } from "@/services/enrollments/enrollments"
+import { formatWeekdays, listOperatorRoutes } from "@/services/routes/routes"
+import { getCurrentAccount } from "@/services/session/session"
 import type { OperatorRoute } from "@/types"
 
 type OperatorHomeState =

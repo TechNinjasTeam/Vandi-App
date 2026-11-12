@@ -3,10 +3,10 @@
 // CAMADA 2 · HOOK da Tela 9 (Lista de embarque). Só guarda o estado e chama os services.
 import { useEffect, useState } from "react"
 
-import { getBoardingList } from "@/services/boarding-list"
-import { formatShortDay, getNow } from "@/services/clock"
-import { listOperatorRoutes } from "@/services/routes"
-import { getCurrentAccount } from "@/services/session"
+import { getBoardingList } from "@/services/boarding-list/boarding-list"
+import { formatShortDay, getNow } from "@/services/clock/clock"
+import { listOperatorRoutes } from "@/services/routes/routes"
+import { getCurrentAccount } from "@/services/session/session"
 import type { BoardingList, OperatorRoute, TripDirection } from "@/types"
 
 type BoardingListState =

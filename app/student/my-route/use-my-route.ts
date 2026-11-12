@@ -3,8 +3,8 @@
 // CAMADA 2 · HOOK da Tela 8 (Minha rota do aluno). Só guarda o estado e chama os services.
 import { useEffect, useState } from "react"
 
-import { confirmSeat, getMyRoute, withdrawRequest } from "@/services/enrollments"
-import { getCurrentAccount } from "@/services/session"
+import { confirmSeat, getMyRoute, withdrawRequest } from "@/services/enrollments/enrollments"
+import { getCurrentAccount } from "@/services/session/session"
 import type { MyEnrollment, MyRoute } from "@/types"
 
 type MyRouteState =

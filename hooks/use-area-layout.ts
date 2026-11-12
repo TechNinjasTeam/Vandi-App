@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 
-import { countPendingRequests } from "@/services/enrollments"
-import { getCurrentAccount } from "@/services/session"
+import { countPendingRequests } from "@/services/enrollments/enrollments"
+import { getCurrentAccount } from "@/services/session/session"
 import type { Role } from "@/types"
 
 // Guarda de papel: sem sessão, papel errado ou falha na leitura → /sign-in, sem mostrar a área.
