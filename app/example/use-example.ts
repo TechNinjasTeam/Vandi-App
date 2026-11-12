@@ -5,7 +5,7 @@
 // sobe para `hooks/` quando uma segunda tela usar.
 import { useEffect, useState } from "react"
 
-import { listExampleRoutes, type ExampleSimulation } from "@/services/example"
+import { listExampleRoutes, type ExampleSimulation } from "@/services/example/example"
 import type { Route } from "@/types"
 
 type ExampleState =

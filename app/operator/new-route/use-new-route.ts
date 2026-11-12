@@ -5,8 +5,8 @@ import { useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 
 import { readRouteForm, type PointRow } from "@/components/route-form"
-import { createRoute } from "@/services/routes"
-import { getCurrentAccount } from "@/services/session"
+import { createRoute } from "@/services/routes/routes"
+import { getCurrentAccount } from "@/services/session/session"
 import type { NewRouteFieldErrors, Weekday } from "@/types"
 
 const defaultWeekdays: Weekday[] = ["mon", "tue", "wed", "thu", "fri"]

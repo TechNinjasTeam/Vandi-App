@@ -4,8 +4,8 @@ import { useCallback, useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 
-import { getNow } from "@/services/clock"
-import { getCurrentAccount, restoreDemoData, signOut as endSession } from "@/services/session"
+import { getNow } from "@/services/clock/clock"
+import { getCurrentAccount, restoreDemoData, signOut as endSession } from "@/services/session/session"
 import type { Account } from "@/types"
 
 type ProfileState = { status: "loading" } | { status: "error" } | { status: "ready"; account: Account }

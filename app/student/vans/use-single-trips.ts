@@ -5,10 +5,10 @@ import { useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 
-import { formatShortDay, getNow } from "@/services/clock"
-import { formatMoney } from "@/services/dashboard"
-import { getCurrentAccount } from "@/services/session"
-import { bookSingleTrip, listSingleTrips } from "@/services/single-trips"
+import { formatShortDay, getNow } from "@/services/clock/clock"
+import { formatMoney } from "@/services/dashboard/dashboard"
+import { getCurrentAccount } from "@/services/session/session"
+import { bookSingleTrip, listSingleTrips } from "@/services/single-trips/single-trips"
 import type { SingleTripCard } from "@/types"
 
 export type SingleTripItem = {
