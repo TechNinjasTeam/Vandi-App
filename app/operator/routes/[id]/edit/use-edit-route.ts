@@ -5,8 +5,8 @@ import { useEffect, useRef, useState } from "react"
 import { useParams, useRouter } from "next/navigation"
 
 import { readRouteForm, type PointRow, type RouteFormDefaults } from "@/components/route-form"
-import { formatMonthlyPrice, getOperatorRoute, POINT_IN_USE, updateRoute } from "@/services/routes"
-import { getCurrentAccount } from "@/services/session"
+import { formatMonthlyPrice, getOperatorRoute, POINT_IN_USE, updateRoute } from "@/services/routes/routes"
+import { getCurrentAccount } from "@/services/session/session"
 import type { EditableRoute, NewRouteFieldErrors, Weekday } from "@/types"
 
 type EditRouteState =

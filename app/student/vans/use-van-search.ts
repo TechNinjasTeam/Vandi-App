@@ -3,9 +3,9 @@
 // CAMADA 2 · HOOK da Tela 6 (Buscar vans). Só guarda o estado e chama os services.
 import { useEffect, useRef, useState } from "react"
 
-import { formatMonthlyPrice, formatWeekdays } from "@/services/routes"
-import { getCurrentAccount } from "@/services/session"
-import { searchVans } from "@/services/vans"
+import { formatMonthlyPrice, formatWeekdays } from "@/services/routes/routes"
+import { getCurrentAccount } from "@/services/session/session"
+import { searchVans } from "@/services/vans/vans"
 import type { VanListing } from "@/types"
 
 export type VanItem = { van: VanListing; operatorFirstName: string; daysLabel: string; priceLabel: string }

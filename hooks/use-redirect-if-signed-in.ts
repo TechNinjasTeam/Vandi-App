@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 
-import { getInitialPath } from "@/services/session"
+import { getInitialPath } from "@/services/session/session"
 
 // Quem já entrou não vê /sign-in nem /sign-up: vai para o caminho inicial do papel.
 // Devolve true enquanto checa (Skeleton no servidor e no primeiro paint do cliente).

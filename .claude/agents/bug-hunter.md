@@ -13,7 +13,7 @@ Invoke `superpowers:systematic-debugging` and follow phases 1 (root cause invest
 
 1. State the problem: actual vs expected, environment (local, preview, production; Android or iPhone), likely category (visual, state, data, permission, storage, contract, transformation).
 2. Locate the area with Grep/Glob. Don't assume paths.
-3. Trace the data flow end to end through the `CLAUDE.md` layers: `page.tsx` → hook `use-<screen>.ts` → `services/*.ts` → `services/storage.ts` → localStorage seeded from `mocks/`. Mock data only: no Supabase. Check the field exists and is preserved, fallbacks changing values (`?? 0`, `[0]` used as total), mobile vs desktop differences, missing or expired session.
+3. Trace the data flow end to end through the `CLAUDE.md` layers: `page.tsx` → hook `use-<screen>.ts` → `services/<module>/<module>.ts` → `services/storage/storage.ts` → localStorage seeded from `mocks/`. Mock data only: no Supabase. Check the field exists and is preserved, fallbacks changing values (`?? 0`, `[0]` used as total), mobile vs desktop differences, missing or expired session.
 4. Compare with working code in the same repo (phase 2).
 
 ## Principles

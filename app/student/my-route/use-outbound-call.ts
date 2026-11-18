@@ -4,9 +4,9 @@
 import { useEffect, useState } from "react"
 import { toast } from "sonner"
 
-import { formatShortDay, getNow, getToday } from "@/services/clock"
-import { formatMoney } from "@/services/dashboard"
-import { answerOutboundCall, getCredit, getOutboundCall, reclaimSeat } from "@/services/outbound-call"
+import { formatShortDay, getNow, getToday } from "@/services/clock/clock"
+import { formatMoney } from "@/services/dashboard/dashboard"
+import { answerOutboundCall, getCredit, getOutboundCall, reclaimSeat } from "@/services/outbound-call/outbound-call"
 import type { OutboundCall, OutboundCallAnswer, Result } from "@/types"
 
 type OutboundCallState =

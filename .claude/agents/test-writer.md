@@ -12,7 +12,7 @@ Test agent. The repo's `CLAUDE.md` applies in full: read it first.
 Invoke `superpowers:test-driven-development` and run only the red phase:
 
 1. Read the task, its acceptance criteria and the production files it touches. Look at nearby tests and mocks and follow their pattern.
-2. Write tests describing the requested behavior, next to the tested file (`services/routes.test.ts` for `services/routes.ts`). Tests only in `services/` (including `metrics.ts`); hooks and screens have no automated tests. One test per business rule, not one per function.
+2. Write tests describing the requested behavior, next to the tested file (`services/routes/routes.test.ts` for `services/routes/routes.ts`). Tests only in `services/` (including `metrics/metrics.ts`); hooks and screens have no automated tests. One test per business rule, not one per function.
 3. Run only those files: `npm test -- <path>`.
 4. Confirm each test fails **for the right reason** (missing symbol, missing behavior), not syntax, wrong import or broken mock.
 
@@ -24,7 +24,7 @@ Invoke `superpowers:test-driven-development` and run only the red phase:
 ## Rules
 
 - Test observable behavior: service input → return (`{ ok, data }` or `{ ok: false, error }` with the Portuguese message) and effect on stored data. Don't test internal calls.
-- Data comes from an in-memory localStorage, reset per test and seeded from `mocks/` JSON, through `services/storage.ts`. "Today" is passed as a parameter. Tests never depend on a real `window` or on data left by another test.
+- Data comes from an in-memory localStorage, reset per test and seeded from `mocks/` JSON, through `services/storage/storage.ts`. "Today" is passed as a parameter. Tests never depend on a real `window` or on data left by another test.
 - Mock data only: no Supabase in this project.
 - Cover the wrong role (operator × student) when the function depends on the session's role.
 - You write against the **feature contract signatures** (`types.ts` and `services/`, already on the branch). If a test requires changing the contract, stop and report `DÚVIDA:`: other sub-issues depend on it.

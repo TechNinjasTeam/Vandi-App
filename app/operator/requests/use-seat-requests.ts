@@ -5,9 +5,9 @@ import { useEffect, useState } from "react"
 import { toast } from "sonner"
 
 import { notifyPendingRequestsChanged } from "@/hooks/use-area-layout"
-import { formatShortDay } from "@/services/clock"
-import { acceptRequest, declineRequest, listRequests } from "@/services/requests"
-import { getCurrentAccount } from "@/services/session"
+import { formatShortDay } from "@/services/clock/clock"
+import { acceptRequest, declineRequest, listRequests } from "@/services/requests/requests"
+import { getCurrentAccount } from "@/services/session/session"
 import type { Enrollment, Result, RouteRequests, SeatRequest } from "@/types"
 
 type SeatRequestsState =

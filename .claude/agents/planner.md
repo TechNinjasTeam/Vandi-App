@@ -33,7 +33,7 @@ Every screen sub-issue codes against these signatures; the types guarantee the f
 For each:
 
 - Conventional Commits title, `<type>(<scope>)`, `<scope>` kebab-case in English (`CLAUDE.md`, Names).
-- **Type:** `dados` (`services/`, including `services/metrics.ts`, with TDD) or `tela` (`page.tsx`, the `use-<screen>.ts` hook and the components next to the screen, no automated tests).
+- **Type:** `dados` (`services/`, including `services/metrics/metrics.ts`, with TDD) or `tela` (`page.tsx`, the `use-<screen>.ts` hook and the components next to the screen, no automated tests).
 - **Target files:** the closed list of files it creates or changes.
 - **Tasks** in order, each fitting one commit, with a criterion as `step → verify: <command>`.
 - **Acceptance criteria** from the spec it covers; for `tela`, the screen(s) in `<cofre>/Design System/Telas/` it implements (file and PNG) and the route, per the `CLAUDE.md` structure.

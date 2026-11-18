@@ -2,7 +2,7 @@
 
 import { useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { getInitialPath } from "@/services/session"
+import { getInitialPath } from "@/services/session/session"
 
 export function useHome() {
   const router = useRouter()

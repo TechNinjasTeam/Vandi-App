@@ -5,7 +5,7 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 
 import { useRedirectIfSignedIn } from "@/hooks/use-redirect-if-signed-in"
-import { getInitialPath, signIn } from "@/services/session"
+import { getInitialPath, signIn } from "@/services/session/session"
 
 export function useSignIn() {
   const router = useRouter()

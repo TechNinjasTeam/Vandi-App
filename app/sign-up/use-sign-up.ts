@@ -5,7 +5,7 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 
 import { useRedirectIfSignedIn } from "@/hooks/use-redirect-if-signed-in"
-import { getInitialPath, signUp } from "@/services/session"
+import { getInitialPath, signUp } from "@/services/session/session"
 import type { Role, SignUpFieldErrors } from "@/types"
 
 export function useSignUp() {

@@ -4,9 +4,9 @@
 // Nenhuma conta aqui: porcentagem, soma, comparação e dia de pico vêm prontos de getDashboard.
 import { useEffect, useRef, useState } from "react"
 
-import { getToday } from "@/services/clock"
-import { formatMoney, formatPercent, formatShortDate, formatWeekCaption, getDashboard } from "@/services/dashboard"
-import { getCurrentAccount } from "@/services/session"
+import { getToday } from "@/services/clock/clock"
+import { formatMoney, formatPercent, formatShortDate, formatWeekCaption, getDashboard } from "@/services/dashboard/dashboard"
+import { getCurrentAccount } from "@/services/session/session"
 import type { Dashboard, RouteFilter, Trend, WeekMetrics, WeeklyPoint } from "@/types"
 
 const NO_DATA = "—"

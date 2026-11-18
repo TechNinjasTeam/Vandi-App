@@ -5,11 +5,11 @@ import { useEffect, useState } from "react"
 import { useParams } from "next/navigation"
 import { toast } from "sonner"
 
-import { getNow } from "@/services/clock"
-import { requestSeat } from "@/services/enrollments"
-import { formatMonthlyPrice, formatWeekdays } from "@/services/routes"
-import { getCurrentAccount } from "@/services/session"
-import { getVan } from "@/services/vans"
+import { getNow } from "@/services/clock/clock"
+import { requestSeat } from "@/services/enrollments/enrollments"
+import { formatMonthlyPrice, formatWeekdays } from "@/services/routes/routes"
+import { getCurrentAccount } from "@/services/session/session"
+import { getVan } from "@/services/vans/vans"
 import type { VanDetail } from "@/types"
 
 type VanDetailState =

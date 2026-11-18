@@ -4,10 +4,10 @@
 import { useState } from "react"
 import { toast } from "sonner"
 
-import { formatShortDay, getNow } from "@/services/clock"
-import { formatMoney } from "@/services/dashboard"
-import { businessDaysInMonth, singleTripPrice } from "@/services/pricing"
-import { announceSeats } from "@/services/single-trips"
+import { formatShortDay, getNow } from "@/services/clock/clock"
+import { formatMoney } from "@/services/dashboard/dashboard"
+import { businessDaysInMonth, singleTripPrice } from "@/services/pricing/pricing"
+import { announceSeats } from "@/services/single-trips/single-trips"
 import type { Route, SeatBalance } from "@/types"
 
 export function useSellSeats(operatorId: string, route: Route, balance: SeatBalance, onAnnounced: () => void) {
